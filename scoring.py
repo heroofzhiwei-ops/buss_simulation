@@ -20,19 +20,13 @@ def _format_assessments_for_scoring(assessments: List[dict]) -> str:
         lines.append(
             f"[buyer_id={item['buyer_id']}] "
             f"[{category}/{channel}/{brief.get('gmv_tier', '')}] "
-            f"适配={item.get('fit_level', '')}
-"
-            f"  评估: {item.get('assessment', '')}
-"
-            f"  翻译: {item.get('opportunity_translation', '')}
-"
-            f"  衍生词: {item.get('derived_keywords', [])}
-"
+            f"适配={item.get('fit_level', '')}\n"
+            f"  评估: {item.get('assessment', '')}\n"
+            f"  翻译: {item.get('opportunity_translation', '')}\n"
+            f"  衍生词: {item.get('derived_keywords', [])}\n"
             f"  风险: {item.get('risks', [])}"
         )
-    return '
-
-'.join(lines)
+    return '\n\n'.join(lines)
 
 
 async def _score_one(persona: dict, assessments: List[dict],

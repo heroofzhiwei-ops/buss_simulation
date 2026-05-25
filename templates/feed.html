@@ -226,8 +226,8 @@ svg { display: block; overflow: visible; stroke-linecap: round; stroke-linejoin:
   <div class="map-grid">
     {% for cluster in opportunity_map.clusters %}
     <div class="cluster-card">
-      <div class="cluster-title"><span>{{ cluster.category }}</span><span class="cluster-count">{{ cluster.items|length }} WORDS</span></div>
-      {% for item in cluster.items %}
+      <div class="cluster-title"><span>{{ cluster.category }}</span><span class="cluster-count">{{ cluster.words|length }} WORDS</span></div>
+      {% for item in cluster.words %}
       <div class="word-item">
         <div class="word-main">
           <span class="word-text">{{ item.word }}</span>

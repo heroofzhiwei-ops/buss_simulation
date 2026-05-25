@@ -36,8 +36,7 @@ def _format_buyer_assessment_prompt(
         image_search_styles=persona.get('image_search_styles', []),
         inquiry_voice_samples=persona.get('inquiry_voice_samples', []),
         inquiry_concerns=persona.get('inquiry_concerns', {}),
-        shop_voice_samples='
-'.join(persona.get('shop_voice_samples', [])[:8]),
+        shop_voice_samples='\n'.join(persona.get('shop_voice_samples', [])[:8]),
         profile_summary_raw=persona.get('profile_summary_raw', '')[:800],
         signal_word=signal_word,
         signal_brief=signal_brief,
@@ -118,8 +117,7 @@ async def generate_buyer_assessments(
     output_path = DATA_OUTPUT / 'assessments.jsonl'
     with open(output_path, 'w', encoding='utf-8') as f:
         for assessment in assessments:
-            f.write(json.dumps(assessment, ensure_ascii=False) + '
-')
+            f.write(json.dumps(assessment, ensure_ascii=False) + '\n')
     return assessments
 
 
@@ -139,19 +137,13 @@ def _format_other_assessments(assessments: List[dict], exclude_buyer_id: str) ->
         lines.append(
             f"[buyer_id={item['buyer_id']}] "
             f"[{category}/{channel}/{brief.get('gmv_tier', '')}] "
-            f"适配={item.get('fit_level', '')}
-"
-            f"  评估: {item.get('assessment', '')}
-"
-            f"  翻译: {item.get('opportunity_translation', '')}
-"
-            f"  衍生词: {item.get('derived_keywords', [])}
-"
+            f"适配={item.get('fit_level', '')}\n"
+            f"  评估: {item.get('assessment', '')}\n"
+            f"  翻译: {item.get('opportunity_translation', '')}\n"
+            f"  衍生词: {item.get('derived_keywords', [])}\n"
             f"  风险: {item.get('risks', [])}"
         )
-    return '
-
-'.join(lines)
+    return '\n\n'.join(lines)
 
 
 async def _gen_one_cross_exam(
@@ -212,8 +204,7 @@ async def generate_cross_examinations(
     output_path = DATA_OUTPUT / 'cross_examinations.jsonl'
     with open(output_path, 'w', encoding='utf-8') as f:
         for challenge in all_challenges:
-            f.write(json.dumps(challenge, ensure_ascii=False) + '
-')
+            f.write(json.dumps(challenge, ensure_ascii=False) + '\n')
     return all_challenges
 
 

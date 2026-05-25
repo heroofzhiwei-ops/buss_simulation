@@ -124,7 +124,7 @@ def build_opportunity_map(assessments: List[dict]) -> dict:
     sorted_clusters = []
     for category, items in sorted(clusters.items(), key=lambda x: -len(x[1])):
         items.sort(key=lambda x: (-x['count'], not x['is_unique'], x['word']))
-        sorted_clusters.append({'category': category, 'items': items})
+        sorted_clusters.append({'category': category, 'words': items})
     return {
         'clusters': sorted_clusters,
         'total_words': len(keyword_info),
