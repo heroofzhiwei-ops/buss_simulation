@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1688 商机信号个性化反应模拟器</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #f5f6f8; min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 40px 20px; color: #222;
+  }
+  .hero {
+    text-align: center; margin-bottom: 36px; max-width: 600px;
+  }
+  .hero h1 {
+    font-size: 28px; font-weight: 700;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+  }
+  .hero p { font-size: 15px; color: #666; line-height: 1.6; }
+  .input-card {
+    background: white; border-radius: 14px; padding: 28px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06); width: 100%; max-width: 560px;
+    margin-bottom: 24px;
+  }
+  .form-group { margin-bottom: 18px; }
+  .form-group label {
+    display: block; font-size: 14px; font-weight: 600;
+    color: #333; margin-bottom: 6px;
+  }
+  .form-group .hint { font-size: 12px; color: #999; margin-bottom: 6px; }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%; padding: 10px 14px; border: 1px solid #ddd;
+    border-radius: 8px; font-size: 14px; outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group textarea:focus {
+    border-color: #ff7e5f;
+  }
+  .form-group textarea { resize: vertical; min-height: 60px; }
+  .form-row { display: flex; gap: 14px; }
+  .form-row .form-group { flex: 1; }
+  .btn-submit {
+    width: 100%; padding: 13px; border: none; border-radius: 10px;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    color: white; font-size: 16px; font-weight: 600; cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+  .btn-submit:hover { opacity: 0.92; }
+  .btn-submit:active { transform: scale(0.98); }
+  .btn-submit:disabled {
+    opacity: 0.5; cursor: not-allowed; transform: none;
+  }
+
+  /* 进度面板 */
+  .progress-panel {
+    background: white; border-radius: 14px; padding: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06); width: 100%; max-width: 560px;
+    display: none;
+  }
+  .progress-panel.active { display: block; }
+  .progress-title {
+    font-size: 16px; font-weight: 600; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .progress-title .spinner {
+    width: 18px; height: 18px; border: 2px solid #eee;
+    border-top-color: #ff7e5f; border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .progress-bar-wrap {
+    height: 6px; background: #eee; border-radius: 3px;
+    overflow: hidden; margin-bottom: 14px;
+  }
+  .progress-bar-fill {
+    height: 100%; background: linear-gradient(90deg, #ff7e5f, #feb47b);
+    border-radius: 3px; width: 0%; transition: width 0.3s;
+  }
+  .progress-log {
+    max-height: 300px; overflow-y: auto; font-size: 13px;
+    color: #555; line-height: 1.8;
+  }
+  .progress-log .log-item {
+    padding: 3px 0; border-bottom: 1px solid #f5f5f5;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .progress-log .log-item:last-child { border-bottom: none; }
+  .log-icon { font-size: 14px; flex-shrink: 0; }
+  .log-icon.done { color: #1a7f4a; }
+  .log-icon.running { color: #ff7e5f; }
+  .log-icon.error { color: #b03030; }
+
+  .result-link {
+    display: block; margin-top: 18px; text-align: center;
+    padding: 14px; background: linear-gradient(135deg, #e6f7ed, #d4f1e0);
+    border-radius: 10px; color: #1a7f4a; font-weight: 600;
+    text-decoration: none; font-size: 15px;
+    transition: opacity 0.2s;
+  }
+  .result-link:hover { opacity: 0.85; }
+
+  /* 数据状态 */
+  .data-status {
+    background: white; border-radius: 14px; padding: 18px 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06); width: 100%; max-width: 560px;
+    margin-bottom: 24px; font-size: 13px; color: #555;
+  }
+  .data-status h3 { font-size: 14px; color: #333; margin-bottom: 8px; }
+  .status-row { display: flex; justify-content: space-between; padding: 4px 0; }
+  .status-ok { color: #1a7f4a; font-weight: 600; }
+  .status-missing { color: #b03030; font-weight: 600; }
+
+  /* 历史记录 */
+  .history-section {
+    width: 100%; max-width: 560px; margin-top: 16px;
+  }
+  .history-section h3 {
+    font-size: 15px; color: #555; margin-bottom: 10px;
+  }
+  .history-item {
+    background: white; border-radius: 10px; padding: 14px 18px;
+    margin-bottom: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .history-item a {
+    color: #ff7e5f; text-decoration: none; font-weight: 600;
+  }
+  .history-item a:hover { text-decoration: underline; }
+  .history-meta { font-size: 12px; color: #999; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🔥 1688 商机信号个性化反应模拟器</h1>
+  <p>输入一个外部商机词，系统将从真实买家画像中抽取差异化角色，<br>
+     模拟他们在分销同行群中对这个信号的个性化反应。</p>
+</div>
+
+<!-- 数据状态卡片 -->
+<div class="data-status" id="dataStatus">
+  <h3>📊 数据状态</h3>
+  <div id="dataStatusContent">加载中...</div>
+</div>
+
+<!-- 输入卡片 -->
+<div class="input-card" id="inputCard">
+  <form id="signalForm">
+    <div class="form-group">
+      <label>商机信号词 *</label>
+      <div class="hint">输入一个外部冒头的趋势词，如"巴恩风""宋代美学复兴""宠物经济"</div>
+      <input type="text" id="signalWord" placeholder="例如：巴恩风" required>
+    </div>
+    <div class="form-group">
+      <label>信号简介</label>
+      <div class="hint">一句话描述这个信号的背景，帮助 agent 更好理解</div>
+      <textarea id="signalBrief" placeholder="例如：美式复古休闲风，近期小红书话题热度环比+120%，主打oversize衬衫和复古工装"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Buyer 采样数</label>
+        <div class="hint">从数据中取前 N 个进行画像构建</div>
+        <input type="number" id="sampleLimit" value="300" min="10" max="9998">
+      </div>
+      <div class="form-group">
+        <label>运行模式</label>
+        <select id="runStage">
+          <option value="all">端到端（Persona + Demo）</option>
+          <option value="demo">仅 Demo（需已有 Persona）</option>
+          <option value="personas">仅构建 Persona</option>
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="btn-submit" id="submitBtn">🚀 开始模拟</button>
+  </form>
+</div>
+
+<!-- 进度面板 -->
+<div class="progress-panel" id="progressPanel">
+  <div class="progress-title">
+    <div class="spinner" id="progressSpinner"></div>
+    <span id="progressTitle">正在处理中...</span>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressBar"></div>
+  </div>
+  <div class="progress-log" id="progressLog"></div>
+</div>
+
+<!-- 历史记录 -->
+<div class="history-section" id="historySection">
+  <h3>📋 历史记录</h3>
+  <div id="historyList"></div>
+</div>
+
+<script>
+const form = document.getElementById('signalForm');
+const inputCard = document.getElementById('inputCard');
+const progressPanel = document.getElementById('progressPanel');
+const progressLog = document.getElementById('progressLog');
+const progressBar = document.getElementById('progressBar');
+const progressTitle = document.getElementById('progressTitle');
+const progressSpinner = document.getElementById('progressSpinner');
+const submitBtn = document.getElementById('submitBtn');
+
+// 页面加载时获取数据状态和历史
+document.addEventListener('DOMContentLoaded', () => {
+  fetchDataStatus();
+  fetchHistory();
+});
+
+async function fetchDataStatus() {
+  try {
+    const resp = await fetch('/api/data-status');
+    const data = await resp.json();
+    const container = document.getElementById('dataStatusContent');
+    let html = '';
+    html += `<div class="status-row"><span>buyer_features.tsv</span><span class="${data.buyer_features ? 'status-ok' : 'status-missing'}">${data.buyer_features ? '✅ ' + data.buyer_count + ' 条' : '❌ 未找到'}</span></div>`;
+    html += `<div class="status-row"><span>buyer_profiles.tsv</span><span class="${data.buyer_profiles ? 'status-ok' : 'status-missing'}">${data.buyer_profiles ? '✅ ' + data.profile_count + ' 条' : '❌ 未找到'}</span></div>`;
+    if (data.personas_demo) {
+      html += `<div class="status-row"><span>personas_demo.jsonl</span><span class="status-ok">✅ ${data.demo_count} 个 persona（可直接跑 Demo）</span></div>`;
+    }
+    container.innerHTML = html;
+  } catch (err) {
+    document.getElementById('dataStatusContent').textContent = '加载失败';
+  }
+}
+
+async function fetchHistory() {
+  try {
+    const resp = await fetch('/api/history');
+    const data = await resp.json();
+    const container = document.getElementById('historyList');
+    if (!data.items || data.items.length === 0) {
+      container.innerHTML = '<div style="color:#999; font-size:13px;">暂无历史记录</div>';
+      return;
+    }
+    container.innerHTML = data.items.map(item =>
+      `<div class="history-item">
+        <div>
+          <a href="${item.url}">${item.signal_word}</a>
+          <div class="history-meta">${item.time}</div>
+        </div>
+        <div class="history-meta">${item.post_count} 条主帖</div>
+      </div>`
+    ).join('');
+  } catch (err) {
+    // 忽略
+  }
+}
+
+function addLogItem(message, status) {
+  const iconMap = { done: '✅', running: '⏳', error: '❌', info: 'ℹ️' };
+  const item = document.createElement('div');
+  item.className = 'log-item';
+  item.innerHTML = `<span class="log-icon ${status}">${iconMap[status] || 'ℹ️'}</span><span>${message}</span>`;
+  progressLog.appendChild(item);
+  progressLog.scrollTop = progressLog.scrollHeight;
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const signalWord = document.getElementById('signalWord').value.trim();
+  const signalBrief = document.getElementById('signalBrief').value.trim();
+  const sampleLimit = parseInt(document.getElementById('sampleLimit').value) || 300;
+  const runStage = document.getElementById('runStage').value;
+
+  if (!signalWord) return;
+
+  submitBtn.disabled = true;
+  progressPanel.classList.add('active');
+  progressLog.innerHTML = '';
+  progressBar.style.width = '0%';
+  progressTitle.textContent = '正在处理中...';
+  progressSpinner.style.display = 'block';
+
+  addLogItem(`商机信号词: ${signalWord}`, 'info');
+  addLogItem(`运行模式: ${runStage}`, 'info');
+  addLogItem('连接服务器...', 'running');
+
+  try {
+    const params = new URLSearchParams({
+      signal: signalWord,
+      signal_brief: signalBrief,
+      sample_limit: sampleLimit,
+      stage: runStage,
+    });
+
+    const eventSource = new EventSource(`/api/run?${params.toString()}`);
+
+    eventSource.addEventListener('progress', (e) => {
+      const data = JSON.parse(e.data);
+      addLogItem(data.message, 'running');
+      if (data.percent !== undefined) {
+        progressBar.style.width = data.percent + '%';
+      }
+    });
+
+    eventSource.addEventListener('stage', (e) => {
+      const data = JSON.parse(e.data);
+      addLogItem(`▶ 阶段: ${data.stage}`, 'info');
+      progressTitle.textContent = data.stage;
+    });
+
+    eventSource.addEventListener('done', (e) => {
+      const data = JSON.parse(e.data);
+      progressSpinner.style.display = 'none';
+      progressTitle.textContent = '✅ 处理完成！';
+      progressBar.style.width = '100%';
+      addLogItem('全部完成！', 'done');
+
+      if (data.result_url) {
+        const link = document.createElement('a');
+        link.className = 'result-link';
+        link.href = data.result_url;
+        link.textContent = '🎉 查看结果页面 →';
+        progressPanel.appendChild(link);
+      }
+
+      submitBtn.disabled = false;
+      eventSource.close();
+      fetchHistory();
+    });
+
+    eventSource.addEventListener('error_msg', (e) => {
+      const data = JSON.parse(e.data);
+      addLogItem(`错误: ${data.message}`, 'error');
+      progressSpinner.style.display = 'none';
+      progressTitle.textContent = '❌ 处理失败';
+      submitBtn.disabled = false;
+      eventSource.close();
+    });
+
+    eventSource.onerror = () => {
+      addLogItem('连接中断', 'error');
+      progressSpinner.style.display = 'none';
+      progressTitle.textContent = '❌ 连接中断';
+      submitBtn.disabled = false;
+      eventSource.close();
+    };
+
+  } catch (err) {
+    addLogItem(`请求失败: ${err.message}`, 'error');
+    progressSpinner.style.display = 'none';
+    submitBtn.disabled = false;
+  }
+});
+</script>
+
+</body>
+</html>

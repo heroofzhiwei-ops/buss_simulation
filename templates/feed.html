@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>商机信号·群体反应 - {{ signal_word }}</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #f5f6f8; margin: 0; padding: 24px; color: #222;
+  }
+  .container { max-width: 760px; margin: 0 auto; }
+  .back-link {
+    display: inline-block; margin-bottom: 16px; color: #ff7e5f;
+    text-decoration: none; font-size: 14px;
+  }
+  .back-link:hover { text-decoration: underline; }
+  .header {
+    background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+    color: white; padding: 28px; border-radius: 14px;
+    margin-bottom: 20px; box-shadow: 0 4px 12px rgba(255,126,95,0.25);
+  }
+  .signal-label { font-size: 12px; opacity: 0.85; letter-spacing: 3px; text-transform: uppercase; }
+  .signal-word { font-size: 32px; font-weight: 700; margin: 10px 0 6px; }
+  .signal-meta { font-size: 14px; opacity: 0.9; line-height: 1.5; }
+  .stats-bar {
+    display: flex; gap: 16px; margin-bottom: 16px;
+    background: white; padding: 14px 18px; border-radius: 10px;
+    font-size: 13px; color: #555; flex-wrap: wrap;
+  }
+  .stat-item { display: flex; gap: 6px; align-items: center; }
+  .stat-num { font-weight: 600; color: #ff7e5f; }
+  .post-card {
+    background: white; border-radius: 12px; padding: 20px;
+    margin-bottom: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .avatar {
+    width: 44px; height: 44px; border-radius: 50%; color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 17px; flex-shrink: 0;
+  }
+  .post-author { flex: 1; min-width: 0; }
+  .author-name { font-weight: 600; font-size: 15px; color: #222; }
+  .author-tags {
+    font-size: 12px; color: #888; margin-top: 3px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .stance-badge { padding: 4px 12px; border-radius: 14px; font-size: 12px; font-weight: 500; }
+  .stance-positive { background: #e6f7ed; color: #1a7f4a; }
+  .stance-neutral  { background: #fff7e6; color: #a37800; }
+  .stance-negative { background: #fbeaea; color: #b03030; }
+  .post-body { font-size: 14.5px; line-height: 1.75; color: #333; white-space: pre-wrap; }
+  .post-translation {
+    margin-top: 12px; padding: 10px 14px;
+    background: #f0f4ff; border-left: 3px solid #4a7fe2;
+    font-size: 13px; color: #444; border-radius: 4px;
+  }
+  .keywords { margin-top: 14px; }
+  .keyword-chip {
+    display: inline-block; margin: 3px 4px 3px 0; padding: 5px 12px;
+    background: #fff0e6; color: #d35400; border-radius: 14px;
+    font-size: 12.5px; font-weight: 500;
+  }
+  .keyword-chip.twist {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    color: white; font-weight: 600;
+  }
+  .concerns {
+    margin-top: 12px; padding: 10px 14px; background: #fffbe6;
+    border-radius: 6px; font-size: 13px; color: #8a6d3b;
+  }
+  .post-footer {
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid #eee;
+    display: flex; justify-content: flex-end; gap: 16px;
+    font-size: 13px; color: #888;
+  }
+  .replies { margin-top: 14px; padding: 12px 16px; background: #fafbfc; border-radius: 8px; }
+  .reply { padding: 9px 0; border-bottom: 1px dashed #e5e5e5; font-size: 13px; line-height: 1.6; }
+  .reply:last-child { border-bottom: none; }
+  .reply-author { font-weight: 600; color: #4a7fe2; }
+  .reply-type { display: inline-block; padding: 1px 7px; border-radius: 4px; font-size: 11px; margin: 0 6px; }
+  .reply-type-反对 { background: #fbeaea; color: #b03030; }
+  .reply-type-补充 { background: #e6f7ed; color: #1a7f4a; }
+  .reply-type-质疑 { background: #fff7e6; color: #a37800; }
+  .summary-section {
+    background: white; padding: 22px; border-radius: 12px; margin-top: 24px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .summary-title { font-size: 16px; font-weight: 600; margin-bottom: 14px; }
+  .summary-section .keyword-chip { font-size: 13.5px; padding: 6px 14px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <a class="back-link" href="/">← 返回首页，输入新的商机信号</a>
+
+  <div class="header">
+    <div class="signal-label">EXTERNAL SIGNAL</div>
+    <div class="signal-word">{{ signal_word }}</div>
+    <div class="signal-meta">{{ signal_brief }}</div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-item"><span>响应人数</span><span class="stat-num">{{ posts|length }}</span></div>
+    <div class="stat-item"><span>积极拓展</span><span class="stat-num">{{ stats.positive }}</span></div>
+    <div class="stat-item"><span>观望</span><span class="stat-num">{{ stats.neutral }}</span></div>
+    <div class="stat-item"><span>无关</span><span class="stat-num">{{ stats.negative }}</span></div>
+    <div class="stat-item"><span>衍生词总数</span><span class="stat-num">{{ stats.kw_count }}</span></div>
+  </div>
+
+  {% for post in posts %}
+  <div class="post-card">
+    <div class="post-header">
+      <div class="avatar" style="background: {{ post.avatar_color }}">{{ post.avatar_initial }}</div>
+      <div class="post-author">
+        <div class="author-name">{{ post.shop_name }}</div>
+        <div class="author-tags">{{ post.persona_tags }}</div>
+      </div>
+      <div class="stance-badge stance-{{ post.stance_class }}">{{ post.stance }}</div>
+    </div>
+    <div class="post-body">{{ post.voice }}</div>
+    {% if post.concrete_translation %}
+    <div class="post-translation">💡 我准备这么落地：{{ post.concrete_translation }}</div>
+    {% endif %}
+    <div class="keywords">
+      {% for kw in post.derived_keywords %}
+        <span class="keyword-chip">{{ kw }}</span>
+      {% endfor %}
+      {% if post.personal_twist_keyword %}
+        <span class="keyword-chip twist">★ {{ post.personal_twist_keyword }}</span>
+      {% endif %}
+    </div>
+    {% if post.concerns %}
+    <div class="concerns">⚠️ 顾虑：{{ post.concerns }}</div>
+    {% endif %}
+    <div class="post-footer">
+      <span>👍 {{ post.like_count }}</span>
+      <span>🔥 共鸣度 {{ post.resonance_score }}</span>
+    </div>
+    {% if post.replies %}
+    <div class="replies">
+      {% for reply in post.replies %}
+      <div class="reply">
+        <span class="reply-author">{{ reply.author }}</span>
+        <span class="reply-type reply-type-{{ reply.type }}">{{ reply.type }}</span>
+        {{ reply.voice }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+
+  <div class="summary-section">
+    <div class="summary-title">🌟 跨群体衍生词聚合（按共鸣度加权排序）</div>
+    <div>
+      {% for kw in aggregated_keywords %}
+      <span class="keyword-chip">{{ kw.word }} · {{ kw.count }}人</span>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</body>
+</html>
