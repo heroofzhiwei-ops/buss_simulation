@@ -3,6 +3,7 @@
 __pycache__/
 *.pyc
 .idea/
+.DS_Store
 data/input/*.tsv
 data/output/
 *.egg-info/
