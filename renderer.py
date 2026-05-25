@@ -1,58 +1,56 @@
-"""阶段 5: 把 posts + replies + resonance 渲染成 HTML
+"""阶段 5: 把商机会诊结果渲染成 HTML。
 
-输出三层结构:
-  L1 泛化信号全景 — 衍生词按类目/场景/立场分类
-  L2 个性化反馈卡 — 每个 buyer 完整反应(不展示分数)
-  L3 群体动态 — 高共识词 + 稀有视角 + 反对意见
+输出结构：
+  L1 商机画像与评审概览
+  L2 个性化衍生商机词机会地图
+  L3 买家评审卡 + 交叉质询
+  L4 共识、分歧与不适配边界
 """
-import json
 import hashlib
 from collections import Counter, defaultdict
-from typing import List, Dict
+from typing import Dict, List
 
 from jinja2 import Environment, FileSystemLoader
 from config import DATA_OUTPUT, TEMPLATE_DIR
 
-STANCE_CLASS_MAP = {
-    '积极拓展': 'positive',
-    '观望试探': 'neutral',
-    '无关跳过': 'negative',
+FIT_CLASS_MAP = {
+    '高适配': 'positive',
+    '可试探': 'neutral',
+    '低适配': 'negative',
+    '不适配': 'negative',
 }
 
-REPLY_TYPE_EN_MAP = {
-    '反对': ('DISAGREE', 'disagree'),
-    '补充': ('ADD', 'add'),
-    '质疑': ('QUESTION', 'question'),
+CHALLENGE_TYPE_EN_MAP = {
+    '边界挑战': ('BOUNDARY', 'disagree'),
+    '迁移补充': ('MIGRATE', 'add'),
+    '风险追问': ('RISK', 'question'),
 }
 
-# 衍生词分类规则（简易版，按关键词匹配）
 CATEGORY_KEYWORDS = {
     '服装·男装': ['男', 'oversize', '工装', 'polo', '马甲', '夹克', '卫衣男',
                  '衬衫男', '外套男', '裤男', '短袖男'],
     '服装·女装': ['女', '连衣裙', '半身裙', '吊带', '甜辣', '碎花', '衬衫女',
-                 '外套女', '针织女', '裙', '女装'],
+                 '外套女', '针织女', '裙', '女装', '通勤'],
     '服装·童装': ['童', '亲子', '宝宝', '学生', '儿童', '校服'],
     '配饰': ['帽', '包', '腰带', '袜', '丝巾', '围巾', '手套', '发带', '饰品'],
     '鞋类': ['鞋', '靴', '凉鞋', '运动鞋', '拖鞋', '板鞋'],
-    '家居': ['抱枕', '相框', '收纳', '窗帘', '地毯', '摆件'],
+    '家居': ['抱枕', '相框', '收纳', '窗帘', '地毯', '摆件', '桌布', '藤编'],
 }
 
 
 def _classify_keyword(word: str) -> str:
-    """根据预定义关键词规则对衍生词做类目分类"""
     for category, keywords in CATEGORY_KEYWORDS.items():
         if any(kw in word for kw in keywords):
             return category
-    return '其他'
+    return '其他机会'
 
 
 def _avatar_color(buyer_id: str) -> str:
-    hash_hex = hashlib.md5(buyer_id.encode()).hexdigest()
+    hash_hex = hashlib.md5(str(buyer_id).encode()).hexdigest()
     return '#' + hash_hex[:6]
 
 
 def _format_shop_label(brief: dict, buyer_id: str) -> str:
-    """生成身份简称：主营·渠道·探索类型"""
     parts = []
     if brief.get('main_categories'):
         parts.append(brief['main_categories'][0])
@@ -61,12 +59,11 @@ def _format_shop_label(brief: dict, buyer_id: str) -> str:
     if brief.get('exploration_status'):
         parts.append(brief['exploration_status'] + '型')
     if not parts:
-        return f"分销同行#{buyer_id[-4:]}"
+        return f"分销买家#{str(buyer_id)[-4:]}"
     return ' · '.join(parts)
 
 
 def _format_identity_line(brief: dict) -> str:
-    """生成身份详情行：主营 / 下游 / 体量"""
     segments = []
     if brief.get('main_categories'):
         segments.append(f"主营: {'/'.join(brief['main_categories'][:2])}")
@@ -79,248 +76,238 @@ def _format_identity_line(brief: dict) -> str:
     return '   '.join(segments)
 
 
+def _as_list(value) -> list:
+    if not value:
+        return []
+    if isinstance(value, list):
+        return value
+    return [value]
+
+
 # ============================================================
-# L1 泛化信号全景
+# 机会地图
 # ============================================================
-def build_overview_panel(posts: List[dict]) -> dict:
-    """生成 L1 泛化信号全景数据"""
-    all_keywords = []
-    for post in posts:
-        brief = post.get('persona_brief', {})
-        channel = (brief.get('downstream_channels', [''])[0]
-                   if brief.get('downstream_channels') else '未知')
-        stance = post.get('stance', '')
+def build_opportunity_map(assessments: List[dict]) -> dict:
+    keyword_info = {}
+    for assessment in assessments:
+        brief = assessment.get('persona_brief', {})
+        source_label = _format_shop_label(brief, assessment.get('buyer_id', ''))
+        all_words = []
+        for word in _as_list(assessment.get('derived_keywords')):
+            all_words.append((word, False))
+        unique_word = assessment.get('unique_angle_keyword') or assessment.get('personal_twist_keyword')
+        if unique_word:
+            all_words.append((unique_word, True))
 
-        for kw in post.get('derived_keywords', []):
-            all_keywords.append({
-                'word': kw,
-                'channel': channel,
-                'stance': stance,
-                'is_twist': False,
+        for word, is_unique in all_words:
+            if not word:
+                continue
+            info = keyword_info.setdefault(word, {
+                'word': word,
+                'category': _classify_keyword(word),
+                'sources': [],
+                'is_unique': False,
+                'fit_levels': [],
+                'reason': assessment.get('opportunity_translation', ''),
             })
-        if post.get('personal_twist_keyword'):
-            all_keywords.append({
-                'word': post['personal_twist_keyword'],
-                'channel': channel,
-                'stance': stance,
-                'is_twist': True,
-            })
+            info['sources'].append(source_label)
+            info['is_unique'] = info['is_unique'] or is_unique
+            info['fit_levels'].append(assessment.get('fit_level', ''))
 
-    # 按类目分组
-    by_category = defaultdict(list)
-    for item in all_keywords:
-        category = _classify_keyword(item['word'])
-        by_category[category].append(item)
-    by_category_sorted = dict(
-        sorted(by_category.items(), key=lambda x: -len(x[1]))
-    )
+    clusters = defaultdict(list)
+    for info in keyword_info.values():
+        info['count'] = len(info['sources'])
+        info['source_preview'] = info['sources'][0] if info['sources'] else ''
+        info['fit_preview'] = next((x for x in info['fit_levels'] if x), '')
+        clusters[info['category']].append(info)
 
-    # 按下游场景分组
-    by_channel = defaultdict(list)
-    for item in all_keywords:
-        by_channel[item['channel']].append(item)
-    by_channel_sorted = dict(
-        sorted(by_channel.items(), key=lambda x: -len(x[1]))
-    )
-
-    # 按立场分组
-    by_stance = defaultdict(list)
-    for item in all_keywords:
-        by_stance[item['stance']].append(item)
-
-    # 立场分布统计
-    stance_distribution = Counter(p.get('stance', '') for p in posts)
-
+    sorted_clusters = []
+    for category, items in sorted(clusters.items(), key=lambda x: -len(x[1])):
+        items.sort(key=lambda x: (-x['count'], not x['is_unique'], x['word']))
+        sorted_clusters.append({'category': category, 'items': items})
     return {
-        'total_kws': len(all_keywords),
-        'unique_kws': len(set(item['word'] for item in all_keywords)),
-        'category_count': len(by_category_sorted),
-        'channel_count': len(by_channel_sorted),
-        'twist_count': sum(1 for k in all_keywords if k['is_twist']),
-        'stance_distribution': dict(stance_distribution),
-        'by_category': by_category_sorted,
-        'by_channel': by_channel_sorted,
-        'by_stance': dict(by_stance),
+        'clusters': sorted_clusters,
+        'total_words': len(keyword_info),
+        'unique_angle_count': sum(1 for item in keyword_info.values() if item['is_unique']),
     }
 
 
 # ============================================================
-# L2 个性化反馈卡
+# 买家评审与质询增强
 # ============================================================
-def enrich_post_v2(post: dict, replies_by_target: Dict[str, list]) -> dict:
-    """增强主帖数据用于 L2 个性化反馈卡（不含分数）"""
-    buyer_id = post['buyer_id']
-    brief = post.get('persona_brief', {})
-    post_replies = replies_by_target.get(buyer_id, [])
+def enrich_assessments(
+    assessments: List[dict],
+    challenges_by_target: Dict[str, list],
+    resonance: Dict[str, dict],
+) -> List[dict]:
+    enriched = []
+    for item in assessments:
+        buyer_id = item.get('buyer_id', '')
+        brief = item.get('persona_brief', {})
+        shop_label = _format_shop_label(brief, buyer_id)
+        fit_level = item.get('fit_level') or item.get('stance', '可试探')
+        fit_class = FIT_CLASS_MAP.get(fit_level, 'neutral')
+        match = item.get('signal_match', {})
+        enriched.append({
+            **item,
+            'shop_label': shop_label,
+            'avatar_initial': shop_label[0] if shop_label else '?',
+            'identity_line': _format_identity_line(brief),
+            'avatar_color': _avatar_color(buyer_id),
+            'fit_level': fit_level,
+            'fit_class': fit_class,
+            'fit_score': match.get('match_score'),
+            'review_role': match.get('review_role', '评审'),
+            'match_reasons': match.get('match_reasons', []),
+            'recommended_actions': _as_list(item.get('recommended_actions')),
+            'risks': _as_list(item.get('risks') or item.get('concerns')),
+            'evidence': _as_list(item.get('evidence')),
+            'unique_angle_keyword': item.get('unique_angle_keyword') or item.get('personal_twist_keyword', ''),
+            'resonance': resonance.get(buyer_id, {}),
+            'challenges': challenges_by_target.get(buyer_id, []),
+        })
+    return sorted(
+        enriched,
+        key=lambda x: (
+            {'高适配': 0, '可试探': 1, '低适配': 2, '不适配': 3}.get(x['fit_level'], 1),
+            -(x.get('resonance', {}).get('avg_score', 0) or 0),
+        )
+    )
 
-    enriched_replies = []
-    for reply in post_replies:
-        from_id = reply.get('from_buyer_id', '')
-        from_brief = reply.get('from_persona_brief', {})
-        if from_brief:
-            author_label = _format_shop_label(from_brief, from_id)
-        else:
-            author_label = f"同行#{from_id[-4:]}" if from_id else '同行'
-        type_zh = reply.get('reply_type', '补充')
-        type_en, type_class = REPLY_TYPE_EN_MAP.get(type_zh, ('NOTE', 'add'))
-        enriched_replies.append({
+
+def enrich_challenges(challenges: List[dict]) -> Dict[str, list]:
+    by_target = defaultdict(list)
+    for item in challenges:
+        from_id = item.get('from_buyer_id', '')
+        from_brief = item.get('from_persona_brief', {})
+        author_label = _format_shop_label(from_brief, from_id) if from_brief else f"买家#{str(from_id)[-4:]}"
+        type_zh = item.get('challenge_type') or item.get('reply_type', '迁移补充')
+        type_en, type_class = CHALLENGE_TYPE_EN_MAP.get(type_zh, ('NOTE', 'add'))
+        enriched = {
+            **item,
             'author': author_label,
             'avatar_initial': author_label[0] if author_label else '?',
             'avatar_color': _avatar_color(from_id) if from_id else '#6b7280',
-            'type': type_zh,
             'type_en': type_en,
             'type_class': type_class,
-            'voice': reply.get('voice', ''),
-            'time_label': 'just now',
-        })
+            'challenge_type': type_zh,
+            'challenge': item.get('challenge') or item.get('voice', ''),
+        }
+        by_target[item.get('target_buyer_id') or item.get('reply_to_buyer_id')].append(enriched)
+    return by_target
 
-    shop_label = _format_shop_label(brief, buyer_id)
+
+# ============================================================
+# 总览/洞察
+# ============================================================
+def build_review_overview(signal_profile: dict, assessments: List[dict], opportunity_map: dict) -> dict:
+    fit_distribution = Counter(a.get('fit_level', '可试探') for a in assessments)
     return {
-        **post,
-        'shop_label': shop_label,
-        'avatar_initial': shop_label[0] if shop_label else '?',
-        'identity_line': _format_identity_line(brief),
-        'avatar_color': _avatar_color(buyer_id),
-        'stance_class': STANCE_CLASS_MAP.get(post.get('stance', ''), 'neutral'),
-        'replies': enriched_replies,
+        'reviewer_count': len(assessments),
+        'total_words': opportunity_map['total_words'],
+        'cluster_count': len(opportunity_map['clusters']),
+        'high_fit_count': fit_distribution.get('高适配', 0),
+        'boundary_count': fit_distribution.get('低适配', 0) + fit_distribution.get('不适配', 0),
+        'fit_distribution': dict(fit_distribution),
+        'signal_profile': signal_profile,
     }
 
 
-# ============================================================
-# L3 群体动态
-# ============================================================
-def build_crowd_dynamics(posts: List[dict]) -> dict:
-    """生成 L3 群体动态数据"""
-    # 统计所有衍生词出现次数
-    keyword_counter = Counter()
-    for post in posts:
-        for kw in post.get('derived_keywords', []):
-            keyword_counter[kw] += 1
-        if post.get('personal_twist_keyword'):
-            keyword_counter[post['personal_twist_keyword']] += 1
-
-    # 高共识词（≥2 人都提到）
-    high_consensus = [
-        {'word': kw, 'count': count}
-        for kw, count in keyword_counter.most_common()
-        if count >= 2
-    ][:8]
-
-    # 稀有视角（twist 词且仅 1 人提出）
-    rare_views = []
-    for post in posts:
-        twist = post.get('personal_twist_keyword')
-        if twist and keyword_counter.get(twist, 0) <= 1:
-            brief = post.get('persona_brief', {})
-            rare_views.append({
-                'word': twist,
-                'from_label': _format_shop_label(brief, post['buyer_id']),
-            })
-
-    # 反对/观望的代表性观点
-    objections = []
-    for post in posts:
-        if post.get('stance') in ('无关跳过', '观望试探'):
-            brief = post.get('persona_brief', {})
-            reason = post.get('concerns', '') or post.get('voice', '')[:120]
-            objections.append({
-                'stance': post.get('stance', ''),
-                'from_label': _format_shop_label(brief, post['buyer_id']),
-                'reason': reason,
-            })
-
-    return {
-        'high_consensus': high_consensus,
-        'rare_views': rare_views,
-        'objections': objections,
-    }
-
-
-# ============================================================
-# 汇总视图：衍生信号总罗列
-# ============================================================
-def build_keyword_roster(posts: List[dict]) -> list:
-    """生成去重的衍生词总表，标注来源数量和是否为 twist"""
-    keyword_info = {}
-    for post in posts:
-        brief = post.get('persona_brief', {})
-        source_label = _format_shop_label(brief, post['buyer_id'])
-        for kw in post.get('derived_keywords', []):
-            if kw not in keyword_info:
-                keyword_info[kw] = {'word': kw, 'sources': [], 'is_twist': False}
-            keyword_info[kw]['sources'].append(source_label)
-        twist = post.get('personal_twist_keyword')
-        if twist:
-            if twist not in keyword_info:
-                keyword_info[twist] = {'word': twist, 'sources': [], 'is_twist': True}
-            else:
-                keyword_info[twist]['is_twist'] = True
-            keyword_info[twist]['sources'].append(source_label)
-
-    roster = sorted(keyword_info.values(), key=lambda x: (-len(x['sources']), x['word']))
-    for item in roster:
-        item['count'] = len(item['sources'])
-        item['source_preview'] = item['sources'][0] if item['sources'] else ''
-    return roster
-
-
-# ============================================================
-# 汇总视图：个性化反馈速览
-# ============================================================
-def build_buyer_summaries(posts: List[dict]) -> list:
-    """每个 buyer 的一句话总结"""
+def build_buyer_summaries(assessments: List[dict]) -> list:
     summaries = []
-    for post in posts:
-        brief = post.get('persona_brief', {})
-        voice = post.get('voice', '')
-        voice_short = voice[:60] + '...' if len(voice) > 60 else voice
+    for item in assessments:
+        brief = item.get('persona_brief', {})
+        assessment = item.get('assessment') or item.get('voice', '')
+        assessment_short = assessment[:70] + '...' if len(assessment) > 70 else assessment
         summaries.append({
-            'shop_label': _format_shop_label(brief, post['buyer_id']),
-            'stance': post.get('stance', ''),
-            'stance_class': STANCE_CLASS_MAP.get(post.get('stance', ''), 'neutral'),
-            'twist': post.get('personal_twist_keyword', ''),
-            'kw_count': len(post.get('derived_keywords', [])),
-            'voice_short': voice_short,
+            'shop_label': _format_shop_label(brief, item.get('buyer_id', '')),
+            'fit_level': item.get('fit_level', '可试探'),
+            'fit_class': FIT_CLASS_MAP.get(item.get('fit_level', ''), 'neutral'),
+            'unique_angle': item.get('unique_angle_keyword') or item.get('personal_twist_keyword', ''),
+            'assessment_short': assessment_short,
         })
     return summaries
+
+
+def build_council_insights(assessments: List[dict], challenges: List[dict]) -> dict:
+    all_keywords = []
+    for item in assessments:
+        all_keywords.extend(_as_list(item.get('derived_keywords')))
+        if item.get('unique_angle_keyword'):
+            all_keywords.append(item['unique_angle_keyword'])
+    keyword_counter = Counter(all_keywords)
+    consensus_keywords = [
+        {'word': word, 'count': count}
+        for word, count in keyword_counter.most_common(8)
+        if count >= 2
+    ]
+
+    consensus = []
+    if consensus_keywords:
+        consensus.append('多个买家重复提及相同细粒度词，说明存在可聚合的货盘方向。')
+    if any(a.get('fit_level') == '高适配' for a in assessments):
+        consensus.append('高适配买家集中在类目/渠道与信号语境接近的经营体。')
+    if any(a.get('recommended_actions') for a in assessments):
+        consensus.append('多数建议先小批量测款，用具体场景词替代原始趋势大词。')
+
+    tensions = []
+    for challenge in challenges[:6]:
+        text = challenge.get('challenge') or challenge.get('voice') or ''
+        if text:
+            tensions.append({
+                'type': challenge.get('challenge_type') or challenge.get('reply_type', '质询'),
+                'text': text,
+            })
+
+    boundaries = []
+    for item in assessments:
+        if item.get('fit_level') in ('低适配', '不适配'):
+            brief = item.get('persona_brief', {})
+            boundaries.append({
+                'from_label': _format_shop_label(brief, item.get('buyer_id', '')),
+                'reason': (item.get('risks') or [item.get('assessment', '')])[0],
+                'fit_level': item.get('fit_level'),
+            })
+
+    return {
+        'consensus': consensus or ['当前评审结果较分散，需要扩大样本或补充更明确的商机简介。'],
+        'consensus_keywords': consensus_keywords,
+        'tensions': tensions,
+        'boundaries': boundaries,
+    }
 
 
 # ============================================================
 # 主渲染入口
 # ============================================================
-def render_demo_html(posts: List[dict], replies: List[dict],
-                     resonance: Dict[str, dict],
-                     signal_word: str, signal_brief: str) -> str:
-    # 按目标聚合 replies
-    replies_by_target = {}
-    for reply in replies:
-        target_id = reply.get('reply_to_buyer_id')
-        if target_id:
-            replies_by_target.setdefault(target_id, []).append(reply)
+def render_demo_html(
+    assessments: List[dict],
+    challenges: List[dict],
+    resonance: Dict[str, dict],
+    signal_word: str,
+    signal_brief: str,
+    signal_profile: Dict[str, object] = None,
+) -> str:
+    if signal_profile is None:
+        from signal_analyzer import build_signal_profile
+        signal_profile = build_signal_profile(signal_word, signal_brief)
 
-    # 按共鸣度排序主帖（内部排序信号，不对外展示分数）
-    posts_sorted = sorted(
-        posts,
-        key=lambda p: -resonance.get(p['buyer_id'], {}).get('avg_score', 0)
-    )
-
-    # 构建三层数据
-    overview = build_overview_panel(posts_sorted)
-    enriched_posts = [enrich_post_v2(p, replies_by_target) for p in posts_sorted]
-    crowd_dynamics = build_crowd_dynamics(posts_sorted)
-
-    # 汇总视图数据
-    all_derived_words = build_keyword_roster(posts_sorted)
-    buyer_summaries = build_buyer_summaries(posts_sorted)
+    challenges_by_target = enrich_challenges(challenges)
+    enriched_assessments = enrich_assessments(assessments, challenges_by_target, resonance)
+    opportunity_map = build_opportunity_map(enriched_assessments)
+    overview = build_review_overview(signal_profile, enriched_assessments, opportunity_map)
+    buyer_summaries = build_buyer_summaries(enriched_assessments)
+    council_insights = build_council_insights(enriched_assessments, challenges)
 
     context = {
         'signal_word': signal_word,
         'signal_brief': signal_brief,
+        'signal_profile': signal_profile,
         'overview': overview,
-        'posts': enriched_posts,
-        'crowd_dynamics': crowd_dynamics,
-        'all_derived_words': all_derived_words,
+        'opportunity_map': opportunity_map,
+        'assessments': enriched_assessments,
         'buyer_summaries': buyer_summaries,
+        'council_insights': council_insights,
     }
 
     env = Environment(loader=FileSystemLoader(TEMPLATE_DIR), autoescape=True)

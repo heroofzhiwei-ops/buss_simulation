@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>商机信号 · 群体反应推演引擎</title>
+  <title>商机信号 · 个性化会诊引擎</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -622,9 +622,9 @@
   <!-- Hero Section -->
   <div class="hero">
     <div class="hero-badge">SYSTEM // BIZ-SIGNAL-AGENT v1.0</div>
-    <h1>商机信号 · 群体反应推演引擎</h1>
+    <h1>商机信号 · 个性化会诊引擎</h1>
     <p>输入一个外部商机趋势词，系统将从真实买家画像中抽取差异化角色，<br>
-       模拟他们在分销同行群中对这个信号的个性化反应与共鸣。</p>
+       组织买家评审团进行商机拆解、适配判断、交叉质询与机会地图归纳。</p>
     <div class="stats-badge">
       <div><span class="dot"></span> 推演引擎在线</div>
       <div>底层模型: qwen-plus</div>
@@ -688,27 +688,27 @@
         <div class="stage-title">执行阶段</div>
         <div class="stage-item pending" id="stage-1">
           <div class="stage-number">01</div>
-          <div class="stage-name">画像加载</div>
+          <div class="stage-name">商机画像</div>
           <div class="stage-status">○</div>
         </div>
         <div class="stage-item pending" id="stage-2">
           <div class="stage-number">02</div>
-          <div class="stage-name">主帖生成</div>
+          <div class="stage-name">买家匹配</div>
           <div class="stage-status">○</div>
         </div>
         <div class="stage-item pending" id="stage-3">
           <div class="stage-number">03</div>
-          <div class="stage-name">回帖生成</div>
+          <div class="stage-name">独立评估</div>
           <div class="stage-status">○</div>
         </div>
         <div class="stage-item pending" id="stage-4">
           <div class="stage-number">04</div>
-          <div class="stage-name">共鸣度评分</div>
+          <div class="stage-name">交叉质询</div>
           <div class="stage-status">○</div>
         </div>
         <div class="stage-item pending" id="stage-5">
           <div class="stage-number">05</div>
-          <div class="stage-name">渲染输出</div>
+          <div class="stage-name">机会地图</div>
           <div class="stage-status">○</div>
         </div>
       </div>
@@ -751,13 +751,13 @@ const submitBtn = document.getElementById('submitBtn');
 const resultSection = document.getElementById('resultSection');
 const resultContent = document.getElementById('resultContent');
 
-// 阶段映射（后端推送格式："阶段 1/5: Persona 画像构建"等）
+// 阶段映射（后端推送格式："阶段 1/5: 商机画像拆解"等）
 const stageKeywords = [
-  { num: 1, keywords: ['1/5', '画像', 'Persona', 'persona'] },
-  { num: 2, keywords: ['2/5', '主帖'] },
-  { num: 3, keywords: ['3/5', '回帖'] },
-  { num: 4, keywords: ['4/5', '共鸣', '评分'] },
-  { num: 5, keywords: ['5/5', '渲染', 'HTML'] },
+  { num: 1, keywords: ['1/5', '商机画像', '信号'] },
+  { num: 2, keywords: ['2/5', '买家匹配', 'Persona', 'persona'] },
+  { num: 3, keywords: ['3/5', '独立评估', '买家评估'] },
+  { num: 4, keywords: ['4/5', '交叉质询', '评分'] },
+  { num: 5, keywords: ['5/5', '机会地图', '渲染', 'HTML'] },
 ];
 function matchStageNum(stageText) {
   for (const entry of stageKeywords) {
@@ -817,7 +817,7 @@ async function fetchHistory() {
           <a href="${item.url}">${item.signal_word}</a>
           <div class="history-meta">${item.time}</div>
         </div>
-        <div class="history-meta">${item.post_count} 条主帖</div>
+        <div class="history-meta">${item.post_count} 个评估 · ${item.reply_count || 0} 条质询</div>
       </div>`
     ).join('');
   } catch (err) {
@@ -936,7 +936,7 @@ form.addEventListener('submit', async (e) => {
         addLogLine('正在加载结果页面...', 'progress');
         loadResult(data.result_url);
       } else {
-        addLogLine('本次运行没有生成 feed 页面', 'info');
+        addLogLine('本次运行没有生成会诊结果页面', 'info');
       }
 
       submitBtn.disabled = false;
@@ -983,7 +983,7 @@ form.addEventListener('submit', async (e) => {
   }
 });
 
-// 加载结果页面。使用 iframe 保留 feed 页自己的字体、SVG 和布局样式。
+// 加载结果页面。使用 iframe 保留结果页自己的字体、SVG 和布局样式。
 function loadResult(url) {
   resultContent.innerHTML = '';
 

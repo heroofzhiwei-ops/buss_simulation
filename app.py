@@ -150,9 +150,11 @@ async def _execute_pipeline(signal_word, signal_brief, sample_limit,
                             stage, progress_callback, message_queue):
     """在子线程的事件循环中执行整个流水线"""
     from persona_builder import build_personas_pipeline
-    from post_generator import generate_main_posts, generate_replies
+    from post_generator import (generate_buyer_assessments,
+                                generate_cross_examinations)
     from scoring import compute_resonance
     from renderer import render_demo_html
+    from signal_analyzer import build_signal_profile, select_review_personas
 
     def send_stage(stage_name):
         message_queue.put(('stage', {'stage': stage_name}))
@@ -199,35 +201,48 @@ async def _execute_pipeline(signal_word, signal_brief, sample_limit,
     personas = _load_jsonl(demo_path)
     progress_callback(f'加载 {len(personas)} 个 demo persona', 1, 1)
 
-    # 阶段 2: 主帖生成
-    send_stage('阶段 2/5: 主帖生成')
-    posts = await generate_main_posts(
-        personas, signal_word, signal_brief,
+    # 阶段 1: 商机画像拆解（demo/personas 已存在时从这里开始）
+    send_stage('阶段 1/5: 商机画像拆解')
+    signal_profile = build_signal_profile(signal_word, signal_brief)
+    progress_callback(
+        f"候选类目: {' / '.join(signal_profile.get('category_candidates', []))}",
+        1, 1,
+    )
+
+    # 阶段 2: 买家匹配
+    send_stage('阶段 2/5: 买家匹配与评审团选择')
+    reviewers = select_review_personas(personas, signal_profile)
+    progress_callback(f'选出 {len(reviewers)} 个买家评审视角', 1, 1)
+
+    # 阶段 3: 买家独立评估
+    send_stage('阶段 3/5: 买家独立评估')
+    assessments = await generate_buyer_assessments(
+        reviewers, signal_word, signal_brief, signal_profile,
         progress_callback=progress_callback,
     )
-    if not posts:
+    if not assessments:
         message_queue.put(('error_msg',
-                           {'message': '没有任何主帖生成成功，请检查 LLM 配置'}))
+                           {'message': '没有任何买家评估生成成功，请检查 LLM 配置'}))
         return
 
-    # 阶段 3: 回帖生成
-    send_stage('阶段 3/5: 回帖生成')
-    replies = await generate_replies(
-        personas, posts, signal_word,
+    # 阶段 4: 交叉质询 + 可参考度评分
+    send_stage('阶段 4/5: 交叉质询与可参考度评分')
+    challenges = await generate_cross_examinations(
+        reviewers, assessments, signal_word,
         progress_callback=progress_callback,
     )
-
-    # 阶段 4: 共鸣度评分
-    send_stage('阶段 4/5: 共鸣度评分')
     resonance = await compute_resonance(
-        personas, posts, signal_word,
+        reviewers, assessments, signal_word,
         progress_callback=progress_callback,
     )
 
-    # 阶段 5: HTML 渲染
-    send_stage('阶段 5/5: HTML 渲染')
-    render_demo_html(posts, replies, resonance, signal_word, signal_brief)
-    progress_callback('HTML 渲染完成', 1, 1)
+    # 阶段 5: 机会地图渲染
+    send_stage('阶段 5/5: 机会地图渲染')
+    render_demo_html(
+        assessments, challenges, resonance,
+        signal_word, signal_brief, signal_profile,
+    )
+    progress_callback('机会地图渲染完成', 1, 1)
 
     # 记录历史
     history = _load_history()
@@ -235,8 +250,8 @@ async def _execute_pipeline(signal_word, signal_brief, sample_limit,
         'signal_word': signal_word,
         'signal_brief': signal_brief,
         'time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        'post_count': len(posts),
-        'reply_count': len(replies),
+        'post_count': len(assessments),
+        'reply_count': len(challenges),
         'url': '/result/demo.html',
     })
     _save_history(history)

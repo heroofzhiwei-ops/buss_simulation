@@ -2,19 +2,19 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>商机信号·群体反应 - {{ signal_word }}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商机会诊结果 - {{ signal_word }}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg-base: #f7fbff;
-  --bg-card: #ffffff;
-  --bg-soft: #f0f7ff;
-  --bg-tint: rgba(14, 165, 233, 0.08);
+  --bg-card: rgba(255,255,255,0.88);
+  --bg-soft: #eef7ff;
+  --bg-tint: rgba(14,165,233,0.08);
   --border: #dbe7f5;
   --border-hover: #b9d4ec;
-  --border-strong: #9fc5e8;
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-tertiary: #718196;
@@ -22,13 +22,11 @@
   --accent: #0ea5e9;
   --accent-deep: #2563eb;
   --accent-violet: #7c3aed;
-  --accent-soft: rgba(14, 165, 233, 0.10);
   --success: #16a34a;
   --warning: #d97706;
   --danger: #dc2626;
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
-  --shadow-md: 0 16px 45px rgba(31, 94, 157, 0.10);
-  --shadow-card: 0 10px 28px rgba(15, 23, 42, 0.07);
+  --shadow-sm: 0 1px 2px rgba(15,23,42,0.06);
+  --shadow-card: 0 14px 38px rgba(31,94,157,0.10);
   --mono: 'JetBrains Mono', 'SF Mono', monospace;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,9 +37,9 @@ body {
   -webkit-font-smoothing: antialiased;
   letter-spacing: -0.01em;
   background:
-    radial-gradient(circle at 8% -6%, rgba(14, 165, 233, 0.18), transparent 34%),
-    radial-gradient(circle at 92% 2%, rgba(124, 58, 237, 0.10), transparent 30%),
-    linear-gradient(180deg, #ffffff 0%, var(--bg-base) 44%, #f3f8ff 100%);
+    radial-gradient(circle at 8% -6%, rgba(14,165,233,0.18), transparent 34%),
+    radial-gradient(circle at 92% 2%, rgba(124,58,237,0.10), transparent 30%),
+    linear-gradient(180deg, #fff 0%, var(--bg-base) 44%, #f3f8ff 100%);
   color: var(--text-primary);
   min-height: 100vh;
   padding: 44px 24px 64px;
@@ -52,513 +50,132 @@ body::before {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(14, 165, 233, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(14, 165, 233, 0.07) 1px, transparent 1px);
+    linear-gradient(rgba(14,165,233,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14,165,233,0.07) 1px, transparent 1px);
   background-size: 42px 42px;
   mask-image: linear-gradient(180deg, rgba(0,0,0,0.55), transparent 76%);
   z-index: -1;
 }
-h1, h2, h3 { letter-spacing: -0.03em; font-weight: 700; }
-svg { display: block; overflow: visible; }
-.container { max-width: 960px; margin: 0 auto; }
+svg { display: block; overflow: visible; stroke-linecap: round; stroke-linejoin: round; }
+.container { max-width: 1040px; margin: 0 auto; }
 .back-link {
   display: inline-flex; align-items: center; gap: 8px;
   margin-bottom: 28px; color: var(--text-secondary);
   text-decoration: none; font-size: 13px; font-weight: 700;
-  padding: 9px 13px;
-  background: rgba(255, 255, 255, 0.78);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(14px);
-  transition: all 0.18s ease;
+  padding: 9px 13px; background: rgba(255,255,255,0.78);
+  border: 1px solid var(--border); border-radius: 999px;
+  box-shadow: var(--shadow-sm); backdrop-filter: blur(14px);
+  transition: all .18s ease;
 }
 .back-link:hover { color: var(--accent-deep); border-color: var(--border-hover); transform: translateY(-1px); }
-.back-link svg { width: 14px; height: 14px; min-width: 14px; flex-shrink: 0; }
-
-/* === Header === */
-.header {
-  margin-bottom: 28px;
-  padding: 34px;
-  border: 1px solid var(--border);
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.84);
-  box-shadow: var(--shadow-md);
-  backdrop-filter: blur(16px);
-  position: relative;
-  overflow: hidden;
-}
-.header::before {
-  content: '';
-  position: absolute;
-  inset: 0 26px auto;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent), var(--accent-violet), transparent);
-  opacity: 0.75;
-}
-.signal-label {
-  font-family: var(--mono); font-size: 11px; font-weight: 700;
-  color: var(--accent-deep); letter-spacing: 0.14em;
-  text-transform: uppercase; margin-bottom: 12px;
-}
-.signal-word {
-  font-size: clamp(34px, 6vw, 54px); font-weight: 800;
-  line-height: 1.05;
-  background: linear-gradient(120deg, #0f172a, #0b74c7 52%, #7c3aed);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.055em;
-  margin-bottom: 12px;
-}
-.signal-meta {
-  font-size: 15px; color: var(--text-secondary);
-  line-height: 1.7; max-width: 760px;
-}
-
-/* === L1: Overview === */
-.overview-panel,
-.roster-panel,
-.summary-table,
-.reaction-card,
-.crowd-block {
-  background: rgba(255, 255, 255, 0.88);
+.back-link svg { width: 14px; height: 14px; min-width: 14px; }
+.header, .panel, .review-card, .insight-card {
+  background: var(--bg-card);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-card);
   backdrop-filter: blur(16px);
 }
-.overview-panel {
-  border-radius: 26px;
-  padding: 30px;
-  margin-bottom: 30px;
+.header {
+  border-radius: 30px; padding: 34px; margin-bottom: 24px;
   position: relative; overflow: hidden;
 }
-.overview-panel::before {
-  content: '';
-  position: absolute; top: 0; left: 28px; right: 28px; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity: 0.55;
+.header::before, .panel::before {
+  content: ''; position: absolute; inset: 0 28px auto; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), var(--accent-violet), transparent);
+  opacity: .72;
 }
-.overview-title {
-  font-size: 18px; font-weight: 800; color: var(--text-primary);
-  margin-bottom: 8px; letter-spacing: -0.025em;
-}
-.overview-sub {
-  font-size: 13px; color: var(--text-tertiary); margin-bottom: 24px;
-}
-.overview-stats {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-  padding: 0; margin-bottom: 24px;
-}
-.stat {
-  text-align: left;
-  padding: 18px;
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  background: linear-gradient(180deg, #ffffff, #f5faff);
-}
-.stat .num {
-  font-size: 32px; font-weight: 800; color: var(--accent-deep);
-  letter-spacing: -0.04em; line-height: 1;
-}
-.stat .label {
-  font-family: var(--mono);
-  font-size: 10px; color: var(--text-tertiary);
-  letter-spacing: 0.08em; text-transform: uppercase; margin-top: 9px;
-}
-.overview-tabs {
-  display: inline-flex; gap: 4px; margin-bottom: 20px;
-  padding: 5px; background: var(--bg-soft); border: 1px solid var(--border);
-  border-radius: 999px;
-}
-.tab {
-  padding: 7px 16px; font-size: 13px; font-weight: 700;
-  color: var(--text-tertiary); border-radius: 999px;
-  cursor: pointer; transition: all 0.15s;
-}
-.tab:hover { color: var(--accent-deep); }
-.tab.active {
-  background: #ffffff; color: var(--accent-deep);
-  box-shadow: var(--shadow-sm);
-}
-.tab-content { display: none; }
-.tab-content.active { display: block; }
-.kw-group {
-  margin-bottom: 14px; padding: 16px 18px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(240,247,255,0.76));
-  border-radius: 16px;
-  border: 1px solid var(--border);
-}
-.kw-group-title {
-  font-size: 13px; font-weight: 800; color: var(--text-primary);
-  margin-bottom: 10px; letter-spacing: -0.005em;
-}
-.kw-group-title .count {
-  font-weight: 500; color: var(--text-muted); font-size: 12px;
-}
-.kw-pill {
-  display: inline-flex; align-items: center; margin: 4px 5px 4px 0; padding: 5px 11px;
-  background: #ffffff; border: 1px solid var(--border);
-  color: var(--text-secondary); border-radius: 999px;
-  font-size: 12.5px; font-weight: 600; font-family: var(--mono);
-  transition: all 0.15s;
-  box-shadow: 0 1px 0 rgba(255,255,255,0.8);
-}
-.kw-pill:hover { color: var(--accent-deep); border-color: var(--border-hover); transform: translateY(-1px); }
-.kw-pill.twist {
-  color: var(--accent-violet); border-color: rgba(124,58,237,0.22);
-  background: rgba(124,58,237,0.07);
-}
-
-/* === 汇总A: 衍生信号总罗列 === */
-.section-heading {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 18px; font-weight: 800; color: var(--text-primary);
-  letter-spacing: -0.025em; margin: 38px 0 18px;
-}
-.section-heading svg { width: 18px; height: 18px; min-width: 18px; min-height: 18px; flex-shrink: 0; color: var(--accent-deep); stroke-linecap: round; stroke-linejoin: round; }
-.roster-panel {
-  border-radius: 22px;
-  padding: 24px 26px;
-  margin-bottom: 28px;
-}
-.roster-sub {
-  font-size: 13px;
-  color: var(--text-tertiary);
-  margin-bottom: 16px;
-  letter-spacing: 0.005em;
-}
-.roster-grid { display: flex; flex-wrap: wrap; gap: 9px; }
-.roster-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: #ffffff;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 7px 12px;
-  font-size: 13px;
-  color: var(--text-secondary);
-  transition: all 0.15s;
-  box-shadow: var(--shadow-sm);
-}
-.roster-item:hover {
-  border-color: var(--border-hover);
-  color: var(--accent-deep);
-  transform: translateY(-1px);
-}
-.roster-item.is-twist {
-  border-color: rgba(124,58,237,0.22);
-  background: rgba(124,58,237,0.06);
-}
-.roster-item.is-twist .roster-word { color: var(--accent-violet); }
-.roster-word { font-family: 'Inter', sans-serif; font-weight: 700; }
-.roster-meta { display: inline-flex; align-items: center; gap: 5px; }
-.roster-count {
-  font-size: 10px;
-  color: var(--text-tertiary);
-  background: var(--bg-soft);
-  padding: 2px 6px;
-  border-radius: 999px;
-}
-.roster-twist-tag {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.08em;
-  color: var(--accent-violet);
-  background: rgba(124,58,237,0.10);
-  padding: 2px 6px;
-  border-radius: 999px;
-  font-weight: 700;
-}
-
-/* === 汇总B: 个性化反馈速览 === */
-.summary-table {
-  border-radius: 22px;
-  overflow-x: auto;
-  margin-bottom: 32px;
-}
-.summary-header-row,
-.summary-row {
-  display: grid;
-  grid-template-columns: minmax(160px, 1.35fr) minmax(92px, 0.65fr) minmax(130px, 1fr) minmax(260px, 2fr);
-  gap: 14px;
-  min-width: 760px;
-}
-.summary-header-row {
-  padding: 13px 22px;
-  background: var(--bg-soft);
-  border-bottom: 1px solid var(--border);
-  font-family: var(--mono);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-}
-.summary-row {
-  padding: 15px 22px;
-  border-bottom: 1px solid var(--border);
-  align-items: center;
-  transition: background 0.15s;
-}
-.summary-row:last-child { border-bottom: none; }
-.summary-row:hover { background: rgba(240,247,255,0.62); }
-.col-identity {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: -0.005em;
-  min-width: 0;
-}
-.col-stance .stance-pill {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  padding: 4px 9px;
-  border-radius: 999px;
-  display: inline-flex;
-  white-space: nowrap;
-}
-.col-stance .positive { color: var(--success); background: rgba(22,163,74,0.10); }
-.col-stance .neutral  { color: var(--warning); background: rgba(217,119,6,0.10); }
-.col-stance .negative { color: var(--danger);  background: rgba(220,38,38,0.10); }
-.col-twist {
-  font-size: 12px;
-  color: var(--text-muted);
-  font-style: italic;
-  min-width: 0;
-}
-.col-twist.has-twist {
-  color: var(--accent-violet);
-  font-style: normal;
-  font-weight: 700;
-}
-.col-voice {
-  font-size: 12.5px;
-  color: var(--text-secondary);
-  line-height: 1.55;
-  min-width: 0;
-}
-
-/* === L2: Reaction Cards === */
-.reaction-card {
-  border-radius: 24px;
-  padding: 28px;
-  margin-bottom: 18px;
-  position: relative;
-  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-}
-.reaction-card:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 18px 44px rgba(31, 94, 157, 0.12);
-}
-.reaction-card::before {
-  content: '';
-  position: absolute; left: 0; top: 28px; bottom: 28px;
-  width: 3px; border-radius: 0 999px 999px 0;
-}
-.reaction-card.stance-positive::before { background: var(--success); }
-.reaction-card.stance-neutral::before  { background: var(--warning); }
-.reaction-card.stance-negative::before { background: var(--danger); }
-.reaction-header {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  gap: 18px;
-  margin-bottom: 24px; padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
-}
-.identity-block { display: flex; gap: 14px; align-items: flex-start; min-width: 0; }
-.identity-avatar {
-  width: 46px; height: 46px; border-radius: 16px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800; color: white; font-size: 16px; flex-shrink: 0;
-  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.18);
-}
-.identity-text { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
-.identity-name {
-  font-size: 15px; font-weight: 800; color: var(--text-primary);
-  letter-spacing: -0.01em;
-  overflow-wrap: anywhere;
-}
-.identity-meta {
-  font-size: 12.5px; color: var(--text-tertiary); letter-spacing: 0.005em;
-  line-height: 1.55;
-  overflow-wrap: anywhere;
-}
-.stance-pill {
-  font-family: var(--mono); font-size: 10.5px; font-weight: 700;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  padding: 5px 10px; border-radius: 999px; flex-shrink: 0;
-  white-space: nowrap;
-}
-.stance-pill.positive { color: var(--success); background: rgba(22,163,74,0.10); }
-.stance-pill.neutral  { color: var(--warning); background: rgba(217,119,6,0.10); }
-.stance-pill.negative { color: var(--danger);  background: rgba(220,38,38,0.10); }
-
-.section-label {
-  display: flex; align-items: center; gap: 8px;
-  font-family: var(--mono);
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--text-tertiary); margin-bottom: 10px;
-}
-.section-label svg { width: 13px; height: 13px; min-width: 13px; min-height: 13px; flex-shrink: 0; color: var(--accent-deep); stroke-linecap: round; stroke-linejoin: round; }
-.voice-text {
-  font-size: 15px; line-height: 1.78; color: var(--text-primary);
-  letter-spacing: -0.005em; margin-bottom: 24px;
-  overflow-wrap: anywhere;
-}
-.twist-block {
-  border-left: 3px solid var(--accent-violet);
-  padding: 6px 0 6px 16px;
-  margin: 8px 0 24px;
-  background: linear-gradient(90deg, rgba(124,58,237,0.07), transparent 70%);
-  border-radius: 0 12px 12px 0;
-}
-.twist-word {
-  font-size: 17px; font-weight: 800; color: var(--accent-violet);
-  letter-spacing: -0.01em; margin-bottom: 6px;
-}
-.twist-source {
-  font-size: 12px; color: var(--text-tertiary); font-style: italic;
-}
-.kw-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 24px; }
-.kw-tag {
-  font-size: 12.5px; font-weight: 700; color: var(--text-secondary);
-  background: #ffffff; border: 1px solid var(--border);
-  padding: 5px 10px; border-radius: 999px; font-family: var(--mono);
-  transition: all 0.15s;
-}
-.kw-tag:hover { color: var(--accent-deep); border-color: var(--border-hover); transform: translateY(-1px); }
-.action-block, .concerns-block {
-  margin-bottom: 24px; padding: 15px 16px;
-  background: var(--bg-soft); border: 1px solid var(--border); border-radius: 16px;
-}
-.concerns-block { border-left: 3px solid var(--warning); }
-.block-text {
-  font-size: 14px; line-height: 1.72; color: var(--text-secondary);
-  overflow-wrap: anywhere;
-}
-
-/* === Replies Thread === */
-.replies-section {
-  margin-top: 24px; padding-top: 20px;
-  border-top: 1px solid var(--border);
-}
-.replies-header {
-  display: flex; align-items: center; gap: 8px;
-  margin-bottom: 14px; color: var(--text-tertiary);
-  font-size: 13px; font-weight: 700;
-}
-.replies-header svg { width: 14px; height: 14px; min-width: 14px; flex-shrink: 0; color: var(--accent-deep); }
-.reply-thread { display: flex; flex-direction: column; }
-.reply-item {
-  display: grid; grid-template-columns: 28px minmax(0, 1fr);
-  gap: 12px; padding: 16px 0; position: relative;
-}
-.reply-item:not(:last-child) { border-bottom: 1px solid var(--border); }
-.reply-rail {
-  width: 2px; min-height: 100%; background: var(--border);
-  margin-left: 13px; border-radius: 999px;
-  transition: background 0.2s;
-}
-.reply-item:hover .reply-rail { background: var(--accent); }
-.reply-body { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-.reply-header { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.reply-avatar {
-  width: 30px; height: 30px; border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 800; color: white; flex-shrink: 0;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.24), 0 6px 16px rgba(15, 23, 42, 0.12);
-}
-.reply-meta { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-.reply-author {
-  font-size: 13.5px; font-weight: 800; color: var(--text-primary);
-  letter-spacing: -0.005em;
-  overflow-wrap: anywhere;
-}
-.reply-context {
-  display: flex; align-items: center; gap: 8px;
-  flex-wrap: wrap;
-  font-size: 11.5px; color: var(--text-tertiary);
-}
-.reply-tag {
-  font-family: var(--mono); font-size: 10px;
-  letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;
-  padding: 3px 7px; border-radius: 999px; background: var(--bg-soft);
-}
-.tag-disagree { color: var(--danger);  background: rgba(220,38,38,0.10); }
-.tag-add      { color: var(--success); background: rgba(22,163,74,0.10); }
-.tag-question { color: var(--warning); background: rgba(217,119,6,0.10); }
-.reply-content {
-  font-size: 14px; line-height: 1.7; color: var(--text-secondary);
-  padding-left: 40px; letter-spacing: -0.005em;
-  overflow-wrap: anywhere;
-}
-
-/* === L3: Crowd Dynamics === */
-.crowd-section {
-  margin-top: 46px; padding-top: 32px;
-  border-top: 1px solid var(--border);
-}
-.crowd-grid {
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px; margin-top: 22px;
-}
-.crowd-block { border-radius: 22px; padding: 22px; min-width: 0; }
-.crowd-block-title {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 13px; font-weight: 800; color: var(--text-primary);
-  margin-bottom: 5px; letter-spacing: -0.005em;
-}
-.crowd-block-title svg { width: 14px; height: 14px; min-width: 14px; flex-shrink: 0; color: var(--accent-deep); stroke-linecap: round; stroke-linejoin: round; }
-.crowd-block-sub {
-  font-size: 11.5px; color: var(--text-tertiary);
-  margin-bottom: 16px; letter-spacing: 0.005em; line-height: 1.5;
-}
-.rare-item {
-  border-left: 3px solid var(--accent-violet); padding: 8px 0 8px 14px;
+.signal-label {
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  color: var(--accent-deep); letter-spacing: .14em; text-transform: uppercase;
   margin-bottom: 12px;
-  background: linear-gradient(90deg, rgba(124,58,237,0.06), transparent 72%);
-  border-radius: 0 10px 10px 0;
 }
-.rare-word { font-size: 13.5px; font-weight: 800; color: var(--accent-violet); overflow-wrap: anywhere; }
-.rare-from {
-  font-size: 11px; color: var(--text-muted); margin-top: 3px;
-  font-family: var(--mono);
-  overflow-wrap: anywhere;
+.signal-word {
+  font-size: clamp(34px, 6vw, 56px); line-height: 1.05; font-weight: 800;
+  letter-spacing: -.055em; margin-bottom: 12px;
+  background: linear-gradient(120deg, #0f172a, #0b74c7 52%, #7c3aed);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
-.objection-item {
-  padding: 11px 14px; margin-bottom: 9px;
-  background: var(--bg-soft); border: 1px solid var(--border);
-  border-radius: 14px; font-size: 13px; color: var(--text-secondary); line-height: 1.62;
-  overflow-wrap: anywhere;
+.signal-meta { font-size: 15px; color: var(--text-secondary); line-height: 1.75; max-width: 780px; }
+.profile-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 22px; }
+.profile-block { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 18px; padding: 14px; min-width: 0; }
+.profile-title { font-family: var(--mono); font-size: 10px; color: var(--text-tertiary); letter-spacing: .09em; text-transform: uppercase; margin-bottom: 9px; }
+.profile-value { color: var(--text-primary); font-size: 13px; font-weight: 700; line-height: 1.55; }
+.tag-list { display: flex; flex-wrap: wrap; gap: 7px; }
+.tag, .kw-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  border: 1px solid var(--border); background: #fff; color: var(--text-secondary);
+  border-radius: 999px; padding: 5px 10px; font-size: 12px; font-weight: 700;
 }
-.obj-tag {
-  display: inline-flex;
-  font-family: var(--mono); font-size: 10px; font-weight: 700;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  padding: 3px 7px; border-radius: 999px; margin-right: 8px;
-  background: rgba(217,119,6,0.10); color: var(--warning);
+.tag.accent, .kw-tag.unique { color: var(--accent-violet); background: rgba(124,58,237,.07); border-color: rgba(124,58,237,.2); }
+.panel { border-radius: 26px; padding: 28px; margin-bottom: 26px; position: relative; overflow: hidden; }
+.section-heading { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 800; letter-spacing: -.025em; margin: 38px 0 18px; }
+.section-heading svg { width: 18px; height: 18px; min-width: 18px; color: var(--accent-deep); }
+.overview-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.stat { padding: 18px; border: 1px solid var(--border); border-radius: 18px; background: linear-gradient(180deg,#fff,#f5faff); }
+.stat .num { font-size: 32px; font-weight: 800; color: var(--accent-deep); letter-spacing: -.04em; line-height: 1; }
+.stat .label { font-family: var(--mono); font-size: 10px; color: var(--text-tertiary); letter-spacing: .08em; text-transform: uppercase; margin-top: 9px; }
+.map-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.cluster-card { background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(240,247,255,.76)); border: 1px solid var(--border); border-radius: 20px; padding: 20px; }
+.cluster-title { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 800; margin-bottom: 13px; }
+.cluster-count { color: var(--text-muted); font-family: var(--mono); font-size: 11px; }
+.word-item { padding: 13px 0; border-top: 1px solid var(--border); }
+.word-item:first-of-type { border-top: none; }
+.word-main { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 7px; }
+.word-text { font-size: 14px; font-weight: 800; color: var(--text-primary); }
+.word-meta { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+.summary-table { overflow-x: auto; }
+.summary-header-row, .summary-row { display: grid; grid-template-columns: minmax(170px,1.25fr) minmax(90px,.65fr) minmax(150px,1fr) minmax(280px,2fr); gap: 14px; min-width: 780px; }
+.summary-header-row { padding: 13px 0; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-tertiary); }
+.summary-row { padding: 16px 0; border-bottom: 1px solid var(--border); align-items: center; }
+.summary-row:last-child { border-bottom: none; }
+.fit-pill, .role-pill {
+  display: inline-flex; width: fit-content; white-space: nowrap;
+  font-family: var(--mono); font-size: 10.5px; font-weight: 800; letter-spacing: .08em;
+  padding: 5px 10px; border-radius: 999px;
 }
-
+.fit-pill.positive { color: var(--success); background: rgba(22,163,74,.1); }
+.fit-pill.neutral { color: var(--warning); background: rgba(217,119,6,.1); }
+.fit-pill.negative { color: var(--danger); background: rgba(220,38,38,.1); }
+.role-pill { color: var(--accent-deep); background: rgba(14,165,233,.1); margin-left: 8px; }
+.review-card { border-radius: 24px; padding: 28px; margin-bottom: 18px; position: relative; overflow: hidden; }
+.review-card::before { content: ''; position: absolute; left: 0; top: 28px; bottom: 28px; width: 3px; border-radius: 0 999px 999px 0; }
+.review-card.fit-positive::before { background: var(--success); }
+.review-card.fit-neutral::before { background: var(--warning); }
+.review-card.fit-negative::before { background: var(--danger); }
+.review-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; padding-bottom: 20px; margin-bottom: 22px; border-bottom: 1px solid var(--border); }
+.identity-block { display: flex; gap: 14px; min-width: 0; }
+.identity-avatar { width: 46px; height: 46px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; flex-shrink: 0; box-shadow: 0 10px 20px rgba(37,99,235,.18); }
+.identity-name { font-size: 15px; font-weight: 800; color: var(--text-primary); overflow-wrap: anywhere; }
+.identity-meta { margin-top: 5px; font-size: 12.5px; color: var(--text-tertiary); line-height: 1.55; overflow-wrap: anywhere; }
+.section-label { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--text-tertiary); margin: 18px 0 10px; }
+.section-label svg { width: 13px; height: 13px; color: var(--accent-deep); }
+.body-text { font-size: 15px; line-height: 1.78; color: var(--text-primary); overflow-wrap: anywhere; }
+.soft-block { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 16px; padding: 15px 16px; color: var(--text-secondary); font-size: 14px; line-height: 1.72; }
+.twist-block { border-left: 3px solid var(--accent-violet); padding: 8px 0 8px 16px; background: linear-gradient(90deg, rgba(124,58,237,.07), transparent 70%); border-radius: 0 12px 12px 0; }
+.twist-word { color: var(--accent-violet); font-weight: 800; font-size: 17px; }
+.bullet-list { display: grid; gap: 8px; }
+.bullet-list li { margin-left: 18px; color: var(--text-secondary); line-height: 1.65; }
+.challenge-section { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); }
+.challenge-item { display: grid; grid-template-columns: 30px minmax(0,1fr); gap: 12px; padding: 15px 0; border-bottom: 1px solid var(--border); }
+.challenge-item:last-child { border-bottom: none; }
+.reply-avatar { width: 30px; height: 30px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 11px; }
+.challenge-author { font-size: 13.5px; font-weight: 800; margin-bottom: 5px; }
+.challenge-text { color: var(--text-secondary); font-size: 14px; line-height: 1.7; }
+.challenge-basis { margin-top: 5px; color: var(--text-tertiary); font-size: 12px; }
+.insight-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+.insight-card { border-radius: 22px; padding: 22px; }
+.insight-title { font-size: 14px; font-weight: 800; margin-bottom: 12px; }
+.insight-card li { margin-left: 18px; margin-bottom: 9px; color: var(--text-secondary); line-height: 1.62; font-size: 13px; }
+.boundary-item { padding: 11px 13px; border: 1px solid var(--border); background: var(--bg-soft); border-radius: 14px; margin-bottom: 9px; font-size: 13px; color: var(--text-secondary); line-height: 1.62; }
 @media (max-width: 900px) {
   body { padding: 32px 18px 52px; }
-  .overview-stats { grid-template-columns: repeat(2, 1fr); }
-  .crowd-grid { grid-template-columns: 1fr; }
+  .profile-grid, .overview-stats, .map-grid, .insight-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
 }
 @media (max-width: 640px) {
   body { padding: 24px 14px 44px; }
-  .header, .overview-panel, .reaction-card { border-radius: 22px; padding: 22px; }
-  .signal-word { font-size: 32px; }
-  .overview-stats { grid-template-columns: 1fr; }
-  .section-heading { align-items: flex-start; }
-  .reaction-header { flex-direction: column; gap: 12px; }
-  .reply-item { grid-template-columns: 18px minmax(0, 1fr); gap: 10px; }
-  .reply-rail { margin-left: 8px; }
-  .reply-content { padding-left: 0; }
+  .header, .panel, .review-card { border-radius: 22px; padding: 22px; }
+  .profile-grid, .overview-stats, .map-grid, .insight-grid { grid-template-columns: 1fr; }
+  .review-header { flex-direction: column; }
 }
 </style>
 </head>
@@ -569,309 +186,162 @@ svg { display: block; overflow: visible; }
     返回控制台
   </a>
 
-  <!-- Header -->
   <div class="header">
-    <div class="signal-label">外部信号</div>
+    <div class="signal-label">OPPORTUNITY REVIEW COUNCIL</div>
     <h1 class="signal-word">{{ signal_word }}</h1>
-    <div class="signal-meta">{{ signal_brief }}</div>
+    <div class="signal-meta">{{ signal_brief or signal_profile.interpretation }}</div>
+    <div class="profile-grid">
+      <div class="profile-block">
+        <div class="profile-title">候选类目</div>
+        <div class="tag-list">{% for item in signal_profile.category_candidates %}<span class="tag">{{ item }}</span>{% endfor %}</div>
+      </div>
+      <div class="profile-block">
+        <div class="profile-title">风格语义</div>
+        <div class="tag-list">{% for item in signal_profile.style_tags %}<span class="tag accent">{{ item }}</span>{% endfor %}</div>
+      </div>
+      <div class="profile-block">
+        <div class="profile-title">渠道提示</div>
+        <div class="tag-list">{% for item in signal_profile.channel_hints %}<span class="tag">{{ item }}</span>{% endfor %}</div>
+      </div>
+      <div class="profile-block">
+        <div class="profile-title">价格/供应链</div>
+        <div class="profile-value">{{ signal_profile.price_band_hint }}<br>{{ signal_profile.supply_requirements|join(' / ') }}</div>
+      </div>
+    </div>
   </div>
 
-  <!-- ====== L1: Overview Panel ====== -->
-  <div class="overview-panel">
-    <div class="overview-title">信号泛化全景</div>
-    <div class="overview-sub">{{ posts|length }} 个真实买家如何从各自视角翻译这个商机信号</div>
-
+  <div class="panel">
     <div class="overview-stats">
-      <div class="stat">
-        <div class="num">{{ overview.total_kws }}</div>
-        <div class="label">衍生搜索词</div>
-      </div>
-      <div class="stat">
-        <div class="num">{{ overview.category_count }}</div>
-        <div class="label">覆盖类目</div>
-      </div>
-      <div class="stat">
-        <div class="num">{{ overview.channel_count }}</div>
-        <div class="label">下游场景</div>
-      </div>
-      <div class="stat">
-        <div class="num">{{ overview.twist_count }}</div>
-        <div class="label">独有视角</div>
-      </div>
-    </div>
-
-    <div class="overview-tabs">
-      <div class="tab active" data-view="category">按类目</div>
-      <div class="tab" data-view="channel">按场景</div>
-      <div class="tab" data-view="stance">按立场</div>
-    </div>
-
-    <!-- Tab: Category -->
-    <div class="tab-content active" id="view-category">
-      {% for cate, items in overview.by_category.items() %}
-      <div class="kw-group">
-        <div class="kw-group-title">{{ cate }} <span class="count">({{ items|length }})</span></div>
-        <div>
-          {% for item in items %}
-          <span class="kw-pill {% if item.is_twist %}twist{% endif %}">{{ item.word }}</span>
-          {% endfor %}
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-
-    <!-- Tab: Channel -->
-    <div class="tab-content" id="view-channel">
-      {% for channel, items in overview.by_channel.items() %}
-      <div class="kw-group">
-        <div class="kw-group-title">{{ channel }} <span class="count">({{ items|length }})</span></div>
-        <div>
-          {% for item in items %}
-          <span class="kw-pill {% if item.is_twist %}twist{% endif %}">{{ item.word }}</span>
-          {% endfor %}
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-
-    <!-- Tab: Stance -->
-    <div class="tab-content" id="view-stance">
-      {% for stance, items in overview.by_stance.items() %}
-      <div class="kw-group">
-        <div class="kw-group-title">{{ stance }} ({{ overview.stance_distribution.get(stance, 0) }} agents) <span class="count">({{ items|length }} keywords)</span></div>
-        <div>
-          {% for item in items %}
-          <span class="kw-pill {% if item.is_twist %}twist{% endif %}">{{ item.word }}</span>
-          {% endfor %}
-        </div>
-      </div>
-      {% endfor %}
+      <div class="stat"><div class="num">{{ overview.reviewer_count }}</div><div class="label">参与评审买家</div></div>
+      <div class="stat"><div class="num">{{ overview.total_words }}</div><div class="label">个性化衍生词</div></div>
+      <div class="stat"><div class="num">{{ overview.cluster_count }}</div><div class="label">机会方向</div></div>
+      <div class="stat"><div class="num">{{ overview.boundary_count }}</div><div class="label">边界/反证视角</div></div>
     </div>
   </div>
 
-  <!-- ====== 汇总A: 衍生信号总罗列 ====== -->
   <div class="section-heading">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-    衍生信号总表
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-5 5"/></svg>
+    个性化衍生商机词地图
   </div>
-  <div class="roster-panel">
-    <div class="roster-sub">该商机信号被翻译成的所有具体搜索词（去重后 {{ all_derived_words|length }} 个）</div>
-    <div class="roster-grid">
-      {% for item in all_derived_words %}
-      <div class="roster-item {% if item.is_twist %}is-twist{% endif %}">
-        <span class="roster-word">{{ item.word }}</span>
-        <span class="roster-meta">
-          {% if item.count > 1 %}<span class="roster-count">{{ item.count }}人</span>{% endif %}
-          {% if item.is_twist %}<span class="roster-twist-tag">TWIST</span>{% endif %}
-        </span>
+  <div class="map-grid">
+    {% for cluster in opportunity_map.clusters %}
+    <div class="cluster-card">
+      <div class="cluster-title"><span>{{ cluster.category }}</span><span class="cluster-count">{{ cluster.items|length }} WORDS</span></div>
+      {% for item in cluster.items %}
+      <div class="word-item">
+        <div class="word-main">
+          <span class="word-text">{{ item.word }}</span>
+          {% if item.is_unique %}<span class="kw-tag unique">独特视角</span>{% endif %}
+          {% if item.count > 1 %}<span class="kw-tag">{{ item.count }} 人提及</span>{% endif %}
+        </div>
+        <div class="word-meta">来源：{{ item.source_preview }}{% if item.fit_preview %} · {{ item.fit_preview }}{% endif %}</div>
       </div>
       {% endfor %}
-    </div>
-  </div>
-
-  <!-- ====== 汇总B: 个性化反馈速览 ====== -->
-  <div class="section-heading">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-    反馈速览
-  </div>
-  <div class="summary-table">
-    <div class="summary-header-row">
-      <span class="col-identity">买家身份</span>
-      <span class="col-stance">立场</span>
-      <span class="col-twist">独有视角</span>
-      <span class="col-voice">核心观点</span>
-    </div>
-    {% for s in buyer_summaries %}
-    <div class="summary-row">
-      <span class="col-identity">{{ s.shop_label }}</span>
-      <span class="col-stance"><span class="stance-pill {{ s.stance_class }}">{{ s.stance }}</span></span>
-      <span class="col-twist {% if s.twist %}has-twist{% endif %}">{{ s.twist or '—' }}</span>
-      <span class="col-voice">{{ s.voice_short }}</span>
     </div>
     {% endfor %}
   </div>
 
-  <!-- ====== L2: Personalized Reactions ====== -->
   <div class="section-heading">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    个性化反馈（详情）
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+    买家评审速览
+  </div>
+  <div class="panel summary-table">
+    <div class="summary-header-row">
+      <span>买家经营体</span><span>适配</span><span>独特衍生词</span><span>判断摘要</span>
+    </div>
+    {% for s in buyer_summaries %}
+    <div class="summary-row">
+      <span><strong>{{ s.shop_label }}</strong></span>
+      <span><span class="fit-pill {{ s.fit_class }}">{{ s.fit_level }}</span></span>
+      <span>{{ s.unique_angle or '—' }}</span>
+      <span>{{ s.assessment_short }}</span>
+    </div>
+    {% endfor %}
   </div>
 
-  {% for post in posts %}
-  <div class="reaction-card stance-{{ post.stance_class }}">
-    <div class="reaction-header">
+  <div class="section-heading">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    买家个性化评审详情
+  </div>
+  {% for item in assessments %}
+  <div class="review-card fit-{{ item.fit_class }}">
+    <div class="review-header">
       <div class="identity-block">
-        <div class="identity-avatar" style="background: linear-gradient(135deg, {{ post.avatar_color }}, {{ post.avatar_color }}cc);">
-          {{ post.avatar_initial }}
-        </div>
-        <div class="identity-text">
-          <div class="identity-name">{{ post.shop_label }}</div>
-          <div class="identity-meta">{{ post.identity_line }}</div>
+        <div class="identity-avatar" style="background: linear-gradient(135deg, {{ item.avatar_color }}, {{ item.avatar_color }}cc);">{{ item.avatar_initial }}</div>
+        <div>
+          <div class="identity-name">{{ item.shop_label }} <span class="role-pill">{{ item.review_role }}</span></div>
+          <div class="identity-meta">{{ item.identity_line }}</div>
+          {% if item.match_reasons %}<div class="identity-meta">匹配依据：{{ item.match_reasons|join(' / ') }}</div>{% endif %}
         </div>
       </div>
-      <div class="stance-pill {{ post.stance_class }}">{{ post.stance }}</div>
+      <span class="fit-pill {{ item.fit_class }}">{{ item.fit_level }}</span>
     </div>
 
-    <!-- Voice -->
-    <div class="section-label">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      观点
-    </div>
-    <div class="voice-text">{{ post.voice }}</div>
+    <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>经营判断</div>
+    <div class="body-text">{{ item.assessment }}</div>
 
-    <!-- Twist -->
-    {% if post.personal_twist_keyword %}
-    <div class="section-label">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-      独有视角
-    </div>
-    <div class="twist-block">
-      <div class="twist-word">{{ post.personal_twist_keyword }}</div>
-      <div class="twist-source">基于身份扭曲: {{ post.identity_line }}</div>
-    </div>
+    {% if item.unique_angle_keyword %}
+    <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>独特机会角度</div>
+    <div class="twist-block"><div class="twist-word">{{ item.unique_angle_keyword }}</div></div>
     {% endif %}
 
-    <!-- Derived keywords -->
-    {% if post.derived_keywords %}
-    <div class="section-label">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      衍生搜索词
-    </div>
-    <div class="kw-tags">
-      {% for kw in post.derived_keywords %}
-      <span class="kw-tag">{{ kw }}</span>
+    {% if item.derived_keywords %}
+    <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>可搜索衍生词</div>
+    <div class="tag-list">{% for kw in item.derived_keywords %}<span class="kw-tag">{{ kw }}</span>{% endfor %}</div>
+    {% endif %}
+
+    <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>机会翻译</div>
+    <div class="soft-block">{{ item.opportunity_translation }}</div>
+
+    {% if item.recommended_actions %}
+    <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>建议动作</div>
+    <ul class="bullet-list">{% for action in item.recommended_actions %}<li>{{ action }}</li>{% endfor %}</ul>
+    {% endif %}
+
+    {% if item.risks %}
+    <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>风险边界</div>
+    <ul class="bullet-list">{% for risk in item.risks %}<li>{{ risk }}</li>{% endfor %}</ul>
+    {% endif %}
+
+    {% if item.challenges %}
+    <div class="challenge-section">
+      <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12h8M12 8v8"/><circle cx="12" cy="12" r="10"/></svg>交叉质询</div>
+      {% for c in item.challenges %}
+      <div class="challenge-item">
+        <div class="reply-avatar" style="background: {{ c.avatar_color }};">{{ c.avatar_initial }}</div>
+        <div>
+          <div class="challenge-author">{{ c.author }} <span class="kw-tag">{{ c.challenge_type }}</span></div>
+          <div class="challenge-text">{{ c.challenge }}</div>
+          {% if c.business_basis %}<div class="challenge-basis">依据：{{ c.business_basis }}</div>{% endif %}
+        </div>
+      </div>
       {% endfor %}
-    </div>
-    {% endif %}
-
-    <!-- Action plan -->
-    {% if post.concrete_translation %}
-    <div class="section-label">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
-      落地计划
-    </div>
-    <div class="action-block">
-      <div class="block-text">{{ post.concrete_translation }}</div>
-    </div>
-    {% endif %}
-
-    <!-- Concerns -->
-    {% if post.concerns %}
-    <div class="section-label">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      顾虑
-    </div>
-    <div class="concerns-block">
-      <div class="block-text">{{ post.concerns }}</div>
-    </div>
-    {% endif %}
-
-    <!-- Replies -->
-    {% if post.replies %}
-    <div class="replies-section">
-      <div class="replies-header">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        <span>{{ post.replies|length }} 条回应</span>
-      </div>
-      <div class="reply-thread">
-        {% for r in post.replies %}
-        <div class="reply-item">
-          <div class="reply-rail"></div>
-          <div class="reply-body">
-            <div class="reply-header">
-              <div class="reply-avatar" style="background: {{ r.avatar_color }};">{{ r.avatar_initial }}</div>
-              <div class="reply-meta">
-                <div class="reply-author">{{ r.author }}</div>
-                <div class="reply-context">
-                  <span class="reply-tag tag-{{ r.type_class }}">{{ r.type_en }}</span>
-                  <span style="opacity:0.4;">·</span>
-                  <span>{{ r.time_label }}</span>
-                </div>
-              </div>
-            </div>
-            <div class="reply-content">{{ r.voice }}</div>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
     </div>
     {% endif %}
   </div>
   {% endfor %}
 
-  <!-- ====== L3: Crowd Dynamics ====== -->
-  <div class="crowd-section">
-    <div class="section-heading">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      群体动态
+  <div class="section-heading">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    共识、分歧与不适配边界
+  </div>
+  <div class="insight-grid">
+    <div class="insight-card">
+      <div class="insight-title">共识</div>
+      <ul>{% for item in council_insights.consensus %}<li>{{ item }}</li>{% endfor %}</ul>
+      {% for kw in council_insights.consensus_keywords %}<span class="kw-tag">{{ kw.word }} · {{ kw.count }}</span>{% endfor %}
     </div>
-
-    <div class="crowd-grid">
-      <!-- High Consensus -->
-      <div class="crowd-block">
-        <div class="crowd-block-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-          高共识词
-        </div>
-        <div class="crowd-block-sub">2 个以上买家共同提及的衍生词</div>
-        {% if crowd_dynamics.high_consensus %}
-          {% for item in crowd_dynamics.high_consensus %}
-          <span class="kw-pill">{{ item.word }} <span style="opacity:0.5; font-size:11px;">({{ item.count }})</span></span>
-          {% endfor %}
-        {% else %}
-          <div style="color:var(--text-muted); font-size:12px;">高度分化 — 无共识关键词</div>
-        {% endif %}
-      </div>
-
-      <!-- Rare Views -->
-      <div class="crowd-block">
-        <div class="crowd-block-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          稀有视角
-        </div>
-        <div class="crowd-block-sub">仅单一买家提出的高扭曲度衍生词</div>
-        {% for r in crowd_dynamics.rare_views %}
-        <div class="rare-item">
-          <div class="rare-word">{{ r.word }}</div>
-          <div class="rare-from">{{ r.from_label }}</div>
-        </div>
-        {% endfor %}
-        {% if not crowd_dynamics.rare_views %}
-          <div style="color:var(--text-muted); font-size:12px;">—</div>
-        {% endif %}
-      </div>
-
-      <!-- Objections -->
-      <div class="crowd-block">
-        <div class="crowd-block-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          反对与观望
-        </div>
-        <div class="crowd-block-sub">为何部分买家对该信号持保留态度</div>
-        {% for o in crowd_dynamics.objections %}
-        <div class="objection-item">
-          <span class="obj-tag">{{ o.stance }}</span>
-          <strong style="color:var(--text-primary);">{{ o.from_label }}</strong>
-          <div style="margin-top:4px;">{{ o.reason }}</div>
-        </div>
-        {% endfor %}
-        {% if not crowd_dynamics.objections %}
-          <div style="color:var(--text-muted); font-size:12px;">全员积极 — 无反对意见</div>
-        {% endif %}
-      </div>
+    <div class="insight-card">
+      <div class="insight-title">分歧/质询</div>
+      {% if council_insights.tensions %}<ul>{% for item in council_insights.tensions %}<li><strong>{{ item.type }}</strong>：{{ item.text }}</li>{% endfor %}</ul>{% else %}<div class="word-meta">暂无明显交叉质询。</div>{% endif %}
+    </div>
+    <div class="insight-card">
+      <div class="insight-title">不适配边界</div>
+      {% if council_insights.boundaries %}
+        {% for item in council_insights.boundaries %}<div class="boundary-item"><strong>{{ item.from_label }}</strong><br>{{ item.reason }}</div>{% endfor %}
+      {% else %}<div class="word-meta">当前样本未给出明确不适配边界。</div>{% endif %}
     </div>
   </div>
 </div>
-
-<script>
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById('view-' + tab.dataset.view).classList.add('active');
-  });
-});
-</script>
 </body>
 </html>
