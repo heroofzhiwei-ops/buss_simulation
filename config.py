@@ -14,7 +14,7 @@ TEMPLATE_DIR = ROOT / 'templates'
 # === LLM ===
 LLM_API_KEY = os.getenv('LLM_API_KEY')
 LLM_BASE_URL = os.getenv('LLM_BASE_URL', 'https://dashscope.aliyuncs.com/compatible-mode/v1')
-LLM_MODEL = os.getenv('LLM_MODEL', 'qwen-plus')
+LLM_MODEL = os.getenv('LLM_MODEL') or os.getenv('LLM_MODEL_NAME', 'qwen-plus')
 
 # === 并发与限流 ===
 LLM_CONCURRENCY_PROFILE = 15
