@@ -13,6 +13,12 @@ from prompts import MAIN_POST_PROMPT, REPLY_PROMPT
 # ============================================================
 def _format_main_post_prompt(persona: dict, signal_word: str,
                              signal_brief: str) -> str:
+    # 取颗粒度最细的 3 个搜索词作为参考
+    all_searches = persona.get('recent_search_top10', [])
+    granular_refs = [s for s in all_searches if len(s) >= 4][:3]
+    if not granular_refs:
+        granular_refs = all_searches[:3]
+
     return MAIN_POST_PROMPT.format(
         main_categories=persona.get('main_categories', []),
         gmv_tier=persona.get('gmv_tier', '未知'),
@@ -24,6 +30,7 @@ def _format_main_post_prompt(persona: dict, signal_word: str,
         style_tags=persona.get('style_tags', []),
         key_traits=persona.get('key_traits', []),
         recent_search_top10=persona.get('recent_search_top10', []),
+        search_granularity_reference='、'.join(granular_refs) or '(无)',
         image_search_styles=persona.get('image_search_styles', []),
         inquiry_voice_samples=persona.get('inquiry_voice_samples', []),
         inquiry_concerns=persona.get('inquiry_concerns', {}),

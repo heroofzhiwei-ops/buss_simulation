@@ -152,6 +152,29 @@
   </div>
   {% endfor %}
 
+  <div class="summary-section" style="border-left: 4px solid #ff7e5f;">
+    <div class="summary-title">⚡ 独特视角衍生词（传统词扩展给不出的增量）</div>
+    <p style="font-size: 12.5px; color: #666; margin: -8px 0 14px; line-height: 1.6;">
+      每条都来自一个 agent 的独特身份扭曲，无法被泛化型词向量推出。
+      这是这套系统相对传统商机词扩展的核心增量产物。
+    </p>
+    {% for tw in twist_keywords %}
+    <div style="padding: 12px 14px; background: linear-gradient(90deg, #fff7f3, white);
+                border-radius: 8px; margin-bottom: 10px; display: flex;
+                align-items: center; gap: 12px;">
+      <div style="font-size: 16px; font-weight: 700; color: #d35400; min-width: 200px;">
+        {{ tw.word }}
+      </div>
+      <div style="flex: 1; font-size: 12.5px; color: #888;">
+        来自 <strong>{{ tw.from_persona }}</strong> · 立场 {{ tw.stance }}
+      </div>
+      <div style="font-size: 12px; color: #888;">
+        🔥 {{ tw.resonance }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
   <div class="summary-section">
     <div class="summary-title">🌟 跨群体衍生词聚合（按共鸣度加权排序）</div>
     <div>

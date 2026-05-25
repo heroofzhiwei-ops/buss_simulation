@@ -228,6 +228,35 @@ async def llm_extract_profile_batch(
 
 
 # ============================================================
+# 画像质量闸
+# ============================================================
+EXTRACTION_FIELDS_TO_CHECK = [
+    'main_categories', 'downstream_channels', 'downstream_audience',
+    'gmv_tier', 'price_band', 'supply_mode',
+    'exploration_status', 'style_tags', 'key_traits',
+]
+
+
+def is_useful_extraction(struct: dict) -> bool:
+    """画像 9 字段里 '未知'/空 占比超 50% 的丢弃"""
+    if not struct:
+        return False
+    unknown_count = 0
+    for field in EXTRACTION_FIELDS_TO_CHECK:
+        value = struct.get(field)
+        if not value:
+            unknown_count += 1
+        elif isinstance(value, str) and value.strip() in ('未知', '', 'null', 'None'):
+            unknown_count += 1
+        elif isinstance(value, list) and (
+            len(value) == 0
+            or all(isinstance(x, str) and x.strip() in ('未知', '') for x in value)
+        ):
+            unknown_count += 1
+    return unknown_count <= 4  # 9 字段最多容忍 4 个未知
+
+
+# ============================================================
 # Persona 组装
 # ============================================================
 def build_persona(row: dict, profile_struct: dict, profile_raw: str) -> dict:
@@ -336,15 +365,20 @@ async def build_personas_pipeline(
     success_count = sum(1 for v in struct_map.values() if v)
     _progress(f"画像结构化完成: 成功 {success_count}/{len(pairs)}")
 
-    # 5. 组装 persona
+    # 5. 组装 persona（含质量闸过滤）
     personas = []
+    filtered_low_quality = 0
     for _, row in qualified.iterrows():
         buyer_id = row['buyer_id']
-        if not struct_map.get(buyer_id):
+        struct = struct_map.get(buyer_id, {})
+        if not is_useful_extraction(struct):
+            filtered_low_quality += 1
             continue
         personas.append(build_persona(
-            row.to_dict(), struct_map[buyer_id], row['profile_text']
+            row.to_dict(), struct, row['profile_text']
         ))
+    if filtered_low_quality > 0:
+        _progress(f"画像质量过滤掉 {filtered_low_quality} 个低信息密度 persona")
 
     # 6. 输出全量
     output_full = DATA_OUTPUT / 'personas.jsonl'
@@ -362,3 +396,22 @@ async def build_personas_pipeline(
     _progress(f"Demo 样本落盘: {len(demo_set)} 条")
 
     return personas, demo_set
+
+
+def manual_pick_demo_personas(buyer_ids: list, source_path: str = None):
+    """手动指定 buyer_id 列表作为 demo personas"""
+    src = source_path or (DATA_OUTPUT / 'personas.jsonl')
+    all_personas = {}
+    with open(src, encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                persona = json.loads(line)
+                all_personas[persona['buyer_id']] = persona
+
+    selected = [all_personas[bid] for bid in buyer_ids if bid in all_personas]
+    output_path = DATA_OUTPUT / 'personas_demo.jsonl'
+    with open(output_path, 'w', encoding='utf-8') as f:
+        for persona in selected:
+            f.write(json.dumps(persona, ensure_ascii=False) + '\n')
+    print(f"手动选出 {len(selected)} 个 demo persona → {output_path}")

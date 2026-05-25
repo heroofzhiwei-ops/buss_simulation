@@ -110,6 +110,30 @@ def _compute_stats(posts: List[dict]) -> dict:
     }
 
 
+def _aggregate_twist_keywords(posts: List[dict],
+                              resonance: Dict[str, dict]) -> list:
+    """专门收集每个 agent 的 personal_twist_keyword，带角色信息"""
+    items = []
+    for post in posts:
+        twist = post.get('personal_twist_keyword')
+        if not twist:
+            continue
+        buyer_id = post['buyer_id']
+        brief = post.get('persona_brief', {})
+        category = (brief.get('main_categories', [''])[0]
+                    if brief.get('main_categories') else '')
+        channel = (brief.get('downstream_channels', [''])[0]
+                   if brief.get('downstream_channels') else '')
+        items.append({
+            'word': twist,
+            'from_persona': f"{category} · {channel}",
+            'stance': post.get('stance', ''),
+            'resonance': resonance.get(buyer_id, {}).get('resonance_score', 0),
+        })
+    items.sort(key=lambda x: -x['resonance'])
+    return items
+
+
 def render_demo_html(posts: List[dict], replies: List[dict],
                      resonance: Dict[str, dict],
                      signal_word: str, signal_brief: str) -> str:
@@ -134,6 +158,7 @@ def render_demo_html(posts: List[dict], replies: List[dict],
         'posts': enriched,
         'stats': _compute_stats(posts),
         'aggregated_keywords': _aggregate_keywords(posts, resonance),
+        'twist_keywords': _aggregate_twist_keywords(posts, resonance),
     }
 
     env = Environment(loader=FileSystemLoader(TEMPLATE_DIR), autoescape=True)
