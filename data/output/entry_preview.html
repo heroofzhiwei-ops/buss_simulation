@@ -806,17 +806,18 @@
     </div>
 
     <div class="entry-card buyer-entry">
-      <div class="entry-kicker">ENTRY B · BUYER FIELD</div>
-      <h2>买家场域侵入推演</h2>
+      <div class="entry-kicker">ENTRY B · BUYER ENVIRONMENT</div>
+      <h2>买家个体环境泛化推演</h2>
       <p class="entry-desc">
-        输入商机信号和指定 buyer_id，以该 buyer 的同行、相似经营体和竞对构成局部场域，
-        观察信号在这个小生态里的扰动、分化与外溢延伸。
+        输入商机信号和指定 buyer_id，从该个体出发构建包含同行、相似经营体和竞对的个体环境包，
+        再通过个体推演与交互推演观察信号如何个性化泛化。
       </p>
       <div class="entry-flow">
-        <span class="flow-step">锁定场域</span>
-        <span class="flow-step">同行/竞对召回</span>
-        <span class="flow-step">信号扰动</span>
-        <span class="flow-step">外溢延伸</span>
+        <span class="flow-step">锁定个体</span>
+        <span class="flow-step">构建环境包</span>
+        <span class="flow-step">个体推演</span>
+        <span class="flow-step">交互推演</span>
+        <span class="flow-step">个性化延伸</span>
       </div>
 
       <form class="entry-form" id="buyerSignalForm" data-entry-mode="buyer">
@@ -828,7 +829,7 @@
 
         <div class="form-group">
           <label>商机信号词 *</label>
-          <div class="hint">同一个商机信号，会在该 buyer 的同行/竞对场域内重新推演</div>
+          <div class="hint">同一个商机信号，会在该 buyer 的个体环境包内重新推演</div>
           <input type="text" name="signalWord" placeholder="例如：巴恩风" required>
         </div>
 
@@ -840,7 +841,7 @@
 
         <div class="form-group">
           <label>信号简介</label>
-          <div class="hint">用于约束该 buyer 场域内的信号扰动和延伸方向</div>
+          <div class="hint">用于约束该 buyer 个体环境包里的泛化和交互推演方向</div>
           <textarea name="signalBrief" placeholder="例如：美式复古休闲风，近期小红书话题热度环比+120%，主打oversize衬衫和复古工装"></textarea>
         </div>
 
@@ -859,7 +860,7 @@
           </div>
         </div>
 
-        <button type="submit" class="btn-submit">启动场域推演</button>
+        <button type="submit" class="btn-submit">启动个体环境推演</button>
       </form>
     </div>
   </div>
@@ -1096,11 +1097,11 @@ forms.forEach(form => form.addEventListener('submit', async (e) => {
   }
 
   addLogLine('正在初始化推演引擎...', 'info');
-  addLogLine(`入口类型: ${entryMode === 'buyer' ? '买家场域侵入推演' : '商机信号侵入推演'}`, 'info');
+  addLogLine(`入口类型: ${entryMode === 'buyer' ? '买家个体环境泛化推演' : '商机信号侵入推演'}`, 'info');
   addLogLine(`商机信号: ${signalWord}`, 'progress');
   if (entryMode === 'buyer') {
     addLogLine(`目标 Buyer ID: ${buyerId}`, 'progress');
-    addLogLine('当前前端已携带 buyer_id 参数，后端同行/竞对场域查询将在下一步接入', 'warn');
+    addLogLine('当前前端已携带 buyer_id 参数，后端个体环境包查询将在下一步接入', 'warn');
   }
   addLogLine(`运行模式: ${runStage}`, 'info');
   addLogLine(`采样数量: ${sampleLimit}`, 'info');
