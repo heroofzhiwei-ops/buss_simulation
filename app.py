@@ -210,23 +210,23 @@ async def _execute_pipeline(signal_word, signal_brief, sample_limit,
     )
 
     # 阶段 2: 买家匹配
-    send_stage('阶段 2/5: 买家匹配与评审团选择')
+    send_stage('阶段 2/5: 买家匹配与视角选择')
     reviewers = select_review_personas(personas, signal_profile)
-    progress_callback(f'选出 {len(reviewers)} 个买家评审视角', 1, 1)
+    progress_callback(f'选出 {len(reviewers)} 个买家推演视角', 1, 1)
 
-    # 阶段 3: 买家独立评估
-    send_stage('阶段 3/5: 买家独立评估')
+    # 阶段 3: 买家个性化推演
+    send_stage('阶段 3/5: 买家个性化推演')
     assessments = await generate_buyer_assessments(
         reviewers, signal_word, signal_brief, signal_profile,
         progress_callback=progress_callback,
     )
     if not assessments:
         message_queue.put(('error_msg',
-                           {'message': '没有任何买家评估生成成功，请检查 LLM 配置'}))
+                           {'message': '没有任何买家推演生成成功，请检查 LLM 配置'}))
         return
 
-    # 阶段 4: 交叉质询 + 可参考度评分
-    send_stage('阶段 4/5: 交叉质询与可参考度评分')
+    # 阶段 4: 视角碰撞 + 可参考度评分
+    send_stage('阶段 4/5: 视角碰撞与可参考度评分')
     challenges = await generate_cross_examinations(
         reviewers, assessments, signal_word,
         progress_callback=progress_callback,
@@ -236,13 +236,13 @@ async def _execute_pipeline(signal_word, signal_brief, sample_limit,
         progress_callback=progress_callback,
     )
 
-    # 阶段 5: 机会地图渲染
-    send_stage('阶段 5/5: 机会地图渲染')
+    # 阶段 5: 延伸地图渲染
+    send_stage('阶段 5/5: 延伸地图渲染')
     render_demo_html(
         assessments, challenges, resonance,
         signal_word, signal_brief, signal_profile,
     )
-    progress_callback('机会地图渲染完成', 1, 1)
+    progress_callback('延伸地图渲染完成', 1, 1)
 
     # 记录历史
     history = _load_history()

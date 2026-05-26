@@ -56,7 +56,7 @@ async def compute_resonance(
     signal_word: str,
     progress_callback: Callable = None,
 ) -> Dict[str, dict]:
-    """返回每个评估在评审团中的可参考度汇总。"""
+    """返回每个推演结果在买家视角池中的可参考度汇总。"""
     sem = asyncio.Semaphore(LLM_CONCURRENCY_SCORE)
     completed = 0
     total = len(personas)

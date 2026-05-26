@@ -1,4 +1,4 @@
-"""阶段 2-3: 买家商机评估 + 交叉质询"""
+"""阶段 2-3: 买家商机推演 + 视角碰撞"""
 import asyncio
 import json
 from typing import Callable, Dict, List
@@ -47,7 +47,7 @@ def _format_buyer_assessment_prompt(
         signal_price_band=signal_profile.get('price_band_hint', ''),
         signal_supply=signal_profile.get('supply_requirements', []),
         match_score=match.get('match_score', 0),
-        review_role=match.get('review_role', '评审'),
+        review_role=match.get('review_role', '推演视角'),
         match_reasons=match.get('match_reasons', []),
     )
 
@@ -106,13 +106,13 @@ async def generate_buyer_assessments(
         )
         completed += 1
         if progress_callback:
-            progress_callback(f"买家评估: {completed}/{total}", completed, total)
+            progress_callback(f"买家推演: {completed}/{total}", completed, total)
         return result
 
     tasks = [_gen_with_progress(p) for p in personas]
     results = await asyncio.gather(*tasks)
     assessments = [r for r in results if r]
-    print(f"[ASSESS] {len(assessments)}/{len(personas)} 买家评估生成成功")
+    print(f"[ASSESS] {len(assessments)}/{len(personas)} 买家推演生成成功")
 
     output_path = DATA_OUTPUT / 'assessments.jsonl'
     with open(output_path, 'w', encoding='utf-8') as f:
@@ -122,7 +122,7 @@ async def generate_buyer_assessments(
 
 
 # ============================================================
-# 交叉质询
+# 视角碰撞
 # ============================================================
 def _format_other_assessments(assessments: List[dict], exclude_buyer_id: str) -> str:
     lines = []
@@ -162,7 +162,7 @@ async def _gen_one_cross_exam(
                 downstream_channels=persona.get('downstream_channels', []),
                 downstream_audience=persona.get('downstream_audience', ''),
                 key_traits=persona.get('key_traits', []),
-                review_role=persona.get('signal_match', {}).get('review_role', '评审'),
+                review_role=persona.get('signal_match', {}).get('review_role', '推演视角'),
                 signal_word=signal_word,
                 other_assessments_formatted=other_assessments_str,
             )
@@ -193,13 +193,13 @@ async def generate_cross_examinations(
         result = await _gen_one_cross_exam(persona, assessments, signal_word, sem)
         completed += 1
         if progress_callback:
-            progress_callback(f"交叉质询: {completed}/{total}", completed, total)
+            progress_callback(f"视角碰撞: {completed}/{total}", completed, total)
         return result
 
     tasks = [_gen_with_progress(p) for p in personas]
     results = await asyncio.gather(*tasks)
     all_challenges = [challenge for challenges in results for challenge in challenges]
-    print(f"[CROSS] 生成 {len(all_challenges)} 条质询")
+    print(f"[CROSS] 生成 {len(all_challenges)} 条视角碰撞")
 
     output_path = DATA_OUTPUT / 'cross_examinations.jsonl'
     with open(output_path, 'w', encoding='utf-8') as f:

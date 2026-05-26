@@ -112,7 +112,7 @@ def build_signal_profile(signal_word: str, signal_brief: str = '') -> Dict[str, 
         'supply_requirements': _unique(supply_requirements),
         'interpretation': (
             f'把“{signal_word}”先拆成可匹配的类目、渠道、人群和供应链要求，'
-            '再分配给高适配、相邻迁移和边界视角的买家评审。'
+            '再分配给高适配、相邻迁移和边界视角的买家进行个性化推演。'
         ),
     }
 
@@ -163,7 +163,7 @@ def score_persona_match(signal_profile: Dict[str, object], persona: dict) -> Dic
         reasons.append('经营状态适合试新机会')
     elif exploration_status in ('谨慎试探', '稳定经营'):
         score += 0.05
-        reasons.append('可作为谨慎/边界评审视角')
+        reasons.append('可作为谨慎/边界推演视角')
 
     if persona.get('inquiry_concerns'):
         score += 0.04
@@ -172,13 +172,13 @@ def score_persona_match(signal_profile: Dict[str, object], persona: dict) -> Dic
     score = min(round(score, 3), 1.0)
     if score >= 0.62:
         tier = '高适配'
-        role = '核心评审'
+        role = '核心推演'
     elif score >= 0.34:
         tier = '可迁移'
         role = '相邻迁移'
     elif score >= 0.18:
         tier = '边界观察'
-        role = '边界评审'
+        role = '边界视角'
     else:
         tier = '低适配'
         role = '反证视角'

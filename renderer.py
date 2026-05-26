@@ -1,9 +1,9 @@
-"""阶段 5: 把商机会诊结果渲染成 HTML。
+"""阶段 5: 把商机个性化推演结果渲染成 HTML。
 
 输出结构：
-  L1 商机画像与评审概览
+  L1 商机画像与推演概览
   L2 个性化衍生商机词机会地图
-  L3 买家评审卡 + 交叉质询
+  L3 买家推演卡 + 视角碰撞
   L4 共识、分歧与不适配边界
 """
 import hashlib
@@ -133,7 +133,7 @@ def build_opportunity_map(assessments: List[dict]) -> dict:
 
 
 # ============================================================
-# 买家评审与质询增强
+# 买家推演与视角碰撞增强
 # ============================================================
 def enrich_assessments(
     assessments: List[dict],
@@ -157,7 +157,7 @@ def enrich_assessments(
             'fit_level': fit_level,
             'fit_class': fit_class,
             'fit_score': match.get('match_score'),
-            'review_role': match.get('review_role', '评审'),
+            'review_role': match.get('review_role', '推演视角'),
             'match_reasons': match.get('match_reasons', []),
             'recommended_actions': _as_list(item.get('recommended_actions')),
             'risks': _as_list(item.get('risks') or item.get('concerns')),
@@ -270,7 +270,7 @@ def build_council_insights(assessments: List[dict], challenges: List[dict]) -> d
             })
 
     return {
-        'consensus': consensus or ['当前评审结果较分散，需要扩大样本或补充更明确的商机简介。'],
+        'consensus': consensus or ['当前推演结果较分散，需要扩大样本或补充更明确的商机简介。'],
         'consensus_keywords': consensus_keywords,
         'tensions': tensions,
         'boundaries': boundaries,

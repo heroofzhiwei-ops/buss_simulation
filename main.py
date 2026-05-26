@@ -1,4 +1,4 @@
-"""命令行入口：persona 构建 → 商机画像 → 买家评估 → 交叉质询 → 机会地图"""
+"""命令行入口：persona 构建 → 商机画像 → 买家推演 → 视角碰撞 → 延伸地图"""
 import asyncio
 import json
 import argparse
@@ -32,7 +32,7 @@ async def stage_personas(args):
 
 
 async def stage_demo(args):
-    """阶段 2-5: 基于已有 personas_demo.jsonl 跑商机会诊 demo"""
+    """阶段 2-5: 基于已有 personas_demo.jsonl 跑商机推演 demo"""
     demo_path = DATA_OUTPUT / 'personas_demo.jsonl'
     if not demo_path.exists():
         raise FileNotFoundError(f"先跑 stage=personas 生成 {demo_path}")
@@ -42,7 +42,7 @@ async def stage_demo(args):
 
     signal_profile = build_signal_profile(args.signal, args.signal_brief)
     reviewers = select_review_personas(personas, signal_profile)
-    print(f"[DEMO] 选出 {len(reviewers)} 个买家评审视角")
+    print(f"[DEMO] 选出 {len(reviewers)} 个买家推演视角")
 
     assessments = await generate_buyer_assessments(
         reviewers, args.signal, args.signal_brief, signal_profile,

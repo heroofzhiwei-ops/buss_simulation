@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>商机会诊结果 - {{ signal_word }}</title>
+<title>商机推演结果 - {{ signal_word }}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -187,7 +187,7 @@ svg { display: block; overflow: visible; stroke-linecap: round; stroke-linejoin:
   </a>
 
   <div class="header">
-    <div class="signal-label">OPPORTUNITY REVIEW COUNCIL</div>
+    <div class="signal-label">PERSONALIZED SIGNAL EXPANSION</div>
     <h1 class="signal-word">{{ signal_word }}</h1>
     <div class="signal-meta">{{ signal_brief or signal_profile.interpretation }}</div>
     <div class="profile-grid">
@@ -212,7 +212,7 @@ svg { display: block; overflow: visible; stroke-linecap: round; stroke-linejoin:
 
   <div class="panel">
     <div class="overview-stats">
-      <div class="stat"><div class="num">{{ overview.reviewer_count }}</div><div class="label">参与评审买家</div></div>
+      <div class="stat"><div class="num">{{ overview.reviewer_count }}</div><div class="label">参与推演买家</div></div>
       <div class="stat"><div class="num">{{ overview.total_words }}</div><div class="label">个性化衍生词</div></div>
       <div class="stat"><div class="num">{{ overview.cluster_count }}</div><div class="label">机会方向</div></div>
       <div class="stat"><div class="num">{{ overview.boundary_count }}</div><div class="label">边界/反证视角</div></div>
@@ -221,7 +221,7 @@ svg { display: block; overflow: visible; stroke-linecap: round; stroke-linejoin:
 
   <div class="section-heading">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-5 5"/></svg>
-    个性化衍生商机词地图
+    个性化商机延伸地图
   </div>
   <div class="map-grid">
     {% for cluster in opportunity_map.clusters %}
@@ -243,7 +243,7 @@ svg { display: block; overflow: visible; stroke-linecap: round; stroke-linejoin:
 
   <div class="section-heading">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
-    买家评审速览
+    买家推演速览
   </div>
   <div class="panel summary-table">
     <div class="summary-header-row">
@@ -261,7 +261,7 @@ svg { display: block; overflow: visible; stroke-linecap: round; stroke-linejoin:
 
   <div class="section-heading">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-    买家个性化评审详情
+    买家个性化推演详情
   </div>
   {% for item in assessments %}
   <div class="review-card fit-{{ item.fit_class }}">
@@ -305,7 +305,7 @@ svg { display: block; overflow: visible; stroke-linecap: round; stroke-linejoin:
 
     {% if item.challenges %}
     <div class="challenge-section">
-      <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12h8M12 8v8"/><circle cx="12" cy="12" r="10"/></svg>交叉质询</div>
+      <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12h8M12 8v8"/><circle cx="12" cy="12" r="10"/></svg>视角碰撞</div>
       {% for c in item.challenges %}
       <div class="challenge-item">
         <div class="reply-avatar" style="background: {{ c.avatar_color }};">{{ c.avatar_initial }}</div>
@@ -323,7 +323,7 @@ svg { display: block; overflow: visible; stroke-linecap: round; stroke-linejoin:
 
   <div class="section-heading">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-    共识、分歧与不适配边界
+    共识、分歧与延伸边界
   </div>
   <div class="insight-grid">
     <div class="insight-card">
@@ -332,8 +332,8 @@ svg { display: block; overflow: visible; stroke-linecap: round; stroke-linejoin:
       {% for kw in council_insights.consensus_keywords %}<span class="kw-tag">{{ kw.word }} · {{ kw.count }}</span>{% endfor %}
     </div>
     <div class="insight-card">
-      <div class="insight-title">分歧/质询</div>
-      {% if council_insights.tensions %}<ul>{% for item in council_insights.tensions %}<li><strong>{{ item.type }}</strong>：{{ item.text }}</li>{% endfor %}</ul>{% else %}<div class="word-meta">暂无明显交叉质询。</div>{% endif %}
+      <div class="insight-title">分歧/碰撞</div>
+      {% if council_insights.tensions %}<ul>{% for item in council_insights.tensions %}<li><strong>{{ item.type }}</strong>：{{ item.text }}</li>{% endfor %}</ul>{% else %}<div class="word-meta">暂无明显视角碰撞。</div>{% endif %}
     </div>
     <div class="insight-card">
       <div class="insight-title">不适配边界</div>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>商机信号 · 个性化会诊引擎</title>
+  <title>商机信号 · 个性化推演引擎</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -622,9 +622,9 @@
   <!-- Hero Section -->
   <div class="hero">
     <div class="hero-badge">SYSTEM // BIZ-SIGNAL-AGENT v1.0</div>
-    <h1>商机信号 · 个性化会诊引擎</h1>
+    <h1>商机信号 · 个性化推演引擎</h1>
     <p>输入一个外部商机趋势词，系统将从真实买家画像中抽取差异化角色，<br>
-       组织买家评审团进行商机拆解、适配判断、交叉质询与机会地图归纳。</p>
+       组织差异化买家视角进行商机拆解、个性化推演、视角碰撞与衍生机会延伸。</p>
     <div class="stats-badge">
       <div><span class="dot"></span> 推演引擎在线</div>
       <div>底层模型: qwen-plus</div>
@@ -663,8 +663,8 @@
         <div class="form-group">
           <label>运行模式</label>
           <select id="runStage">
-            <option value="all">端到端（Persona + 会诊）</option>
-            <option value="demo">仅会诊（需已有 Persona）</option>
+            <option value="all">端到端（Persona + 推演）</option>
+            <option value="demo">仅推演（需已有 Persona）</option>
             <option value="personas">仅构建 Persona</option>
           </select>
         </div>
@@ -698,17 +698,17 @@
         </div>
         <div class="stage-item pending" id="stage-3">
           <div class="stage-number">03</div>
-          <div class="stage-name">独立评估</div>
+          <div class="stage-name">个性化推演</div>
           <div class="stage-status">○</div>
         </div>
         <div class="stage-item pending" id="stage-4">
           <div class="stage-number">04</div>
-          <div class="stage-name">交叉质询</div>
+          <div class="stage-name">视角碰撞</div>
           <div class="stage-status">○</div>
         </div>
         <div class="stage-item pending" id="stage-5">
           <div class="stage-number">05</div>
-          <div class="stage-name">机会地图</div>
+          <div class="stage-name">延伸地图</div>
           <div class="stage-status">○</div>
         </div>
       </div>
@@ -755,9 +755,9 @@ const resultContent = document.getElementById('resultContent');
 const stageKeywords = [
   { num: 1, keywords: ['1/5', '商机画像', '信号'] },
   { num: 2, keywords: ['2/5', '买家匹配', 'Persona', 'persona'] },
-  { num: 3, keywords: ['3/5', '独立评估', '买家评估'] },
-  { num: 4, keywords: ['4/5', '交叉质询', '评分'] },
-  { num: 5, keywords: ['5/5', '机会地图', '渲染', 'HTML'] },
+  { num: 3, keywords: ['3/5', '个性化推演', '买家评估'] },
+  { num: 4, keywords: ['4/5', '视角碰撞', '评分'] },
+  { num: 5, keywords: ['5/5', '延伸地图', '渲染', 'HTML'] },
 ];
 function matchStageNum(stageText) {
   for (const entry of stageKeywords) {
@@ -817,7 +817,7 @@ async function fetchHistory() {
           <a href="${item.url}">${item.signal_word}</a>
           <div class="history-meta">${item.time}</div>
         </div>
-        <div class="history-meta">${item.post_count} 个评估 · ${item.reply_count || 0} 条质询</div>
+        <div class="history-meta">${item.post_count} 个推演 · ${item.reply_count || 0} 条碰撞</div>
       </div>`
     ).join('');
   } catch (err) {
@@ -936,7 +936,7 @@ form.addEventListener('submit', async (e) => {
         addLogLine('正在加载结果页面...', 'progress');
         loadResult(data.result_url);
       } else {
-        addLogLine('本次运行没有生成会诊结果页面', 'info');
+        addLogLine('本次运行没有生成推演结果页面', 'info');
       }
 
       submitBtn.disabled = false;
