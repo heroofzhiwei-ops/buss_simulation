@@ -220,6 +220,8 @@
     overflow: hidden;
     box-shadow: var(--shadow-card);
     backdrop-filter: blur(18px);
+    display: flex;
+    flex-direction: column;
   }
 
   .entry-card::before {
@@ -294,6 +296,8 @@
     flex-wrap: wrap;
     gap: 8px;
     margin: -8px 0 22px;
+    min-height: 58px;
+    align-content: flex-start;
   }
 
   .flow-step {
@@ -311,6 +315,11 @@
   .entry-form {
     display: flex;
     flex-direction: column;
+    flex: 1;
+  }
+
+  .entry-form .btn-submit {
+    margin-top: auto;
   }
 
   .form-group { margin-bottom: 20px; }
@@ -743,16 +752,12 @@
     <h1>商机信号 · 个性化推演引擎</h1>
     <p>输入一个外部商机趋势词，系统将从真实买家画像中抽取差异化角色，<br>
        组织差异化买家视角进行商机拆解、个性化推演、视角碰撞与衍生机会延伸。</p>
-    <div class="stats-badge">
-      <div><span class="dot"></span> 推演引擎在线</div>
-      <div>底层模型: qwen-plus</div>
-    </div>
   </div>
 
   <!-- Entry Cards -->
   <div class="entry-grid" id="entryGrid">
     <div class="entry-card signal-entry">
-      <div class="entry-kicker">ENTRY A · SIGNAL LEVEL</div>
+      <div class="entry-kicker">ENTRY A · 生意视角</div>
       <h2>商机信号侵入推演</h2>
       <p class="entry-desc">
         输入一个外部商机信号，从全量 buyer 池中召回 top 相关经营体，
@@ -760,8 +765,9 @@
       </p>
       <div class="entry-flow">
         <span class="flow-step">信号画像</span>
-        <span class="flow-step">Top Buyer 召回</span>
-        <span class="flow-step">群体推演</span>
+        <span class="flow-step">生意人群召回</span>
+        <span class="flow-step">个体推演</span>
+        <span class="flow-step">交互推演</span>
         <span class="flow-step">延伸地图</span>
       </div>
 
@@ -806,7 +812,7 @@
     </div>
 
     <div class="entry-card buyer-entry">
-      <div class="entry-kicker">ENTRY B · BUYER ENVIRONMENT</div>
+      <div class="entry-kicker">ENTRY B · 买家视角</div>
       <h2>买家个体环境泛化推演</h2>
       <p class="entry-desc">
         输入商机信号和指定 buyer_id，从该个体出发构建包含同行、相似经营体和竞对的个体环境包，
@@ -821,16 +827,17 @@
       </div>
 
       <form class="entry-form" id="buyerSignalForm" data-entry-mode="buyer">
-        <div class="form-group">
-          <label>目标 Buyer ID *</label>
-          <div class="hint">围绕这个 buyer_id 查询相似同行、竞对或同类经营体</div>
-          <input type="text" name="buyerId" placeholder="例如：B100001" required>
-        </div>
-
-        <div class="form-group">
-          <label>商机信号词 *</label>
-          <div class="hint">同一个商机信号，会在该 buyer 的个体环境包内重新推演</div>
-          <input type="text" name="signalWord" placeholder="例如：巴恩风" required>
+        <div class="form-row">
+          <div class="form-group">
+            <label>目标 Buyer ID *</label>
+            <div class="hint">查询相似同行、竞对或同类经营体</div>
+            <input type="text" name="buyerId" placeholder="例如：B100001" required>
+          </div>
+          <div class="form-group">
+            <label>商机信号词 *</label>
+            <div class="hint">在个体环境包内重新推演</div>
+            <input type="text" name="signalWord" placeholder="例如：巴恩风" required>
+          </div>
         </div>
 
         <div class="preset-chips">
