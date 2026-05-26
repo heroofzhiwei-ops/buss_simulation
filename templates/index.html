@@ -197,6 +197,122 @@
     pointer-events: none;
   }
 
+  .entry-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto 42px;
+  }
+
+  .entry-grid.disabled {
+    opacity: 0.62;
+    pointer-events: none;
+  }
+
+  .entry-card {
+    background: var(--bg-panel);
+    border: 1px solid rgba(183, 210, 234, 0.78);
+    border-radius: 28px;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(18px);
+  }
+
+  .entry-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 26px;
+    right: 26px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), var(--accent-purple), transparent);
+    opacity: 0.65;
+  }
+
+  .entry-card.buyer-entry::before {
+    background: linear-gradient(90deg, transparent, var(--accent-purple), var(--accent), transparent);
+  }
+
+  .entry-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    margin-bottom: 14px;
+    border-radius: 999px;
+    background: rgba(239, 247, 255, 0.9);
+    border: 1px solid var(--line);
+    color: var(--accent-deep);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .entry-kicker::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12);
+  }
+
+  .buyer-entry .entry-kicker {
+    color: var(--accent-purple);
+  }
+
+  .buyer-entry .entry-kicker::before {
+    background: var(--accent-purple);
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
+  }
+
+  .entry-card h2 {
+    font-size: 24px;
+    line-height: 1.18;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+  }
+
+  .entry-desc {
+    min-height: 74px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.75;
+    margin-bottom: 22px;
+  }
+
+  .entry-flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: -8px 0 22px;
+  }
+
+  .flow-step {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid var(--line);
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .entry-form {
+    display: flex;
+    flex-direction: column;
+  }
+
   .form-group { margin-bottom: 20px; }
 
   .form-group label {
@@ -599,13 +715,15 @@
   .history-meta { font-size: 12px; color: var(--text-muted); }
 
   @media (max-width: 900px) {
+    .entry-grid { grid-template-columns: 1fr; }
     .progress-content { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 680px) {
     .container { padding: 42px 16px 36px; }
     .hero p br { display: none; }
-    .input-card { padding: 24px; border-radius: 22px; }
+    .input-card,
+    .entry-card { padding: 24px; border-radius: 22px; }
     .form-row { flex-direction: column; gap: 0; }
     .stats-badge { border-radius: 22px; }
     .history-item { align-items: flex-start; flex-direction: column; }
@@ -631,53 +749,125 @@
     </div>
   </div>
 
-  <!-- Input Card -->
-  <div class="input-card" id="inputCard">
-    <form id="signalForm">
-      <div class="form-group">
-        <label>商机信号词 *</label>
-        <div class="hint">输入一个外部冒头的趋势词，如"巴恩风""宋代美学复兴""宠物经济"</div>
-        <input type="text" id="signalWord" placeholder="例如：巴恩风" required>
+  <!-- Entry Cards -->
+  <div class="entry-grid" id="entryGrid">
+    <div class="entry-card signal-entry">
+      <div class="entry-kicker">ENTRY A · SIGNAL LEVEL</div>
+      <h2>商机信号侵入推演</h2>
+      <p class="entry-desc">
+        输入一个外部商机信号，从全量 buyer 池中召回 top 相关经营体，
+        汇总高适配、可迁移和边界视角的反馈，形成商机层级的延伸地图。
+      </p>
+      <div class="entry-flow">
+        <span class="flow-step">信号画像</span>
+        <span class="flow-step">Top Buyer 召回</span>
+        <span class="flow-step">群体推演</span>
+        <span class="flow-step">延伸地图</span>
       </div>
 
-      <div class="preset-chips">
-        <div class="preset-chip" data-signal="巴恩风" data-brief="美式复古休闲风，近期小红书话题热度环比+120%，主打oversize衬衫和复古工装">巴恩风</div>
-        <div class="preset-chip" data-signal="宋代美学" data-brief="宋代极简美学复兴，强调留白意境与传统工艺结合，茶道、香道文化回归">宋代美学</div>
-        <div class="preset-chip" data-signal="宠物经济" data-brief="养宠人群年轻化，智能养宠设备、宠物情感消费、宠物社交成为新热点">宠物经济</div>
-        <div class="preset-chip" data-signal="多巴胺穿搭" data-brief="高饱和度色彩搭配，通过视觉刺激带来愉悦感，Z世代社交货币">多巴胺穿搭</div>
-        <div class="preset-chip" data-signal="赛博朋克风" data-brief="未来主义与反乌托邦美学，霓虹色彩、机械元素、数字艺术融合">赛博朋克风</div>
-      </div>
-
-      <div class="form-group">
-        <label>信号简介</label>
-        <div class="hint">一句话描述这个信号的背景，帮助 agent 更好理解</div>
-        <textarea id="signalBrief" placeholder="例如：美式复古休闲风，近期小红书话题热度环比+120%，主打oversize衬衫和复古工装"></textarea>
-      </div>
-
-      <div class="form-row">
+      <form class="entry-form" id="signalForm" data-entry-mode="signal">
         <div class="form-group">
-          <label>Buyer 采样数</label>
-          <div class="hint">从数据中取前 N 个进行画像构建</div>
-          <input type="number" id="sampleLimit" value="300" min="10" max="9998">
+          <label>商机信号词 *</label>
+          <div class="hint">输入一个外部冒头的趋势词，如"巴恩风""宋代美学复兴""宠物经济"</div>
+          <input type="text" name="signalWord" placeholder="例如：巴恩风" required>
         </div>
+
+        <div class="preset-chips">
+          <div class="preset-chip" data-signal="巴恩风" data-brief="美式复古休闲风，近期小红书话题热度环比+120%，主打oversize衬衫和复古工装">巴恩风</div>
+          <div class="preset-chip" data-signal="宋代美学" data-brief="宋代极简美学复兴，强调留白意境与传统工艺结合，茶道、香道文化回归">宋代美学</div>
+          <div class="preset-chip" data-signal="宠物经济" data-brief="养宠人群年轻化，智能养宠设备、宠物情感消费、宠物社交成为新热点">宠物经济</div>
+          <div class="preset-chip" data-signal="多巴胺穿搭" data-brief="高饱和度色彩搭配，通过视觉刺激带来愉悦感，Z世代社交货币">多巴胺穿搭</div>
+        </div>
+
         <div class="form-group">
-          <label>运行模式</label>
-          <select id="runStage">
-            <option value="all">端到端（Persona + 推演）</option>
-            <option value="demo">仅推演（需已有 Persona）</option>
-            <option value="personas">仅构建 Persona</option>
-          </select>
+          <label>信号简介</label>
+          <div class="hint">一句话描述这个信号的背景，帮助 agent 更好理解</div>
+          <textarea name="signalBrief" placeholder="例如：美式复古休闲风，近期小红书话题热度环比+120%，主打oversize衬衫和复古工装"></textarea>
         </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Buyer 采样数</label>
+            <div class="hint">从数据中取前 N 个进行画像构建</div>
+            <input type="number" name="sampleLimit" value="300" min="10" max="9998">
+          </div>
+          <div class="form-group">
+            <label>运行模式</label>
+            <select name="runStage">
+              <option value="all">端到端（Persona + 推演）</option>
+              <option value="demo">仅推演（需已有 Persona）</option>
+              <option value="personas">仅构建 Persona</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit">启动侵入推演</button>
+      </form>
+    </div>
+
+    <div class="entry-card buyer-entry">
+      <div class="entry-kicker">ENTRY B · BUYER LEVEL</div>
+      <h2>Buyer 精准人群推演</h2>
+      <p class="entry-desc">
+        输入商机信号和指定 buyer_id，围绕该 buyer 查询同行、相似经营体或竞争对手，
+        泛化出小范围精准人群池，再进行同样的个性化推演与视角碰撞。
+      </p>
+      <div class="entry-flow">
+        <span class="flow-step">锁定 Buyer</span>
+        <span class="flow-step">同行/竞对池</span>
+        <span class="flow-step">精准推演</span>
+        <span class="flow-step">个体延伸</span>
       </div>
 
-      <button type="submit" class="btn-submit" id="submitBtn">启动推演引擎</button>
+      <form class="entry-form" id="buyerSignalForm" data-entry-mode="buyer">
+        <div class="form-group">
+          <label>目标 Buyer ID *</label>
+          <div class="hint">围绕这个 buyer_id 查询相似同行、竞对或同类经营体</div>
+          <input type="text" name="buyerId" placeholder="例如：B100001" required>
+        </div>
 
-      <!-- Data Status -->
-      <div class="data-status" id="dataStatus">
-        <h4>数据状态检查</h4>
-        <div id="dataStatusContent">加载中...</div>
-      </div>
-    </form>
+        <div class="form-group">
+          <label>商机信号词 *</label>
+          <div class="hint">同一个商机信号，会在该 buyer 的精准人群池内重新推演</div>
+          <input type="text" name="signalWord" placeholder="例如：巴恩风" required>
+        </div>
+
+        <div class="preset-chips">
+          <div class="preset-chip" data-signal="巴恩风" data-brief="美式复古休闲风，近期小红书话题热度环比+120%，主打oversize衬衫和复古工装">巴恩风</div>
+          <div class="preset-chip" data-signal="宠物经济" data-brief="养宠人群年轻化，智能养宠设备、宠物情感消费、宠物社交成为新热点">宠物经济</div>
+          <div class="preset-chip" data-signal="宋代美学" data-brief="宋代极简美学复兴，强调留白意境与传统工艺结合，茶道、香道文化回归">宋代美学</div>
+        </div>
+
+        <div class="form-group">
+          <label>信号简介</label>
+          <div class="hint">用于约束该 buyer 精准人群池里的推演方向</div>
+          <textarea name="signalBrief" placeholder="例如：美式复古休闲风，近期小红书话题热度环比+120%，主打oversize衬衫和复古工装"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>邻近人群规模</label>
+            <div class="hint">后续用于控制同行/竞对候选池大小</div>
+            <input type="number" name="sampleLimit" value="80" min="10" max="500">
+          </div>
+          <div class="form-group">
+            <label>运行模式</label>
+            <select name="runStage">
+              <option value="demo">仅推演（需已有 Persona）</option>
+              <option value="all">端到端（Persona + 推演）</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit">启动 Buyer 推演</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Data Status -->
+  <div class="data-status" id="dataStatus">
+    <h4>数据状态检查</h4>
+    <div id="dataStatusContent">加载中...</div>
   </div>
 
   <!-- Progress Panel -->
@@ -743,11 +933,10 @@
 </div>
 
 <script>
-const form = document.getElementById('signalForm');
-const inputCard = document.getElementById('inputCard');
+const forms = document.querySelectorAll('.entry-form');
+const entryGrid = document.getElementById('entryGrid');
 const progressPanel = document.getElementById('progressPanel');
 const terminalContent = document.getElementById('terminalContent');
-const submitBtn = document.getElementById('submitBtn');
 const resultSection = document.getElementById('resultSection');
 const resultContent = document.getElementById('resultContent');
 
@@ -777,8 +966,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function setupPresetChips() {
   document.querySelectorAll('.preset-chip').forEach(chip => {
     chip.addEventListener('click', () => {
-      document.getElementById('signalWord').value = chip.dataset.signal;
-      document.getElementById('signalBrief').value = chip.dataset.brief;
+      const form = chip.closest('.entry-form');
+      if (!form) return;
+      form.querySelector('[name="signalWord"]').value = chip.dataset.signal;
+      form.querySelector('[name="signalBrief"]').value = chip.dataset.brief;
     });
   });
 }
@@ -853,28 +1044,47 @@ function updateStageStatus(stageNum, status) {
   }
 }
 
+function setFormRunning(button, isRunning, defaultText) {
+  button.disabled = isRunning;
+  button.classList.toggle('loading', isRunning);
+  button.textContent = isRunning ? '正在初始化...' : defaultText;
+  entryGrid.classList.toggle('disabled', isRunning);
+}
+
+function getFormValue(form, name) {
+  const field = form.querySelector(`[name="${name}"]`);
+  return field ? field.value.trim() : '';
+}
+
 // 表单提交
-form.addEventListener('submit', async (e) => {
+forms.forEach(form => form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  
-  const signalWord = document.getElementById('signalWord').value.trim();
-  const signalBrief = document.getElementById('signalBrief').value.trim();
-  const sampleLimit = parseInt(document.getElementById('sampleLimit').value) || 300;
-  const runStage = document.getElementById('runStage').value;
+
+  const entryMode = form.dataset.entryMode || 'signal';
+  const signalWord = getFormValue(form, 'signalWord');
+  const signalBrief = getFormValue(form, 'signalBrief');
+  const buyerId = getFormValue(form, 'buyerId');
+  const sampleLimit = parseInt(getFormValue(form, 'sampleLimit')) || 300;
+  const runStage = getFormValue(form, 'runStage') || 'demo';
+  const submitBtn = form.querySelector('.btn-submit');
+  const defaultButtonText = submitBtn.textContent;
 
   // 验证
   if (!signalWord) {
-    const input = document.getElementById('signalWord');
+    const input = form.querySelector('[name="signalWord"]');
+    input.classList.add('error');
+    setTimeout(() => input.classList.remove('error'), 400);
+    return;
+  }
+  if (entryMode === 'buyer' && !buyerId) {
+    const input = form.querySelector('[name="buyerId"]');
     input.classList.add('error');
     setTimeout(() => input.classList.remove('error'), 400);
     return;
   }
 
   // UI 状态更新
-  submitBtn.disabled = true;
-  submitBtn.classList.add('loading');
-  submitBtn.textContent = '正在初始化...';
-  inputCard.classList.add('disabled');
+  setFormRunning(submitBtn, true, defaultButtonText);
 
   progressPanel.classList.add('active');
   terminalContent.innerHTML = '';
@@ -886,7 +1096,12 @@ form.addEventListener('submit', async (e) => {
   }
 
   addLogLine('正在初始化推演引擎...', 'info');
+  addLogLine(`入口类型: ${entryMode === 'buyer' ? 'Buyer 精准人群推演' : '商机信号侵入推演'}`, 'info');
   addLogLine(`商机信号: ${signalWord}`, 'progress');
+  if (entryMode === 'buyer') {
+    addLogLine(`目标 Buyer ID: ${buyerId}`, 'progress');
+    addLogLine('当前前端已携带 buyer_id 参数，后端精准人群池查询将在下一步接入', 'warn');
+  }
   addLogLine(`运行模式: ${runStage}`, 'info');
   addLogLine(`采样数量: ${sampleLimit}`, 'info');
 
@@ -896,7 +1111,11 @@ form.addEventListener('submit', async (e) => {
       signal_brief: signalBrief,
       sample_limit: sampleLimit,
       stage: runStage,
+      mode: entryMode,
     });
+    if (buyerId) {
+      params.set('buyer_id', buyerId);
+    }
 
     const eventSource = new EventSource(`/api/run?${params.toString()}`);
 
@@ -939,10 +1158,7 @@ form.addEventListener('submit', async (e) => {
         addLogLine('本次运行没有生成推演结果页面', 'info');
       }
 
-      submitBtn.disabled = false;
-      submitBtn.classList.remove('loading');
-      submitBtn.textContent = '启动推演引擎';
-      inputCard.classList.remove('disabled');
+      setFormRunning(submitBtn, false, defaultButtonText);
 
       eventSource.close();
       fetchHistory();
@@ -953,10 +1169,7 @@ form.addEventListener('submit', async (e) => {
       const data = JSON.parse(e.data);
       addLogLine(`✗ 错误: ${data.message}`, 'error');
       
-      submitBtn.disabled = false;
-      submitBtn.classList.remove('loading');
-      submitBtn.textContent = '启动推演引擎';
-      inputCard.classList.remove('disabled');
+      setFormRunning(submitBtn, false, defaultButtonText);
       
       eventSource.close();
     });
@@ -965,10 +1178,7 @@ form.addEventListener('submit', async (e) => {
     eventSource.onerror = () => {
       addLogLine('✗ 连接中断', 'error');
       
-      submitBtn.disabled = false;
-      submitBtn.classList.remove('loading');
-      submitBtn.textContent = '启动推演引擎';
-      inputCard.classList.remove('disabled');
+      setFormRunning(submitBtn, false, defaultButtonText);
       
       eventSource.close();
     };
@@ -976,12 +1186,9 @@ form.addEventListener('submit', async (e) => {
   } catch (err) {
     addLogLine(`✗ 请求失败: ${err.message}`, 'error');
     
-    submitBtn.disabled = false;
-    submitBtn.classList.remove('loading');
-    submitBtn.textContent = '启动推演引擎';
-    inputCard.classList.remove('disabled');
+    setFormRunning(submitBtn, false, defaultButtonText);
   }
-});
+}));
 
 // 加载结果页面。使用 iframe 保留结果页自己的字体、SVG 和布局样式。
 function loadResult(url) {
