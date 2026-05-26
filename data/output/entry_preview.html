@@ -339,9 +339,8 @@
     line-height: 1.6;
   }
 
-  .form-group .mode-hint {
-    margin-top: 7px;
-    margin-bottom: 0;
+  .form-row .form-group .hint {
+    min-height: 38px;
   }
 
   .form-group input,
@@ -803,12 +802,12 @@
           </div>
           <div class="form-group">
             <label>运行模式</label>
+            <div class="hint">选择是否重建 persona，或直接使用已有画像推演</div>
             <select name="runStage">
               <option value="all">端到端（Persona + 推演）</option>
               <option value="demo">仅推演（需已有 Persona）</option>
               <option value="personas">仅构建 Persona</option>
             </select>
-            <div class="hint mode-hint">选择是否重建 persona，或直接使用已有画像推演</div>
           </div>
         </div>
 
@@ -865,11 +864,11 @@
           </div>
           <div class="form-group">
             <label>运行模式</label>
+            <div class="hint">选择是否刷新画像，再进入个体环境包推演</div>
             <select name="runStage">
               <option value="demo">仅推演（需已有 Persona）</option>
               <option value="all">端到端（Persona + 推演）</option>
             </select>
-            <div class="hint mode-hint">选择是否刷新画像，再进入个体环境包推演</div>
           </div>
         </div>
 
