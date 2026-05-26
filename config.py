@@ -17,7 +17,7 @@ LLM_BASE_URL = os.getenv('LLM_BASE_URL', 'https://dashscope.aliyuncs.com/compati
 LLM_MODEL = os.getenv('LLM_MODEL') or os.getenv('LLM_MODEL_NAME', 'qwen-plus')
 
 # === 并发与限流 ===
-LLM_CONCURRENCY_PROFILE = 15
+LLM_CONCURRENCY_PROFILE = 35
 LLM_CONCURRENCY_POST = 8
 LLM_CONCURRENCY_REPLY = 8
 LLM_CONCURRENCY_SCORE = 8

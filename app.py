@@ -1,4 +1,4 @@
-"""1688 商机信号个性化反应模拟器 - Flask Web 应用"""
+"""1688 商机信号 · 个性化推演引擎 - Flask Web 应用"""
 import asyncio
 import json
 import threading
@@ -50,6 +50,7 @@ def data_status():
     """返回数据文件状态"""
     buyer_path = DATA_INPUT / 'buyer_features.tsv'
     profile_path = DATA_INPUT / 'buyer_profiles.tsv'
+    full_path = DATA_OUTPUT / 'personas.jsonl'
     demo_path = DATA_OUTPUT / 'personas_demo.jsonl'
 
     result = {
@@ -57,8 +58,8 @@ def data_status():
         'buyer_count': 0,
         'buyer_profiles': profile_path.exists(),
         'profile_count': 0,
-        'personas_demo': demo_path.exists(),
-        'demo_count': 0,
+        'personas_ready': False,
+        'persona_count': 0,
     }
 
     if buyer_path.exists():
@@ -69,18 +70,24 @@ def data_status():
         with open(profile_path, encoding='utf-8') as f:
             result['profile_count'] = sum(1 for _ in f) - 1
 
-    if demo_path.exists():
+    # 优先展示全量 persona，和实际推演使用的一致
+    if full_path.exists() and full_path.stat().st_size > 100:
+        result['personas_ready'] = True
+        with open(full_path, encoding='utf-8') as f:
+            result['persona_count'] = sum(1 for line in f if line.strip())
+    elif demo_path.exists():
+        result['personas_ready'] = True
         with open(demo_path, encoding='utf-8') as f:
-            result['demo_count'] = sum(1 for line in f if line.strip())
+            result['persona_count'] = sum(1 for line in f if line.strip())
 
     return jsonify(result)
 
 
 @app.route('/api/history')
 def history_api():
-    """返回历史运行记录"""
+    """返回最新 5 条历史运行记录（倒序）"""
     items = _load_history()
-    return jsonify({'items': items[-20:]})
+    return jsonify({'items': list(reversed(items[-5:]))})
 
 
 @app.route('/api/run')
@@ -150,15 +157,24 @@ async def _execute_pipeline(signal_word, signal_brief, sample_limit,
                             stage, progress_callback, message_queue):
     """在子线程的事件循环中执行整个流水线"""
     from persona_builder import build_personas_pipeline
-    from post_generator import generate_main_posts, generate_replies
+    from post_generator import (generate_buyer_assessments,
+                                generate_cross_examinations)
     from scoring import compute_resonance
     from renderer import render_demo_html
+    from signal_analyzer import build_signal_profile, select_review_personas
 
     def send_stage(stage_name):
         message_queue.put(('stage', {'stage': stage_name}))
 
-    # 阶段 1: Persona 构建
-    if stage in ('all', 'personas'):
+    # 阶段 1: Persona 构建（如果已有缓存则跳过）
+    demo_path_check = DATA_OUTPUT / 'personas_demo.jsonl'
+    skip_persona_build = (
+        stage == 'all'
+        and demo_path_check.exists()
+        and demo_path_check.stat().st_size > 100
+    )
+
+    if stage == 'personas' or (stage == 'all' and not skip_persona_build):
         send_stage('阶段 1/5: Persona 画像构建')
         buyer_file = 'buyer_features.tsv'
         profile_file = 'buyer_profiles.tsv'
@@ -180,6 +196,9 @@ async def _execute_pipeline(signal_word, signal_brief, sample_limit,
             sample_limit=sample_limit,
             progress_callback=progress_callback,
         )
+    elif skip_persona_build:
+        send_stage('阶段 1/5: 使用已有画像缓存')
+        progress_callback('画像已缓存，跳过构建', 1, 1)
 
     if stage == 'personas':
         message_queue.put(('done', {
@@ -188,46 +207,64 @@ async def _execute_pipeline(signal_word, signal_brief, sample_limit,
         }))
         return
 
-    # 检查 demo persona 是否存在
+    # 优先加载全量 persona（匹配范围更大），否则回退到 demo
+    full_path = DATA_OUTPUT / 'personas.jsonl'
     demo_path = DATA_OUTPUT / 'personas_demo.jsonl'
-    if not demo_path.exists():
+    if full_path.exists() and full_path.stat().st_size > 100:
+        personas = _load_jsonl(full_path)
+        progress_callback(f'加载 {len(personas)} 个全量 persona（用于信号匹配）', 1, 1)
+    elif demo_path.exists():
+        personas = _load_jsonl(demo_path)
+        progress_callback(f'加载 {len(personas)} 个 demo persona', 1, 1)
+    else:
         message_queue.put(('error_msg', {
-            'message': '没有找到 personas_demo.jsonl，请先运行 Persona 构建阶段'
+            'message': '没有找到 persona 数据，请先运行 Persona 构建阶段'
         }))
         return
 
-    personas = _load_jsonl(demo_path)
-    progress_callback(f'加载 {len(personas)} 个 demo persona', 1, 1)
+    # 阶段 1: 商机画像拆解（demo/personas 已存在时从这里开始）
+    send_stage('阶段 1/5: 商机画像拆解')
+    signal_profile = build_signal_profile(signal_word, signal_brief)
+    progress_callback(
+        f"候选类目: {' / '.join(signal_profile.get('category_candidates', []))}",
+        1, 1,
+    )
 
-    # 阶段 2: 主帖生成
-    send_stage('阶段 2/5: 主帖生成')
-    posts = await generate_main_posts(
-        personas, signal_word, signal_brief,
+    # 阶段 2: 买家匹配
+    send_stage('阶段 2/5: 买家匹配与推演视角选择')
+    reviewers = select_review_personas(personas, signal_profile)
+    progress_callback(f'选出 {len(reviewers)} 个买家推演视角', 1, 1)
+
+    # 阶段 3: 买家独立评估
+    send_stage('阶段 3/5: 买家独立评估')
+    assessments = await generate_buyer_assessments(
+        reviewers, signal_word, signal_brief, signal_profile,
         progress_callback=progress_callback,
     )
-    if not posts:
+    if not assessments:
         message_queue.put(('error_msg',
-                           {'message': '没有任何主帖生成成功，请检查 LLM 配置'}))
+                           {'message': '没有任何买家评估生成成功，请检查 LLM 配置'}))
         return
 
-    # 阶段 3: 回帖生成
-    send_stage('阶段 3/5: 回帖生成')
-    replies = await generate_replies(
-        personas, posts, signal_word,
+    # 阶段 4: 交叉质询 + 可参考度评分
+    send_stage('阶段 4/5: 交叉质询与可参考度评分')
+    challenges = await generate_cross_examinations(
+        reviewers, assessments, signal_word,
         progress_callback=progress_callback,
     )
-
-    # 阶段 4: 共鸣度评分
-    send_stage('阶段 4/5: 共鸣度评分')
     resonance = await compute_resonance(
-        personas, posts, signal_word,
+        reviewers, assessments, signal_word,
         progress_callback=progress_callback,
     )
 
-    # 阶段 5: HTML 渲染
-    send_stage('阶段 5/5: HTML 渲染')
-    render_demo_html(posts, replies, resonance, signal_word, signal_brief)
-    progress_callback('HTML 渲染完成', 1, 1)
+    # 阶段 5: 机会地图渲染
+    send_stage('阶段 5/5: 机会地图渲染')
+    result_filename = render_demo_html(
+        assessments, challenges, resonance,
+        signal_word, signal_brief, signal_profile,
+    )
+    result_url = f'/result/{result_filename}'
+    progress_callback('机会地图渲染完成', 1, 1)
 
     # 记录历史
     history = _load_history()
@@ -235,15 +272,15 @@ async def _execute_pipeline(signal_word, signal_brief, sample_limit,
         'signal_word': signal_word,
         'signal_brief': signal_brief,
         'time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        'post_count': len(posts),
-        'reply_count': len(replies),
-        'url': '/result/demo.html',
+        'post_count': len(assessments),
+        'reply_count': len(challenges),
+        'url': result_url,
     })
     _save_history(history)
 
     message_queue.put(('done', {
         'message': '全部完成！',
-        'result_url': '/result/demo.html',
+        'result_url': result_url,
     }))
 
 

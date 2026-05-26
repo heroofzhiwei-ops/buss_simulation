@@ -8,11 +8,23 @@ from openai import AsyncOpenAI
 from config import (LLM_API_KEY, LLM_BASE_URL, LLM_MODEL,
                     LLM_TIMEOUT, LLM_MAX_RETRIES)
 
-_client = AsyncOpenAI(
-    api_key=LLM_API_KEY,
-    base_url=LLM_BASE_URL,
-    timeout=LLM_TIMEOUT,
-)
+_client = None
+
+
+def _get_client() -> AsyncOpenAI:
+    """Lazy-init LLM client so code can be imported without local secrets."""
+    global _client
+    if _client is None:
+        if not LLM_API_KEY:
+            raise RuntimeError(
+                '缺少 LLM_API_KEY，请在 .env 中配置后再运行需要 LLM 的阶段'
+            )
+        _client = AsyncOpenAI(
+            api_key=LLM_API_KEY,
+            base_url=LLM_BASE_URL,
+            timeout=LLM_TIMEOUT,
+        )
+    return _client
 
 
 async def llm_call(prompt: str, system: str = None,
@@ -27,7 +39,7 @@ async def llm_call(prompt: str, system: str = None,
     last_err = None
     for attempt in range(max_retries + 1):
         try:
-            resp = await _client.chat.completions.create(
+            resp = await _get_client().chat.completions.create(
                 model=LLM_MODEL,
                 messages=messages,
                 temperature=temperature,

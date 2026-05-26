@@ -1,131 +1,230 @@
 """
-ODPS 数据导出脚本 (PyODPS 版本)
+ODPS 数据导出脚本 (PyODPS Tunnel 直读版本)
 
-使用前需安装: pip install pyodps
-并配置 ODPS 访问凭证。
+使用 TableTunnel 直读分区数据，避免跨项目 SQL Instance 问题。
 
 用法:
     python scripts/export_data_pyodps.py
+    python scripts/export_data_pyodps.py --dry-run   # 仅探测，不写文件
+    python scripts/export_data_pyodps.py --limit 100  # 只导前 100 条
 
 导出结果:
     data/input/buyer_features.tsv
     data/input/buyer_profiles.tsv
 """
+import argparse
+import json
 import os
 import sys
+import time
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv(Path(__file__).parent.parent / '.env')
 
 try:
     from odps import ODPS
+    from odps.tunnel import TableTunnel
 except ImportError:
     print("请先安装 pyodps: pip install pyodps")
     sys.exit(1)
 
-# ODPS 连接配置 - 请根据实际情况修改
 ODPS_ACCESS_ID = os.getenv('ODPS_ACCESS_ID', '')
 ODPS_ACCESS_KEY = os.getenv('ODPS_ACCESS_KEY', '')
-ODPS_PROJECT = os.getenv('ODPS_PROJECT', 'cbu_data_algo_dev')
-ODPS_ENDPOINT = os.getenv('ODPS_ENDPOINT', 'http://service.odps.aliyun.com/api')
+ODPS_PROJECT = os.getenv('ODPS_PROJECT', 'cbuads_dev')
+ODPS_ENDPOINT = os.getenv('ODPS_ENDPOINT', 'http://service-corp.odps.aliyun-inc.com/api')
 
 OUTPUT_DIR = Path(__file__).parent.parent / 'data' / 'input'
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
+# 动线数据表 (无分区)
+FEATURES_TABLE = 'buss_bizword_user_profile_data'
+FEATURES_PROJECT = 'cbu_data_algo_dev'
 
-def export_buyer_features():
-    """导出动线行为数据"""
-    print("[1/2] 导出 buyer_features ...")
+# 画像表 (分区表)
+PROFILE_TABLE = 'ads_cn_dap_bizworld_scene_node_merge_profile_d'
+PROFILE_PROJECT = 'cbuads'
+PROFILE_DS = '20260522'
+PROFILE_PARTITION = f'ds={PROFILE_DS},scene_code=fx'
 
-    odps = ODPS(ODPS_ACCESS_ID, ODPS_ACCESS_KEY, ODPS_PROJECT, ODPS_ENDPOINT)
+FEATURES_COLUMNS = [
+    'buyer_id', 'inquiry_cnt', 'inquiry_contents',
+    'image_search_cnt', 'image_search_contents',
+    'search_cnt', 'search_keywords',
+    'product_view_cnt', 'viewed_products',
+    'cart_cnt', 'carted_products',
+    'recommend_click_cnt', 'recommended_products',
+    'video_play_cnt', 'video_products',
+    'shop_view_cnt', 'shop_viewed_products',
+]
 
-    sql = """
-    SELECT
-        buyer_id,
-        inquiry_cnt, inquiry_contents,
-        image_search_cnt, image_search_contents,
-        search_cnt, search_keywords,
-        product_view_cnt, viewed_products,
-        cart_cnt, carted_products,
-        recommend_click_cnt, recommended_products,
-        video_play_cnt, video_products,
-        shop_view_cnt, shop_viewed_products
-    FROM cbu_data_algo_dev.buss_bizword_user_profile_data
-    """
 
-    output_path = OUTPUT_DIR / 'buyer_features.tsv'
-    columns = [
-        'buyer_id', 'inquiry_cnt', 'inquiry_contents',
-        'image_search_cnt', 'image_search_contents',
-        'search_cnt', 'search_keywords',
-        'product_view_cnt', 'viewed_products',
-        'cart_cnt', 'carted_products',
-        'recommend_click_cnt', 'recommended_products',
-        'video_play_cnt', 'video_products',
-        'shop_view_cnt', 'shop_viewed_products',
-    ]
+def to_str(value):
+    """将值转为字符串，None 转为 \\N，去除 tab/换行防止 TSV 错乱"""
+    if value is None:
+        return '\\N'
+    text = str(value)
+    text = text.replace('\t', ' ').replace('\n', ' ').replace('\r', '')
+    return text
 
-    with odps.execute_sql(sql).open_reader() as reader:
-        with open(output_path, 'w', encoding='utf-8') as f:
-            f.write('\t'.join(columns) + '\n')
-            count = 0
+
+def get_odps_client(project=None):
+    return ODPS(
+        ODPS_ACCESS_ID, ODPS_ACCESS_KEY,
+        project=project or ODPS_PROJECT,
+        endpoint=ODPS_ENDPOINT
+    )
+
+
+def export_buyer_features_tunnel(limit=None, dry_run=False):
+    """通过 Tunnel 直读动线行为数据"""
+    print(f"[1/2] 导出 buyer_features (Tunnel 直读) ...")
+
+    odps = get_odps_client(FEATURES_PROJECT)
+    tunnel = TableTunnel(odps, project=FEATURES_PROJECT)
+
+    session = tunnel.create_download_session(FEATURES_TABLE)
+    total = session.count
+    print(f"  表总行数: {total}")
+
+    if dry_run:
+        print("  [dry-run] 读取前 3 行样本:")
+        with session.open_record_reader(0, min(3, total)) as reader:
             for record in reader:
-                values = [str(record[col]) if record[col] is not None else '\\N'
-                          for col in columns]
+                sample = {col: to_str(record[col]) for col in FEATURES_COLUMNS[:5]}
+                print(f"    {sample}")
+        return
+
+    target = min(limit, total) if limit else total
+    output_path = OUTPUT_DIR / 'buyer_features.tsv'
+
+    start_time = time.time()
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write('\t'.join(FEATURES_COLUMNS) + '\n')
+        count = 0
+        with session.open_record_reader(0, target) as reader:
+            for record in reader:
+                values = []
+                for col in FEATURES_COLUMNS:
+                    values.append(to_str(record[col]))
                 f.write('\t'.join(values) + '\n')
                 count += 1
                 if count % 1000 == 0:
-                    print(f"  已导出 {count} 行 ...")
+                    elapsed = time.time() - start_time
+                    rate = count / elapsed if elapsed > 0 else 0
+                    eta = (target - count) / rate if rate > 0 else 0
+                    print(f"  已导出 {count}/{target} ({100*count/target:.1f}%) "
+                          f"速率 {rate:.0f} 行/s  ETA {eta:.0f}s")
 
-    print(f"  完成: {output_path} ({count} 行)")
+    elapsed = time.time() - start_time
+    print(f"  完成: {output_path} ({count} 行, {elapsed:.1f}s)")
 
 
-def export_buyer_profiles():
-    """导出画像 summary 数据"""
-    print("[2/2] 导出 buyer_profiles ...")
+def export_buyer_profiles_tunnel(limit=None, dry_run=False):
+    """通过 Tunnel 直读画像 summary 数据"""
+    print(f"[2/2] 导出 buyer_profiles (Tunnel 直读) ...")
 
-    odps = ODPS(ODPS_ACCESS_ID, ODPS_ACCESS_KEY,
-                'cbuads', ODPS_ENDPOINT)
+    odps = get_odps_client(PROFILE_PROJECT)
+    tunnel = TableTunnel(odps, project=PROFILE_PROJECT)
 
-    sql = """
-    SELECT
-        node_id AS buyer_id,
-        get_json_object(profile, '$.summary') AS profile_text
-    FROM cbuads.ads_cn_dap_bizworld_scene_node_merge_profile_d
-    WHERE ds = '20260522'
-      AND scene_code = 'fx'
-      AND node_type = 'buyer'
-      AND get_json_object(profile, '$.summary') IS NOT NULL
-      AND length(get_json_object(profile, '$.summary')) >= 100
-    """
+    session = tunnel.create_download_session(
+        PROFILE_TABLE, partition_spec=PROFILE_PARTITION
+    )
+    total = session.count
+    print(f"  分区 {PROFILE_PARTITION} 总行数: {total}")
 
+    if dry_run:
+        print("  [dry-run] 读取前 3 行样本:")
+        with session.open_record_reader(0, min(3, total)) as reader:
+            for record in reader:
+                node_id = to_str(record['node_id'])
+                node_type = to_str(record['node_type'])
+                profile_str = to_str(record['profile'])
+                profile = {}
+                try:
+                    profile = json.loads(profile_str) if profile_str != '\\N' else {}
+                except (json.JSONDecodeError, TypeError):
+                    pass
+                summary = profile.get('summary', '')[:80]
+                print(f"    node_id={node_id}, type={node_type}, summary={summary}...")
+        return
+
+    target = min(limit, total) if limit else total
     output_path = OUTPUT_DIR / 'buyer_profiles.tsv'
 
-    with odps.execute_sql(sql).open_reader() as reader:
-        with open(output_path, 'w', encoding='utf-8') as f:
-            f.write('buyer_id\tprofile_text\n')
-            count = 0
+    start_time = time.time()
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write('buyer_id\tprofile_text\n')
+        count = 0
+        skipped = 0
+        with session.open_record_reader(0, target) as reader:
             for record in reader:
-                buyer_id = str(record['buyer_id']) if record['buyer_id'] else ''
-                profile_text = str(record['profile_text']) if record['profile_text'] else ''
-                # 去除 profile_text 中的制表符和换行符，防止 TSV 格式错乱
-                profile_text = profile_text.replace('\t', ' ').replace('\n', ' ').replace('\r', '')
-                if buyer_id and len(profile_text) >= 100:
-                    f.write(f'{buyer_id}\t{profile_text}\n')
-                    count += 1
-                    if count % 1000 == 0:
-                        print(f"  已导出 {count} 行 ...")
+                node_type = to_str(record['node_type'])
+                if node_type != 'buyer':
+                    skipped += 1
+                    continue
 
-    print(f"  完成: {output_path} ({count} 行)")
+                node_id = to_str(record['node_id'])
+                profile_str = to_str(record['profile'])
+
+                profile_text = ''
+                try:
+                    if profile_str and profile_str != '\\N':
+                        profile_data = json.loads(profile_str)
+                        if isinstance(profile_data, dict):
+                            profile_text = profile_data.get('summary', '')
+                except (json.JSONDecodeError, TypeError):
+                    pass
+
+                if not profile_text or len(profile_text) < 100:
+                    skipped += 1
+                    continue
+
+                profile_text = (profile_text
+                                .replace('\t', ' ')
+                                .replace('\n', ' ')
+                                .replace('\r', ''))
+
+                f.write(f'{node_id}\t{profile_text}\n')
+                count += 1
+
+                if count % 1000 == 0:
+                    elapsed = time.time() - start_time
+                    rate = count / elapsed if elapsed > 0 else 0
+                    print(f"  已导出 {count} 条 buyer (跳过 {skipped} 条) "
+                          f"速率 {rate:.0f} 行/s")
+
+    elapsed = time.time() - start_time
+    print(f"  完成: {output_path} ({count} 条 buyer, 跳过 {skipped} 条, {elapsed:.1f}s)")
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='从 ODPS 导出 buyer 数据')
+    parser.add_argument('--dry-run', action='store_true',
+                        help='仅探测连接和样本，不写文件')
+    parser.add_argument('--limit', type=int, default=None,
+                        help='每张表只导前 N 行')
+    parser.add_argument('--skip-features', action='store_true',
+                        help='跳过动线数据导出')
+    parser.add_argument('--skip-profiles', action='store_true',
+                        help='跳过画像数据导出')
+    args = parser.parse_args()
+
     if not ODPS_ACCESS_ID:
-        print("请设置环境变量 ODPS_ACCESS_ID 和 ODPS_ACCESS_KEY")
-        print("  export ODPS_ACCESS_ID=your_access_id")
-        print("  export ODPS_ACCESS_KEY=your_access_key")
-        print("\n或者直接在 ODPS 控制台执行 scripts/export_data.sql 中的 SQL，")
-        print("手动导出 TSV 文件到 data/input/ 目录。")
+        print("请在 .env 中设置 ODPS_ACCESS_ID 和 ODPS_ACCESS_KEY")
         sys.exit(1)
 
-    export_buyer_features()
-    export_buyer_profiles()
-    print("\n✅ 数据导出完成！可以运行 python app.py 启动应用。")
+    print(f"ODPS 配置:")
+    print(f"  endpoint = {ODPS_ENDPOINT}")
+    print(f"  features = {FEATURES_PROJECT}.{FEATURES_TABLE}")
+    print(f"  profiles = {PROFILE_PROJECT}.{PROFILE_TABLE} ({PROFILE_PARTITION})")
+    print()
+
+    if not args.skip_features:
+        export_buyer_features_tunnel(limit=args.limit, dry_run=args.dry_run)
+
+    if not args.skip_profiles:
+        export_buyer_profiles_tunnel(limit=args.limit, dry_run=args.dry_run)
+
+    if not args.dry_run:
+        print("\n✅ 数据导出完成！可以运行 python app.py 启动应用。")

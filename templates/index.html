@@ -3,227 +3,797 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>1688 商机信号个性化反应模拟器</title>
+  <title>商机信号 · 个性化推演引擎</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --bg-base: #f7fbff;
+    --bg-panel: rgba(255, 255, 255, 0.88);
+    --bg-card: #ffffff;
+    --bg-soft: #eef7ff;
+    --bg-tint: rgba(14, 165, 233, 0.08);
+    --line: #d9e7f5;
+    --line-strong: #b7d2ea;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #8aa0b6;
+    --accent: #0ea5e9;
+    --accent-deep: #2563eb;
+    --accent-purple: #7c3aed;
+    --success: #16a34a;
+    --warning: #d97706;
+    --danger: #dc2626;
+    --shadow-soft: 0 18px 60px rgba(31, 94, 157, 0.12);
+    --shadow-card: 0 12px 36px rgba(15, 23, 42, 0.08);
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
   body {
-    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: #f5f6f8; min-height: 100vh;
-    display: flex; flex-direction: column; align-items: center;
-    padding: 40px 20px; color: #222;
+    font-family: 'Inter', -apple-system, 'PingFang SC', 'HarmonyOS Sans', sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(circle at 16% -10%, rgba(14, 165, 233, 0.18), transparent 32%),
+      radial-gradient(circle at 84% 0%, rgba(124, 58, 237, 0.12), transparent 30%),
+      linear-gradient(180deg, #ffffff 0%, var(--bg-base) 42%, #f3f8ff 100%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    overflow-x: hidden;
   }
+
+  .bg-grid {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(14, 165, 233, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(14, 165, 233, 0.08) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.65), transparent 82%);
+    z-index: -2;
+  }
+
+  .bg-glow {
+    position: fixed;
+    inset: 0;
+    background:
+      linear-gradient(115deg, rgba(14, 165, 233, 0.08), transparent 36%),
+      radial-gradient(ellipse at 50% 12%, rgba(255, 255, 255, 0.78), transparent 54%);
+    z-index: -1;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 64px 24px 48px;
+  }
+
   .hero {
-    text-align: center; margin-bottom: 36px; max-width: 600px;
+    text-align: center;
+    margin: 0 auto 42px;
+    max-width: 760px;
   }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent-deep);
+    letter-spacing: 2.4px;
+    margin-bottom: 20px;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.10);
+    backdrop-filter: blur(16px);
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 0 5px rgba(22, 163, 74, 0.12);
+  }
+
   .hero h1 {
-    font-size: 28px; font-weight: 700;
-    background: linear-gradient(135deg, #ff7e5f, #feb47b);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    margin-bottom: 12px;
+    font-size: clamp(34px, 5vw, 58px);
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    margin-bottom: 18px;
+    background: linear-gradient(120deg, #0f172a 0%, #115eac 48%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
-  .hero p { font-size: 15px; color: #666; line-height: 1.6; }
+
+  .hero p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    max-width: 660px;
+    margin: 0 auto;
+  }
+
+  .stats-badge {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 26px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    box-shadow: var(--shadow-soft);
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .stats-badge > div {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: rgba(239, 247, 255, 0.78);
+  }
+
+  .stats-badge .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--success);
+    border-radius: 50%;
+    box-shadow: 0 0 0 5px rgba(22, 163, 74, 0.12);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.55; transform: scale(0.82); }
+  }
+
   .input-card {
-    background: white; border-radius: 14px; padding: 28px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06); width: 100%; max-width: 560px;
-    margin-bottom: 24px;
+    background: var(--bg-panel);
+    border: 1px solid rgba(183, 210, 234, 0.78);
+    border-radius: 28px;
+    padding: 34px;
+    width: 100%;
+    max-width: 740px;
+    margin: 0 auto 42px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(18px);
   }
-  .form-group { margin-bottom: 18px; }
+
+  .input-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 26px;
+    right: 26px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), var(--accent-purple), transparent);
+    opacity: 0.65;
+  }
+
+  .input-card.disabled {
+    opacity: 0.62;
+    pointer-events: none;
+  }
+
+  .form-group { margin-bottom: 20px; }
+
   .form-group label {
-    display: block; font-size: 14px; font-weight: 600;
-    color: #333; margin-bottom: 6px;
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
   }
-  .form-group .hint { font-size: 12px; color: #999; margin-bottom: 6px; }
-  .form-group input, .form-group textarea, .form-group select {
-    width: 100%; padding: 10px 14px; border: 1px solid #ddd;
-    border-radius: 8px; font-size: 14px; outline: none;
-    transition: border-color 0.2s;
+
+  .form-group .hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 7px;
+    line-height: 1.6;
   }
-  .form-group input:focus, .form-group textarea:focus {
-    border-color: #ff7e5f;
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    font-family: inherit;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
   }
-  .form-group textarea { resize: vertical; min-height: 60px; }
-  .form-row { display: flex; gap: 14px; }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: #9fb1c6; }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: rgba(14, 165, 233, 0.72);
+    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12), inset 0 1px 0 rgba(255,255,255,0.8);
+    transform: translateY(-1px);
+  }
+
+  .form-group input.error {
+    border-color: var(--danger);
+    animation: shake 0.4s ease-in-out;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 92px;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 16px;
+  }
+
   .form-row .form-group { flex: 1; }
+
+  .preset-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .preset-chip {
+    padding: 8px 14px;
+    background: rgba(239, 247, 255, 0.9);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+
+  .preset-chip:hover {
+    background: #ffffff;
+    border-color: rgba(14, 165, 233, 0.65);
+    color: var(--accent-deep);
+    box-shadow: 0 8px 22px rgba(14, 165, 233, 0.12);
+    transform: translateY(-1px);
+  }
+
   .btn-submit {
-    width: 100%; padding: 13px; border: none; border-radius: 10px;
-    background: linear-gradient(135deg, #ff7e5f, #feb47b);
-    color: white; font-size: 16px; font-weight: 600; cursor: pointer;
-    transition: opacity 0.2s, transform 0.1s;
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 58%, var(--accent-purple) 100%);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 16px 30px rgba(37, 99, 235, 0.24);
   }
-  .btn-submit:hover { opacity: 0.92; }
-  .btn-submit:active { transform: scale(0.98); }
+
+  .btn-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 20px 38px rgba(37, 99, 235, 0.30);
+  }
+
+  .btn-submit:active { transform: translateY(0); }
+
   .btn-submit:disabled {
-    opacity: 0.5; cursor: not-allowed; transform: none;
+    opacity: 0.58;
+    cursor: not-allowed;
+    transform: none;
   }
 
-  /* 进度面板 */
-  .progress-panel {
-    background: white; border-radius: 14px; padding: 24px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06); width: 100%; max-width: 560px;
-    display: none;
+  .btn-submit.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.36), transparent);
+    animation: sweep 1.45s linear infinite;
   }
-  .progress-panel.active { display: block; }
-  .progress-title {
-    font-size: 16px; font-weight: 600; margin-bottom: 16px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .progress-title .spinner {
-    width: 18px; height: 18px; border: 2px solid #eee;
-    border-top-color: #ff7e5f; border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .progress-bar-wrap {
-    height: 6px; background: #eee; border-radius: 3px;
-    overflow: hidden; margin-bottom: 14px;
-  }
-  .progress-bar-fill {
-    height: 100%; background: linear-gradient(90deg, #ff7e5f, #feb47b);
-    border-radius: 3px; width: 0%; transition: width 0.3s;
-  }
-  .progress-log {
-    max-height: 300px; overflow-y: auto; font-size: 13px;
-    color: #555; line-height: 1.8;
-  }
-  .progress-log .log-item {
-    padding: 3px 0; border-bottom: 1px solid #f5f5f5;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .progress-log .log-item:last-child { border-bottom: none; }
-  .log-icon { font-size: 14px; flex-shrink: 0; }
-  .log-icon.done { color: #1a7f4a; }
-  .log-icon.running { color: #ff7e5f; }
-  .log-icon.error { color: #b03030; }
 
-  .result-link {
-    display: block; margin-top: 18px; text-align: center;
-    padding: 14px; background: linear-gradient(135deg, #e6f7ed, #d4f1e0);
-    border-radius: 10px; color: #1a7f4a; font-weight: 600;
-    text-decoration: none; font-size: 15px;
-    transition: opacity 0.2s;
+  @keyframes sweep {
+    0% { left: -100%; }
+    100% { left: 100%; }
   }
-  .result-link:hover { opacity: 0.85; }
 
-  /* 数据状态 */
   .data-status {
-    background: white; border-radius: 14px; padding: 18px 24px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06); width: 100%; max-width: 560px;
-    margin-bottom: 24px; font-size: 13px; color: #555;
+    margin-top: 20px;
+    padding: 16px;
+    background: rgba(239, 247, 255, 0.72);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    font-size: 12px;
   }
-  .data-status h3 { font-size: 14px; color: #333; margin-bottom: 8px; }
-  .status-row { display: flex; justify-content: space-between; padding: 4px 0; }
-  .status-ok { color: #1a7f4a; font-weight: 600; }
-  .status-missing { color: #b03030; font-weight: 600; }
 
-  /* 历史记录 */
-  .history-section {
-    width: 100%; max-width: 560px; margin-top: 16px;
+  .data-status h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
   }
-  .history-section h3 {
-    font-size: 15px; color: #555; margin-bottom: 10px;
+
+  .status-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 7px 0;
+    color: var(--text-secondary);
   }
+
+  .status-ok { color: var(--success); font-weight: 700; }
+  .status-missing { color: var(--danger); font-weight: 700; }
+
+  .progress-panel {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: none;
+    animation: slideUp 0.5s ease-out;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .progress-panel.active { display: block; }
+
+  .progress-content {
+    display: grid;
+    grid-template-columns: minmax(240px, 280px) minmax(0, 1fr);
+    gap: 22px;
+  }
+
+  .stage-indicators,
+  .terminal-log,
+  .result-container,
   .history-item {
-    background: white; border-radius: 10px; padding: 14px 18px;
-    margin-bottom: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(16px);
   }
+
+  .stage-indicators {
+    border-radius: 22px;
+    padding: 20px;
+  }
+
+  .stage-title,
+  .terminal-title,
+  .history-section h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+  }
+
+  .stage-title { margin-bottom: 12px; }
+
+  .stage-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(217, 231, 245, 0.78);
+  }
+
+  .stage-item:last-child { border-bottom: none; }
+
+  .stage-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    min-width: 28px;
+  }
+
+  .stage-name {
+    flex: 1;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .stage-status {
+    width: 22px;
+    height: 22px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .stage-item.pending .stage-status {
+    background: #eef4fb;
+    color: var(--text-muted);
+  }
+
+  .stage-item.active .stage-status {
+    background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+    color: #ffffff;
+    box-shadow: 0 0 0 5px rgba(14, 165, 233, 0.12);
+  }
+
+  .stage-item.active .stage-name,
+  .stage-item.active .stage-number { color: var(--accent-deep); }
+
+  .stage-item.done .stage-status {
+    background: rgba(22, 163, 74, 0.12);
+    color: var(--success);
+  }
+
+  .stage-item.done .stage-name { color: var(--text-primary); }
+
+  .terminal-log {
+    border-radius: 22px;
+    overflow: hidden;
+  }
+
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 16px;
+    background: rgba(239, 247, 255, 0.72);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .terminal-dots { display: flex; gap: 6px; }
+
+  .terminal-dots .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .terminal-dots .dot.red { background: #fb7185; }
+  .terminal-dots .dot.yellow { background: #fbbf24; }
+  .terminal-dots .dot.green { background: #22c55e; }
+
+  .terminal-title { margin-left: auto; margin-right: auto; }
+
+  .terminal-content {
+    height: 350px;
+    overflow-y: auto;
+    padding: 16px;
+    font-family: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+    font-size: 12px;
+    line-height: 1.65;
+    color: #24405f;
+    background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(247,251,255,0.92));
+  }
+
+  .terminal-content::-webkit-scrollbar { width: 6px; }
+  .terminal-content::-webkit-scrollbar-track { background: transparent; }
+  .terminal-content::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 999px; }
+
+  .log-line {
+    margin-bottom: 5px;
+    animation: typeIn 0.2s ease-out;
+    overflow-wrap: anywhere;
+  }
+
+  @keyframes typeIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .log-line .timestamp { color: var(--text-muted); margin-right: 12px; }
+  .log-line.info { color: var(--text-secondary); }
+  .log-line.progress { color: var(--accent-deep); }
+  .log-line.success { color: var(--success); }
+  .log-line.warn { color: var(--warning); }
+  .log-line.error { color: var(--danger); }
+
+  .result-section {
+    width: 100%;
+    max-width: 1200px;
+    margin: 42px auto 0;
+    display: none;
+    animation: slideUp 0.5s ease-out;
+  }
+
+  .result-section.active { display: block; }
+
+  .result-container {
+    border-radius: 28px;
+    padding: 16px;
+    min-height: 520px;
+    overflow: hidden;
+  }
+
+  .result-frame {
+    display: block;
+    width: 100%;
+    min-height: 760px;
+    border: 0;
+    border-radius: 20px;
+    background: #ffffff;
+  }
+
+  .result-frame-link {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0 12px 4px;
+    color: var(--accent-deep);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .result-frame-link:hover { text-decoration: underline; }
+
+  .history-section {
+    width: 100%;
+    max-width: 740px;
+    margin: 60px auto 0;
+  }
+
+  .history-section h3 { margin-bottom: 16px; }
+
+  .history-item {
+    border-radius: 18px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.18s ease;
+  }
+
+  .history-item:hover {
+    border-color: rgba(14, 165, 233, 0.58);
+    transform: translateY(-1px);
+  }
+
   .history-item a {
-    color: #ff7e5f; text-decoration: none; font-weight: 600;
+    color: var(--accent-deep);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
   }
+
   .history-item a:hover { text-decoration: underline; }
-  .history-meta { font-size: 12px; color: #999; }
+
+  .history-meta { font-size: 12px; color: var(--text-muted); }
+
+  @media (max-width: 900px) {
+    .progress-content { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 680px) {
+    .container { padding: 42px 16px 36px; }
+    .hero p br { display: none; }
+    .input-card { padding: 24px; border-radius: 22px; }
+    .form-row { flex-direction: column; gap: 0; }
+    .stats-badge { border-radius: 22px; }
+    .history-item { align-items: flex-start; flex-direction: column; }
+    .result-container { padding: 8px; border-radius: 22px; }
+    .result-frame { border-radius: 16px; }
+  }
 </style>
 </head>
 <body>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
 
-<div class="hero">
-  <h1>🔥 1688 商机信号个性化反应模拟器</h1>
-  <p>输入一个外部商机词，系统将从真实买家画像中抽取差异化角色，<br>
-     模拟他们在分销同行群中对这个信号的个性化反应。</p>
-</div>
-
-<!-- 数据状态卡片 -->
-<div class="data-status" id="dataStatus">
-  <h3>📊 数据状态</h3>
-  <div id="dataStatusContent">加载中...</div>
-</div>
-
-<!-- 输入卡片 -->
-<div class="input-card" id="inputCard">
-  <form id="signalForm">
-    <div class="form-group">
-      <label>商机信号词 *</label>
-      <div class="hint">输入一个外部冒头的趋势词，如"巴恩风""宋代美学复兴""宠物经济"</div>
-      <input type="text" id="signalWord" placeholder="例如：巴恩风" required>
+<div class="container">
+  <!-- Hero Section -->
+  <div class="hero">
+    <div class="hero-badge">SYSTEM // BIZ-SIGNAL-AGENT v1.0</div>
+    <h1>商机信号 · 个性化推演引擎</h1>
+    <p>输入一个外部商机趋势词，系统将从真实买家画像中抽取差异化视角，<br>
+       进行个性化推演、视角碰撞与延伸边界归纳，生成商机延伸地图。</p>
+    <div class="stats-badge">
+      <div><span class="dot"></span> 推演引擎在线</div>
+      <div>底层模型: qwen-plus</div>
     </div>
-    <div class="form-group">
-      <label>信号简介</label>
-      <div class="hint">一句话描述这个信号的背景，帮助 agent 更好理解</div>
-      <textarea id="signalBrief" placeholder="例如：美式复古休闲风，近期小红书话题热度环比+120%，主打oversize衬衫和复古工装"></textarea>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Buyer 采样数</label>
-        <div class="hint">从数据中取前 N 个进行画像构建</div>
-        <input type="number" id="sampleLimit" value="300" min="10" max="9998">
-      </div>
-      <div class="form-group">
-        <label>运行模式</label>
-        <select id="runStage">
-          <option value="all">端到端（Persona + Demo）</option>
-          <option value="demo">仅 Demo（需已有 Persona）</option>
-          <option value="personas">仅构建 Persona</option>
-        </select>
-      </div>
-    </div>
-    <button type="submit" class="btn-submit" id="submitBtn">🚀 开始模拟</button>
-  </form>
-</div>
-
-<!-- 进度面板 -->
-<div class="progress-panel" id="progressPanel">
-  <div class="progress-title">
-    <div class="spinner" id="progressSpinner"></div>
-    <span id="progressTitle">正在处理中...</span>
   </div>
-  <div class="progress-bar-wrap">
-    <div class="progress-bar-fill" id="progressBar"></div>
-  </div>
-  <div class="progress-log" id="progressLog"></div>
-</div>
 
-<!-- 历史记录 -->
-<div class="history-section" id="historySection">
-  <h3>📋 历史记录</h3>
-  <div id="historyList"></div>
+  <!-- Input Card -->
+  <div class="input-card" id="inputCard">
+    <form id="signalForm">
+      <div class="form-group">
+        <label>商机信号词 *</label>
+        <div class="hint">输入一个外部冒头的趋势词，如"巴恩风""宋代美学复兴""宠物经济"</div>
+        <input type="text" id="signalWord" placeholder="例如：巴恩风" required>
+      </div>
+
+      <div class="preset-chips">
+        <div class="preset-chip" data-signal="巴恩风" data-brief="美式复古休闲风，近期小红书话题热度环比+120%，主打oversize衬衫和复古工装">巴恩风</div>
+        <div class="preset-chip" data-signal="宋代美学" data-brief="宋代极简美学复兴，强调留白意境与传统工艺结合，茶道、香道文化回归">宋代美学</div>
+        <div class="preset-chip" data-signal="宠物经济" data-brief="养宠人群年轻化，智能养宠设备、宠物情感消费、宠物社交成为新热点">宠物经济</div>
+        <div class="preset-chip" data-signal="多巴胺穿搭" data-brief="高饱和度色彩搭配，通过视觉刺激带来愉悦感，Z世代社交货币">多巴胺穿搭</div>
+        <div class="preset-chip" data-signal="赛博朋克风" data-brief="未来主义与反乌托邦美学，霓虹色彩、机械元素、数字艺术融合">赛博朋克风</div>
+      </div>
+
+      <div class="form-group">
+        <label>信号简介</label>
+        <div class="hint">一句话描述这个信号的背景，帮助 agent 更好理解</div>
+        <textarea id="signalBrief" placeholder="例如：美式复古休闲风，近期小红书话题热度环比+120%，主打oversize衬衫和复古工装"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Buyer 采样数</label>
+          <div class="hint">从数据中取前 N 个进行画像构建</div>
+          <input type="number" id="sampleLimit" value="300" min="10" max="9998">
+        </div>
+        <div class="form-group">
+          <label>运行模式</label>
+          <select id="runStage">
+            <option value="all">端到端（Persona + 推演）</option>
+            <option value="demo">仅推演（需已有 Persona）</option>
+            <option value="personas">仅构建 Persona</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">启动推演引擎</button>
+
+      <!-- Data Status -->
+      <div class="data-status" id="dataStatus">
+        <h4>数据状态检查</h4>
+        <div id="dataStatusContent">加载中...</div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Progress Panel -->
+  <div class="progress-panel" id="progressPanel">
+    <div class="progress-content">
+      <!-- Left: Stage Indicators -->
+      <div class="stage-indicators">
+        <div class="stage-title">执行阶段</div>
+        <div class="stage-item pending" id="stage-1">
+          <div class="stage-number">01</div>
+          <div class="stage-name">画像与信号拆解</div>
+          <div class="stage-status">○</div>
+        </div>
+        <div class="stage-item pending" id="stage-2">
+          <div class="stage-number">02</div>
+          <div class="stage-name">买家匹配</div>
+          <div class="stage-status">○</div>
+        </div>
+        <div class="stage-item pending" id="stage-3">
+          <div class="stage-number">03</div>
+          <div class="stage-name">独立评估</div>
+          <div class="stage-status">○</div>
+        </div>
+        <div class="stage-item pending" id="stage-4">
+          <div class="stage-number">04</div>
+          <div class="stage-name">交叉质询</div>
+          <div class="stage-status">○</div>
+        </div>
+        <div class="stage-item pending" id="stage-5">
+          <div class="stage-number">05</div>
+          <div class="stage-name">机会地图</div>
+          <div class="stage-status">○</div>
+        </div>
+      </div>
+
+      <!-- Right: Terminal Log -->
+      <div class="terminal-log">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+          </div>
+          <div class="terminal-title">EVENT_STREAM</div>
+        </div>
+        <div class="terminal-content" id="terminalContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result Section -->
+  <div class="result-section" id="resultSection">
+    <div class="result-container">
+      <div id="resultContent"></div>
+    </div>
+  </div>
+
+  <!-- History Section -->
+  <div class="history-section" id="historySection">
+    <h3>历史记录</h3>
+    <div id="historyList"></div>
+  </div>
 </div>
 
 <script>
 const form = document.getElementById('signalForm');
 const inputCard = document.getElementById('inputCard');
 const progressPanel = document.getElementById('progressPanel');
-const progressLog = document.getElementById('progressLog');
-const progressBar = document.getElementById('progressBar');
-const progressTitle = document.getElementById('progressTitle');
-const progressSpinner = document.getElementById('progressSpinner');
+const terminalContent = document.getElementById('terminalContent');
 const submitBtn = document.getElementById('submitBtn');
+const resultSection = document.getElementById('resultSection');
+const resultContent = document.getElementById('resultContent');
 
-// 页面加载时获取数据状态和历史
+// 阶段映射（后端推送格式："阶段 1/5: 商机画像拆解"等）
+const stageKeywords = [
+  { num: 1, keywords: ['1/5', '商机画像', '信号'] },
+  { num: 2, keywords: ['2/5', '买家匹配', 'Persona', 'persona'] },
+  { num: 3, keywords: ['3/5', '独立评估', '买家评估'] },
+  { num: 4, keywords: ['4/5', '交叉质询', '评分'] },
+  { num: 5, keywords: ['5/5', '机会地图', '渲染', 'HTML'] },
+];
+function matchStageNum(stageText) {
+  for (const entry of stageKeywords) {
+    if (entry.keywords.some(kw => stageText.includes(kw))) return entry.num;
+  }
+  return null;
+}
+
+// 页面加载
 document.addEventListener('DOMContentLoaded', () => {
   fetchDataStatus();
   fetchHistory();
+  setupPresetChips();
 });
 
+// 预设 chips 点击
+function setupPresetChips() {
+  document.querySelectorAll('.preset-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.getElementById('signalWord').value = chip.dataset.signal;
+      document.getElementById('signalBrief').value = chip.dataset.brief;
+    });
+  });
+}
+
+// 数据状态
 async function fetchDataStatus() {
   try {
     const resp = await fetch('/api/data-status');
     const data = await resp.json();
     const container = document.getElementById('dataStatusContent');
     let html = '';
-    html += `<div class="status-row"><span>buyer_features.tsv</span><span class="${data.buyer_features ? 'status-ok' : 'status-missing'}">${data.buyer_features ? '✅ ' + data.buyer_count + ' 条' : '❌ 未找到'}</span></div>`;
-    html += `<div class="status-row"><span>buyer_profiles.tsv</span><span class="${data.buyer_profiles ? 'status-ok' : 'status-missing'}">${data.buyer_profiles ? '✅ ' + data.profile_count + ' 条' : '❌ 未找到'}</span></div>`;
-    if (data.personas_demo) {
-      html += `<div class="status-row"><span>personas_demo.jsonl</span><span class="status-ok">✅ ${data.demo_count} 个 persona（可直接跑 Demo）</span></div>`;
+    html += `<div class="status-row"><span>buyer_features.tsv</span><span class="${data.buyer_features ? 'status-ok' : 'status-missing'}">${data.buyer_features ? '✓ ' + data.buyer_count + ' 条' : '✗ 未找到'}</span></div>`;
+    html += `<div class="status-row"><span>buyer_profiles.tsv</span><span class="${data.buyer_profiles ? 'status-ok' : 'status-missing'}">${data.buyer_profiles ? '✓ ' + data.profile_count + ' 条' : '✗ 未找到'}</span></div>`;
+    if (data.personas_ready) {
+      html += `<div class="status-row"><span>买家画像</span><span class="status-ok">✓ ${data.persona_count} 个 persona 可用</span></div>`;
     }
     container.innerHTML = html;
   } catch (err) {
@@ -231,22 +801,23 @@ async function fetchDataStatus() {
   }
 }
 
+// 历史记录
 async function fetchHistory() {
   try {
     const resp = await fetch('/api/history');
     const data = await resp.json();
     const container = document.getElementById('historyList');
     if (!data.items || data.items.length === 0) {
-      container.innerHTML = '<div style="color:#999; font-size:13px;">暂无历史记录</div>';
+      container.innerHTML = '<div style="color:var(--text-muted); font-size:13px; padding:16px;">暂无历史记录</div>';
       return;
     }
     container.innerHTML = data.items.map(item =>
       `<div class="history-item">
         <div>
-          <a href="${item.url}">${item.signal_word}</a>
+          <a href="${item.url}" target="_blank">${item.signal_word}</a>
           <div class="history-meta">${item.time}</div>
         </div>
-        <div class="history-meta">${item.post_count} 条主帖</div>
+        <div class="history-meta">${item.post_count} 个视角 · ${item.reply_count || 0} 条碰撞</div>
       </div>`
     ).join('');
   } catch (err) {
@@ -254,34 +825,70 @@ async function fetchHistory() {
   }
 }
 
-function addLogItem(message, status) {
-  const iconMap = { done: '✅', running: '⏳', error: '❌', info: 'ℹ️' };
-  const item = document.createElement('div');
-  item.className = 'log-item';
-  item.innerHTML = `<span class="log-icon ${status}">${iconMap[status] || 'ℹ️'}</span><span>${message}</span>`;
-  progressLog.appendChild(item);
-  progressLog.scrollTop = progressLog.scrollHeight;
+// 添加终端日志
+function addLogLine(message, type = 'info') {
+  const now = new Date();
+  const timestamp = now.toLocaleTimeString('zh-CN', { hour12: false });
+  const line = document.createElement('div');
+  line.className = `log-line ${type}`;
+  line.innerHTML = `<span class="timestamp">[${timestamp}]</span>${message}`;
+  terminalContent.appendChild(line);
+  terminalContent.scrollTop = terminalContent.scrollHeight;
 }
 
+// 更新阶段状态
+function updateStageStatus(stageNum, status) {
+  const stageEl = document.getElementById(`stage-${stageNum}`);
+  if (!stageEl) return;
+
+  stageEl.className = `stage-item ${status}`;
+
+  const statusEl = stageEl.querySelector('.stage-status');
+  if (status === 'pending') {
+    statusEl.textContent = '○';
+  } else if (status === 'active') {
+    statusEl.textContent = '●';
+  } else if (status === 'done') {
+    statusEl.textContent = '✓';
+  }
+}
+
+// 表单提交
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
+  
   const signalWord = document.getElementById('signalWord').value.trim();
   const signalBrief = document.getElementById('signalBrief').value.trim();
   const sampleLimit = parseInt(document.getElementById('sampleLimit').value) || 300;
   const runStage = document.getElementById('runStage').value;
 
-  if (!signalWord) return;
+  // 验证
+  if (!signalWord) {
+    const input = document.getElementById('signalWord');
+    input.classList.add('error');
+    setTimeout(() => input.classList.remove('error'), 400);
+    return;
+  }
 
+  // UI 状态更新
   submitBtn.disabled = true;
-  progressPanel.classList.add('active');
-  progressLog.innerHTML = '';
-  progressBar.style.width = '0%';
-  progressTitle.textContent = '正在处理中...';
-  progressSpinner.style.display = 'block';
+  submitBtn.classList.add('loading');
+  submitBtn.textContent = '正在初始化...';
+  inputCard.classList.add('disabled');
 
-  addLogItem(`商机信号词: ${signalWord}`, 'info');
-  addLogItem(`运行模式: ${runStage}`, 'info');
-  addLogItem('连接服务器...', 'running');
+  progressPanel.classList.add('active');
+  terminalContent.innerHTML = '';
+  resultSection.classList.remove('active');
+
+  // 重置阶段
+  for (let i = 1; i <= 5; i++) {
+    updateStageStatus(i, 'pending');
+  }
+
+  addLogLine('正在初始化推演引擎...', 'info');
+  addLogLine(`商机信号: ${signalWord}`, 'progress');
+  addLogLine(`运行模式: ${runStage}`, 'info');
+  addLogLine(`采样数量: ${sampleLimit}`, 'info');
 
   try {
     const params = new URLSearchParams({
@@ -293,63 +900,127 @@ form.addEventListener('submit', async (e) => {
 
     const eventSource = new EventSource(`/api/run?${params.toString()}`);
 
+    // Progress 事件
     eventSource.addEventListener('progress', (e) => {
       const data = JSON.parse(e.data);
-      addLogItem(data.message, 'running');
-      if (data.percent !== undefined) {
-        progressBar.style.width = data.percent + '%';
-      }
+      addLogLine(data.message, 'progress');
     });
 
+    // Stage 事件
     eventSource.addEventListener('stage', (e) => {
       const data = JSON.parse(e.data);
-      addLogItem(`▶ 阶段: ${data.stage}`, 'info');
-      progressTitle.textContent = data.stage;
+      const stageNum = matchStageNum(data.stage);
+      
+      if (stageNum) {
+        for (let i = 1; i < stageNum; i++) {
+          updateStageStatus(i, 'done');
+        }
+        updateStageStatus(stageNum, 'active');
+      }
+      
+      addLogLine(`▶ ${data.stage}`, 'info');
     });
 
+    // Done 事件
     eventSource.addEventListener('done', (e) => {
       const data = JSON.parse(e.data);
-      progressSpinner.style.display = 'none';
-      progressTitle.textContent = '✅ 处理完成！';
-      progressBar.style.width = '100%';
-      addLogItem('全部完成！', 'done');
+
+      // 所有阶段完成
+      for (let i = 1; i <= 5; i++) {
+        updateStageStatus(i, 'done');
+      }
+
+      addLogLine('✓ 推演完成！', 'success');
 
       if (data.result_url) {
-        const link = document.createElement('a');
-        link.className = 'result-link';
-        link.href = data.result_url;
-        link.textContent = '🎉 查看结果页面 →';
-        progressPanel.appendChild(link);
+        addLogLine('正在加载结果页面...', 'progress');
+        loadResult(data.result_url);
+      } else {
+        addLogLine('本次运行没有生成推演结果页面', 'info');
       }
 
       submitBtn.disabled = false;
+      submitBtn.classList.remove('loading');
+      submitBtn.textContent = '启动推演引擎';
+      inputCard.classList.remove('disabled');
+
       eventSource.close();
       fetchHistory();
     });
 
+    // Error 事件
     eventSource.addEventListener('error_msg', (e) => {
       const data = JSON.parse(e.data);
-      addLogItem(`错误: ${data.message}`, 'error');
-      progressSpinner.style.display = 'none';
-      progressTitle.textContent = '❌ 处理失败';
+      addLogLine(`✗ 错误: ${data.message}`, 'error');
+      
       submitBtn.disabled = false;
+      submitBtn.classList.remove('loading');
+      submitBtn.textContent = '启动推演引擎';
+      inputCard.classList.remove('disabled');
+      
       eventSource.close();
     });
 
+    // Connection error
     eventSource.onerror = () => {
-      addLogItem('连接中断', 'error');
-      progressSpinner.style.display = 'none';
-      progressTitle.textContent = '❌ 连接中断';
+      addLogLine('✗ 连接中断', 'error');
+      
       submitBtn.disabled = false;
+      submitBtn.classList.remove('loading');
+      submitBtn.textContent = '启动推演引擎';
+      inputCard.classList.remove('disabled');
+      
       eventSource.close();
     };
 
   } catch (err) {
-    addLogItem(`请求失败: ${err.message}`, 'error');
-    progressSpinner.style.display = 'none';
+    addLogLine(`✗ 请求失败: ${err.message}`, 'error');
+    
     submitBtn.disabled = false;
+    submitBtn.classList.remove('loading');
+    submitBtn.textContent = '启动推演引擎';
+    inputCard.classList.remove('disabled');
   }
 });
+
+// 加载结果页面。使用 iframe 保留结果页自己的字体、SVG 和布局样式。
+function loadResult(url) {
+  resultContent.innerHTML = '';
+
+  const openLink = document.createElement('a');
+  openLink.className = 'result-frame-link';
+  openLink.href = url;
+  openLink.target = '_blank';
+  openLink.rel = 'noopener noreferrer';
+  openLink.textContent = '在新窗口打开完整结果 →';
+
+  const frame = document.createElement('iframe');
+  frame.className = 'result-frame';
+  frame.src = url;
+  frame.title = '商机信号推演结果';
+  frame.loading = 'lazy';
+
+  frame.addEventListener('load', () => {
+    try {
+      const doc = frame.contentDocument || frame.contentWindow.document;
+      const height = Math.max(
+        doc.body.scrollHeight,
+        doc.documentElement.scrollHeight,
+        760,
+      );
+      frame.style.height = `${height + 24}px`;
+    } catch (err) {
+      frame.style.height = '900px';
+    }
+  });
+
+  resultContent.append(openLink, frame);
+  resultSection.classList.add('active');
+
+  setTimeout(() => {
+    resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
 </script>
 
 </body>

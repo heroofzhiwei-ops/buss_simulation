@@ -2,149 +2,335 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>商机信号·群体反应 - {{ signal_word }}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商机推演结果 - {{ signal_word }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; }
-  body {
-    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: #f5f6f8; margin: 0; padding: 24px; color: #222;
-  }
-  .container { max-width: 760px; margin: 0 auto; }
-  .back-link {
-    display: inline-block; margin-bottom: 16px; color: #ff7e5f;
-    text-decoration: none; font-size: 14px;
-  }
-  .back-link:hover { text-decoration: underline; }
-  .header {
-    background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
-    color: white; padding: 28px; border-radius: 14px;
-    margin-bottom: 20px; box-shadow: 0 4px 12px rgba(255,126,95,0.25);
-  }
-  .signal-label { font-size: 12px; opacity: 0.85; letter-spacing: 3px; text-transform: uppercase; }
-  .signal-word { font-size: 32px; font-weight: 700; margin: 10px 0 6px; }
-  .signal-meta { font-size: 14px; opacity: 0.9; line-height: 1.5; }
-  .stats-bar {
-    display: flex; gap: 16px; margin-bottom: 16px;
-    background: white; padding: 14px 18px; border-radius: 10px;
-    font-size: 13px; color: #555; flex-wrap: wrap;
-  }
-  .stat-item { display: flex; gap: 6px; align-items: center; }
-  .stat-num { font-weight: 600; color: #ff7e5f; }
-  .post-card {
-    background: white; border-radius: 12px; padding: 20px;
-    margin-bottom: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-  }
-  .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-  .avatar {
-    width: 44px; height: 44px; border-radius: 50%; color: white;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 600; font-size: 17px; flex-shrink: 0;
-  }
-  .post-author { flex: 1; min-width: 0; }
-  .author-name { font-weight: 600; font-size: 15px; color: #222; }
-  .author-tags {
-    font-size: 12px; color: #888; margin-top: 3px;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  }
-  .stance-badge { padding: 4px 12px; border-radius: 14px; font-size: 12px; font-weight: 500; }
-  .stance-positive { background: #e6f7ed; color: #1a7f4a; }
-  .stance-neutral  { background: #fff7e6; color: #a37800; }
-  .stance-negative { background: #fbeaea; color: #b03030; }
-  .post-body { font-size: 14.5px; line-height: 1.75; color: #333; white-space: pre-wrap; }
-  .post-translation {
-    margin-top: 12px; padding: 10px 14px;
-    background: #f0f4ff; border-left: 3px solid #4a7fe2;
-    font-size: 13px; color: #444; border-radius: 4px;
-  }
-  .keywords { margin-top: 14px; }
-  .keyword-chip {
-    display: inline-block; margin: 3px 4px 3px 0; padding: 5px 12px;
-    background: #fff0e6; color: #d35400; border-radius: 14px;
-    font-size: 12.5px; font-weight: 500;
-  }
-  .keyword-chip.twist {
-    background: linear-gradient(135deg, #ff7e5f, #feb47b);
-    color: white; font-weight: 600;
-  }
-  .concerns {
-    margin-top: 12px; padding: 10px 14px; background: #fffbe6;
-    border-radius: 6px; font-size: 13px; color: #8a6d3b;
-  }
-  .post-footer {
-    margin-top: 14px; padding-top: 12px; border-top: 1px solid #eee;
-    display: flex; justify-content: flex-end; gap: 16px;
-    font-size: 13px; color: #888;
-  }
-  .replies { margin-top: 14px; padding: 12px 16px; background: #fafbfc; border-radius: 8px; }
-  .reply { padding: 9px 0; border-bottom: 1px dashed #e5e5e5; font-size: 13px; line-height: 1.6; }
-  .reply:last-child { border-bottom: none; }
-  .reply-author { font-weight: 600; color: #4a7fe2; }
-  .reply-type { display: inline-block; padding: 1px 7px; border-radius: 4px; font-size: 11px; margin: 0 6px; }
-  .reply-type-反对 { background: #fbeaea; color: #b03030; }
-  .reply-type-补充 { background: #e6f7ed; color: #1a7f4a; }
-  .reply-type-质疑 { background: #fff7e6; color: #a37800; }
-  .summary-section {
-    background: white; padding: 22px; border-radius: 12px; margin-top: 24px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-  }
-  .summary-title { font-size: 16px; font-weight: 600; margin-bottom: 14px; }
-  .summary-section .keyword-chip { font-size: 13.5px; padding: 6px 14px; }
+:root {
+  --bg-base: #f7fbff;
+  --bg-card: rgba(255,255,255,0.88);
+  --bg-soft: #eef7ff;
+  --bg-tint: rgba(14,165,233,0.08);
+  --border: #dbe7f5;
+  --border-hover: #b9d4ec;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #718196;
+  --text-muted: #9aabba;
+  --accent: #0ea5e9;
+  --accent-deep: #2563eb;
+  --accent-violet: #7c3aed;
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --shadow-sm: 0 1px 2px rgba(15,23,42,0.06);
+  --shadow-card: 0 14px 38px rgba(31,94,157,0.10);
+  --mono: 'JetBrains Mono', 'SF Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--bg-base); }
+body {
+  font-family: 'Inter', -apple-system, 'PingFang SC', 'HarmonyOS Sans', sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
+  background:
+    radial-gradient(circle at 8% -6%, rgba(14,165,233,0.18), transparent 34%),
+    radial-gradient(circle at 92% 2%, rgba(124,58,237,0.10), transparent 30%),
+    linear-gradient(180deg, #fff 0%, var(--bg-base) 44%, #f3f8ff 100%);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 44px 24px 64px;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(14,165,233,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14,165,233,0.07) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.55), transparent 76%);
+  z-index: -1;
+}
+svg { display: block; overflow: visible; stroke-linecap: round; stroke-linejoin: round; }
+.container { max-width: 1040px; margin: 0 auto; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-bottom: 28px; color: var(--text-secondary);
+  text-decoration: none; font-size: 13px; font-weight: 700;
+  padding: 9px 13px; background: rgba(255,255,255,0.78);
+  border: 1px solid var(--border); border-radius: 999px;
+  box-shadow: var(--shadow-sm); backdrop-filter: blur(14px);
+  transition: all .18s ease;
+}
+.back-link:hover { color: var(--accent-deep); border-color: var(--border-hover); transform: translateY(-1px); }
+.back-link svg { width: 14px; height: 14px; min-width: 14px; }
+.header, .panel, .review-card, .insight-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(16px);
+}
+.header {
+  border-radius: 30px; padding: 34px; margin-bottom: 24px;
+  position: relative; overflow: hidden;
+}
+.header::before, .panel::before {
+  content: ''; position: absolute; inset: 0 28px auto; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), var(--accent-violet), transparent);
+  opacity: .72;
+}
+.signal-label {
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  color: var(--accent-deep); letter-spacing: .14em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.signal-word {
+  font-size: clamp(34px, 6vw, 56px); line-height: 1.05; font-weight: 800;
+  letter-spacing: -.055em; margin-bottom: 12px;
+  background: linear-gradient(120deg, #0f172a, #0b74c7 52%, #7c3aed);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.signal-meta { font-size: 15px; color: var(--text-secondary); line-height: 1.75; max-width: 780px; }
+.profile-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 22px; }
+.profile-block { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 18px; padding: 14px; min-width: 0; }
+.profile-title { font-family: var(--mono); font-size: 10px; color: var(--text-tertiary); letter-spacing: .09em; text-transform: uppercase; margin-bottom: 9px; }
+.profile-value { color: var(--text-primary); font-size: 13px; font-weight: 700; line-height: 1.55; }
+.tag-list { display: flex; flex-wrap: wrap; gap: 7px; }
+.tag, .kw-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  border: 1px solid var(--border); background: #fff; color: var(--text-secondary);
+  border-radius: 999px; padding: 5px 10px; font-size: 12px; font-weight: 700;
+}
+.tag.accent, .kw-tag.unique { color: var(--accent-violet); background: rgba(124,58,237,.07); border-color: rgba(124,58,237,.2); }
+.panel { border-radius: 26px; padding: 28px; margin-bottom: 26px; position: relative; overflow: hidden; }
+.section-heading { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 800; letter-spacing: -.025em; margin: 38px 0 18px; }
+.section-heading svg { width: 18px; height: 18px; min-width: 18px; color: var(--accent-deep); }
+.overview-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.stat { padding: 18px; border: 1px solid var(--border); border-radius: 18px; background: linear-gradient(180deg,#fff,#f5faff); }
+.stat .num { font-size: 32px; font-weight: 800; color: var(--accent-deep); letter-spacing: -.04em; line-height: 1; }
+.stat .label { font-family: var(--mono); font-size: 10px; color: var(--text-tertiary); letter-spacing: .08em; text-transform: uppercase; margin-top: 9px; }
+.map-grid { columns: 2; column-gap: 18px; }
+.cluster-card { background: linear-gradient(160deg, rgba(255,255,255,.97), rgba(245,250,255,.85)); border: 1px solid var(--border); border-radius: 22px; padding: 22px 20px 16px; margin-bottom: 18px; break-inside: avoid; position: relative; overflow: hidden; }
+.cluster-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent-deep), var(--accent-deep)44); border-radius: 22px 22px 0 0; }
+.cluster-title { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; }
+.cluster-title span:first-child { font-size: 14px; font-weight: 800; letter-spacing: -.01em; }
+.cluster-count { color: var(--text-muted); font-family: var(--mono); font-size: 10px; letter-spacing: .06em; background: var(--bg-soft); padding: 3px 8px; border-radius: 6px; }
+.word-flow { display: flex; flex-wrap: wrap; gap: 8px; }
+.word-chip { display: inline-flex; align-items: center; gap: 5px; padding: 7px 13px; border-radius: 10px; font-size: 13px; font-weight: 600; background: rgba(255,255,255,.9); border: 1px solid var(--border); transition: all .15s ease; cursor: default; position: relative; }
+.word-chip:hover { border-color: var(--accent-deep); box-shadow: 0 2px 8px rgba(37,99,235,.1); transform: translateY(-1px); }
+.word-chip.fit-high { border-left: 3px solid #10b981; }
+.word-chip.fit-try { border-left: 3px solid #3b82f6; }
+.word-chip.fit-low { border-left: 3px solid #94a3b8; }
+.word-chip.fit-unfit { border-left: 3px solid #e2e8f0; opacity: .7; border-style: dashed; }
+.word-chip .chip-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.word-chip .chip-dot.dot-high { background: #10b981; }
+.word-chip .chip-dot.dot-try { background: #3b82f6; }
+.word-chip .chip-dot.dot-low { background: #94a3b8; }
+.word-chip .chip-dot.dot-unfit { background: #cbd5e1; }
+.word-chip .chip-badge { font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 4px; margin-left: 2px; }
+.word-chip .chip-badge.badge-unique { background: linear-gradient(135deg, #f59e0b22, #f59e0b11); color: #d97706; }
+.word-chip .chip-badge.badge-multi { background: rgba(37,99,235,.08); color: var(--accent-deep); }
+.word-chip-tooltip { display: none; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #1e293b; color: #f8fafc; font-size: 11px; font-weight: 400; padding: 6px 10px; border-radius: 8px; white-space: nowrap; z-index: 10; pointer-events: none; }
+.word-chip:hover .word-chip-tooltip { display: block; }
+.summary-table { overflow-x: auto; }
+.summary-header-row, .summary-row { display: grid; grid-template-columns: minmax(170px,1.25fr) minmax(90px,.65fr) minmax(150px,1fr) minmax(280px,2fr); gap: 14px; min-width: 780px; }
+.summary-header-row { padding: 13px 0; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-tertiary); }
+.summary-row { padding: 16px 0; border-bottom: 1px solid var(--border); align-items: center; }
+.summary-row:last-child { border-bottom: none; }
+.fit-pill, .role-pill {
+  display: inline-flex; width: fit-content; white-space: nowrap;
+  font-family: var(--mono); font-size: 10.5px; font-weight: 800; letter-spacing: .08em;
+  padding: 5px 10px; border-radius: 999px;
+}
+.fit-pill.positive { color: var(--success); background: rgba(22,163,74,.1); }
+.fit-pill.neutral { color: var(--warning); background: rgba(217,119,6,.1); }
+.fit-pill.negative { color: var(--danger); background: rgba(220,38,38,.1); }
+.role-pill { color: var(--accent-deep); background: rgba(14,165,233,.1); margin-left: 8px; }
+.review-card { border-radius: 24px; padding: 28px; margin-bottom: 18px; position: relative; overflow: hidden; }
+.review-card::before { content: ''; position: absolute; left: 0; top: 28px; bottom: 28px; width: 3px; border-radius: 0 999px 999px 0; }
+.review-card.fit-positive::before { background: var(--success); }
+.review-card.fit-neutral::before { background: var(--warning); }
+.review-card.fit-negative::before { background: var(--danger); }
+.review-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; padding-bottom: 20px; margin-bottom: 22px; border-bottom: 1px solid var(--border); }
+.identity-block { display: flex; gap: 14px; min-width: 0; }
+.identity-avatar { width: 46px; height: 46px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; flex-shrink: 0; box-shadow: 0 10px 20px rgba(37,99,235,.18); }
+.identity-name { font-size: 15px; font-weight: 800; color: var(--text-primary); overflow-wrap: anywhere; }
+.identity-meta { margin-top: 5px; font-size: 12.5px; color: var(--text-tertiary); line-height: 1.55; overflow-wrap: anywhere; }
+.section-label { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--text-tertiary); margin: 18px 0 10px; }
+.section-label svg { width: 13px; height: 13px; color: var(--accent-deep); }
+.body-text { font-size: 15px; line-height: 1.78; color: var(--text-primary); overflow-wrap: anywhere; }
+.soft-block { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 16px; padding: 15px 16px; color: var(--text-secondary); font-size: 14px; line-height: 1.72; }
+.twist-block { border-left: 3px solid var(--accent-violet); padding: 8px 0 8px 16px; background: linear-gradient(90deg, rgba(124,58,237,.07), transparent 70%); border-radius: 0 12px 12px 0; }
+.twist-word { color: var(--accent-violet); font-weight: 800; font-size: 17px; }
+.bullet-list { display: grid; gap: 8px; }
+.bullet-list li { margin-left: 18px; color: var(--text-secondary); line-height: 1.65; }
+.challenge-section { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); }
+.challenge-item { display: grid; grid-template-columns: 30px minmax(0,1fr); gap: 12px; padding: 15px 0; border-bottom: 1px solid var(--border); }
+.challenge-item:last-child { border-bottom: none; }
+.reply-avatar { width: 30px; height: 30px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 11px; }
+.challenge-author { font-size: 13.5px; font-weight: 800; margin-bottom: 5px; }
+.challenge-text { color: var(--text-secondary); font-size: 14px; line-height: 1.7; }
+.challenge-basis { margin-top: 5px; color: var(--text-tertiary); font-size: 12px; }
+.insight-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+.insight-card { border-radius: 22px; padding: 22px; }
+.insight-title { font-size: 14px; font-weight: 800; margin-bottom: 12px; }
+.insight-card li { margin-left: 18px; margin-bottom: 9px; color: var(--text-secondary); line-height: 1.62; font-size: 13px; }
+.boundary-item { padding: 11px 13px; border: 1px solid var(--border); background: var(--bg-soft); border-radius: 14px; margin-bottom: 9px; font-size: 13px; color: var(--text-secondary); line-height: 1.62; }
+@media (max-width: 900px) {
+  body { padding: 32px 18px 52px; }
+  .profile-grid, .overview-stats, .insight-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .map-grid { columns: 2; }
+}
+@media (max-width: 640px) {
+  body { padding: 24px 14px 44px; }
+  .header, .panel, .review-card { border-radius: 22px; padding: 22px; }
+  .profile-grid, .overview-stats, .insight-grid { grid-template-columns: 1fr; }
+  .map-grid { columns: 1; }
+  .review-header { flex-direction: column; }
+}
 </style>
 </head>
 <body>
 <div class="container">
-  <a class="back-link" href="/">← 返回首页，输入新的商机信号</a>
+  <a class="back-link" href="/" target="_top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    返回控制台
+  </a>
 
   <div class="header">
-    <div class="signal-label">EXTERNAL SIGNAL</div>
-    <div class="signal-word">{{ signal_word }}</div>
-    <div class="signal-meta">{{ signal_brief }}</div>
-  </div>
-
-  <div class="stats-bar">
-    <div class="stat-item"><span>响应人数</span><span class="stat-num">{{ posts|length }}</span></div>
-    <div class="stat-item"><span>积极拓展</span><span class="stat-num">{{ stats.positive }}</span></div>
-    <div class="stat-item"><span>观望</span><span class="stat-num">{{ stats.neutral }}</span></div>
-    <div class="stat-item"><span>无关</span><span class="stat-num">{{ stats.negative }}</span></div>
-    <div class="stat-item"><span>衍生词总数</span><span class="stat-num">{{ stats.kw_count }}</span></div>
-  </div>
-
-  {% for post in posts %}
-  <div class="post-card">
-    <div class="post-header">
-      <div class="avatar" style="background: {{ post.avatar_color }}">{{ post.avatar_initial }}</div>
-      <div class="post-author">
-        <div class="author-name">{{ post.shop_name }}</div>
-        <div class="author-tags">{{ post.persona_tags }}</div>
+    <div class="signal-label">OPPORTUNITY SIGNAL · PERSONALIZED DERIVATION</div>
+    <h1 class="signal-word">{{ signal_word }}</h1>
+    <div class="signal-meta">{{ signal_brief or signal_profile.interpretation }}</div>
+    <div class="profile-grid">
+      <div class="profile-block">
+        <div class="profile-title">候选类目</div>
+        <div class="tag-list">{% for item in signal_profile.category_candidates %}<span class="tag">{{ item }}</span>{% endfor %}</div>
       </div>
-      <div class="stance-badge stance-{{ post.stance_class }}">{{ post.stance }}</div>
+      <div class="profile-block">
+        <div class="profile-title">风格语义</div>
+        <div class="tag-list">{% for item in signal_profile.style_tags %}<span class="tag accent">{{ item }}</span>{% endfor %}</div>
+      </div>
+      <div class="profile-block">
+        <div class="profile-title">渠道提示</div>
+        <div class="tag-list">{% for item in signal_profile.channel_hints %}<span class="tag">{{ item }}</span>{% endfor %}</div>
+      </div>
+      <div class="profile-block">
+        <div class="profile-title">价格/供应链</div>
+        <div class="profile-value">{{ signal_profile.price_band_hint }}<br>{{ signal_profile.supply_requirements|join(' / ') }}</div>
+      </div>
     </div>
-    <div class="post-body">{{ post.voice }}</div>
-    {% if post.concrete_translation %}
-    <div class="post-translation">💡 我准备这么落地：{{ post.concrete_translation }}</div>
+  </div>
+
+  <div class="panel">
+    <div class="overview-stats">
+      <div class="stat"><div class="num">{{ overview.reviewer_count }}</div><div class="label">参与推演视角</div></div>
+      <div class="stat"><div class="num">{{ overview.total_words }}</div><div class="label">个性化衍生词</div></div>
+      <div class="stat"><div class="num">{{ overview.cluster_count }}</div><div class="label">机会方向</div></div>
+      <div class="stat"><div class="num">{{ overview.boundary_count }}</div><div class="label">延伸边界</div></div>
+    </div>
+  </div>
+
+  <div class="section-heading">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-5 5"/></svg>
+    个性化商机延伸地图
+  </div>
+  <div class="map-grid">
+    {% for cluster in opportunity_map.clusters %}
+    <div class="cluster-card">
+      <div class="cluster-title"><span>{{ cluster.category }}</span><span class="cluster-count">{{ cluster.words|length }}</span></div>
+      <div class="word-flow">
+        {% for item in cluster.words %}
+        <span class="word-chip {% if item.fit_preview == '高适配' %}fit-high{% elif item.fit_preview == '可试探' %}fit-try{% elif item.fit_preview == '低适配' %}fit-low{% elif item.fit_preview == '不适配' %}fit-unfit{% endif %}">
+          <span class="chip-dot {% if item.fit_preview == '高适配' %}dot-high{% elif item.fit_preview == '可试探' %}dot-try{% elif item.fit_preview == '低适配' %}dot-low{% else %}dot-unfit{% endif %}"></span>
+          {{ item.word }}
+          {% if item.is_unique %}<span class="chip-badge badge-unique">独特</span>{% endif %}
+          {% if item.count > 1 %}<span class="chip-badge badge-multi">×{{ item.count }}</span>{% endif %}
+          <span class="word-chip-tooltip">{{ item.source_preview }}{% if item.fit_preview %} · {{ item.fit_preview }}{% endif %}</span>
+        </span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="section-heading">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+    买家视角速览
+  </div>
+  <div class="panel summary-table">
+    <div class="summary-header-row">
+      <span>买家经营体</span><span>适配</span><span>独特衍生词</span><span>判断摘要</span>
+    </div>
+    {% for s in buyer_summaries %}
+    <div class="summary-row">
+      <span><strong>{{ s.shop_label }}</strong></span>
+      <span><span class="fit-pill {{ s.fit_class }}">{{ s.fit_level }}</span></span>
+      <span>{{ s.unique_angle or '—' }}</span>
+      <span>{{ s.assessment_short }}</span>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="section-heading">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    买家个性化推演详情
+  </div>
+  {% for item in assessments %}
+  <div class="review-card fit-{{ item.fit_class }}">
+    <div class="review-header">
+      <div class="identity-block">
+        <div class="identity-avatar" style="background: linear-gradient(135deg, {{ item.avatar_color }}, {{ item.avatar_color }}cc);">{{ item.avatar_initial }}</div>
+        <div>
+          <div class="identity-name">{{ item.shop_label }} <span class="role-pill">{{ item.review_role }}</span></div>
+          <div class="identity-meta">{{ item.identity_line }}</div>
+          {% if item.match_reasons %}<div class="identity-meta">匹配依据：{{ item.match_reasons|join(' / ') }}</div>{% endif %}
+        </div>
+      </div>
+      <span class="fit-pill {{ item.fit_class }}">{{ item.fit_level }}</span>
+    </div>
+
+    <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>经营判断</div>
+    <div class="body-text">{{ item.assessment }}</div>
+
+    {% if item.unique_angle_keyword %}
+    <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>独特机会角度</div>
+    <div class="twist-block"><div class="twist-word">{{ item.unique_angle_keyword }}</div></div>
     {% endif %}
-    <div class="keywords">
-      {% for kw in post.derived_keywords %}
-        <span class="keyword-chip">{{ kw }}</span>
-      {% endfor %}
-      {% if post.personal_twist_keyword %}
-        <span class="keyword-chip twist">★ {{ post.personal_twist_keyword }}</span>
-      {% endif %}
-    </div>
-    {% if post.concerns %}
-    <div class="concerns">⚠️ 顾虑：{{ post.concerns }}</div>
+
+    {% if item.derived_keywords %}
+    <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>可搜索衍生词</div>
+    <div class="tag-list">{% for kw in item.derived_keywords %}<span class="kw-tag">{{ kw }}</span>{% endfor %}</div>
     {% endif %}
-    <div class="post-footer">
-      <span>👍 {{ post.like_count }}</span>
-      <span>🔥 共鸣度 {{ post.resonance_score }}</span>
-    </div>
-    {% if post.replies %}
-    <div class="replies">
-      {% for reply in post.replies %}
-      <div class="reply">
-        <span class="reply-author">{{ reply.author }}</span>
-        <span class="reply-type reply-type-{{ reply.type }}">{{ reply.type }}</span>
-        {{ reply.voice }}
+
+    <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>机会翻译</div>
+    <div class="soft-block">{{ item.opportunity_translation }}</div>
+
+    {% if item.recommended_actions %}
+    <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>建议动作</div>
+    <ul class="bullet-list">{% for action in item.recommended_actions %}<li>{{ action }}</li>{% endfor %}</ul>
+    {% endif %}
+
+    {% if item.risks %}
+    <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>风险边界</div>
+    <ul class="bullet-list">{% for risk in item.risks %}<li>{{ risk }}</li>{% endfor %}</ul>
+    {% endif %}
+
+    {% if item.challenges %}
+    <div class="challenge-section">
+      <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12h8M12 8v8"/><circle cx="12" cy="12" r="10"/></svg>交叉质询</div>
+      {% for c in item.challenges %}
+      <div class="challenge-item">
+        <div class="reply-avatar" style="background: {{ c.avatar_color }};">{{ c.avatar_initial }}</div>
+        <div>
+          <div class="challenge-author">{{ c.author }} <span class="kw-tag">{{ c.challenge_type }}</span></div>
+          <div class="challenge-text">{{ c.challenge }}</div>
+          {% if c.business_basis %}<div class="challenge-basis">依据：{{ c.business_basis }}</div>{% endif %}
+        </div>
       </div>
       {% endfor %}
     </div>
@@ -152,37 +338,55 @@
   </div>
   {% endfor %}
 
-  <div class="summary-section" style="border-left: 4px solid #ff7e5f;">
-    <div class="summary-title">⚡ 独特视角衍生词（传统词扩展给不出的增量）</div>
-    <p style="font-size: 12.5px; color: #666; margin: -8px 0 14px; line-height: 1.6;">
-      每条都来自一个 agent 的独特身份扭曲，无法被泛化型词向量推出。
-      这是这套系统相对传统商机词扩展的核心增量产物。
-    </p>
-    {% for tw in twist_keywords %}
-    <div style="padding: 12px 14px; background: linear-gradient(90deg, #fff7f3, white);
-                border-radius: 8px; margin-bottom: 10px; display: flex;
-                align-items: center; gap: 12px;">
-      <div style="font-size: 16px; font-weight: 700; color: #d35400; min-width: 200px;">
-        {{ tw.word }}
-      </div>
-      <div style="flex: 1; font-size: 12.5px; color: #888;">
-        来自 <strong>{{ tw.from_persona }}</strong> · 立场 {{ tw.stance }}
-      </div>
-      <div style="font-size: 12px; color: #888;">
-        🔥 {{ tw.resonance }}
-      </div>
+  <div class="section-heading">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    共识、视角碰撞与延伸边界
+  </div>
+  <div class="insight-grid">
+    <div class="insight-card">
+      <div class="insight-title">共识</div>
+      <ul>{% for item in council_insights.consensus %}<li>{{ item }}</li>{% endfor %}</ul>
+      {% for kw in council_insights.consensus_keywords %}<span class="kw-tag">{{ kw.word }} · {{ kw.count }}</span>{% endfor %}
     </div>
-    {% endfor %}
+    <div class="insight-card">
+      <div class="insight-title">视角碰撞</div>
+      {% if council_insights.tensions %}<ul>{% for item in council_insights.tensions %}<li><strong>{{ item.type }}</strong>：{{ item.text }}</li>{% endfor %}</ul>{% else %}<div class="word-meta">暂无明显交叉质询。</div>{% endif %}
+    </div>
+    <div class="insight-card">
+      <div class="insight-title">延伸边界</div>
+      {% if council_insights.boundaries %}
+        {% for item in council_insights.boundaries %}<div class="boundary-item"><strong>{{ item.from_label }}</strong><br>{{ item.reason }}</div>{% endfor %}
+      {% else %}<div class="word-meta">当前样本未给出明确延伸边界。</div>{% endif %}
+    </div>
   </div>
 
-  <div class="summary-section">
-    <div class="summary-title">🌟 跨群体衍生词聚合（按共鸣度加权排序）</div>
-    <div>
-      {% for kw in aggregated_keywords %}
-      <span class="keyword-chip">{{ kw.word }} · {{ kw.count }}人</span>
-      {% endfor %}
-    </div>
+  {% if unfit_assessments %}
+  <div class="section-heading" style="margin-top: 56px; opacity: .7;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+    不适配视角反馈（仅供参考）
   </div>
+  <div style="opacity: .72;">
+  {% for item in unfit_assessments %}
+  <div class="review-card fit-negative" style="border-color: rgba(220,38,38,.18);">
+    <div class="review-header">
+      <div class="identity-block">
+        <div class="identity-avatar" style="background: linear-gradient(135deg, {{ item.avatar_color }}, {{ item.avatar_color }}cc);">{{ item.avatar_initial }}</div>
+        <div>
+          <div class="identity-name">{{ item.shop_label }} <span class="fit-pill negative">不适配</span></div>
+          <div class="identity-meta">{{ item.identity_line }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>判断理由</div>
+    <div class="body-text">{{ item.assessment }}</div>
+    {% if item.risks %}
+    <div class="section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>风险边界</div>
+    <ul class="bullet-list">{% for risk in item.risks %}<li>{{ risk }}</li>{% endfor %}</ul>
+    {% endif %}
+  </div>
+  {% endfor %}
+  </div>
+  {% endif %}
 </div>
 </body>
 </html>

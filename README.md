@@ -1,6 +1,6 @@
 # 1688 商机信号个性化反应模拟器
 
-输入一个外部商机词（如"巴恩风"），系统从真实买家画像中抽取差异化角色，模拟他们在分销同行群中对这个信号的个性化反应，输出一个信息流页面。
+输入一个外部商机词（如"巴恩风"），系统从真实买家画像中抽取差异化角色，组织买家评审团进行商机拆解、适配判断、交叉质询，并输出个性化衍生商机词机会地图。
 
 ## 快速开始
 
@@ -60,12 +60,13 @@ python main.py --stage demo --signal "巴恩风"
 ├── llm_client.py           # LLM 异步客户端封装
 ├── prompts.py              # Prompt 模板
 ├── persona_builder.py      # 画像构建
-├── post_generator.py       # 主帖 + 回帖生成
-├── scoring.py              # 共鸣度评分
+├── signal_analyzer.py      # 商机画像拆解 + buyer 匹配
+├── post_generator.py       # 买家评估 + 交叉质询生成
+├── scoring.py              # 机会可参考度评分
 ├── renderer.py             # HTML 渲染
 ├── templates/
 │   ├── index.html          # Web 首页
-│   └── feed.html           # 结果展示模板
+│   └── feed.html           # 会诊结果展示模板
 └── data/
     ├── input/              # 输入数据
     └── output/             # 输出结果
