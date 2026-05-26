@@ -1000,6 +1000,7 @@ async function fetchDataStatus() {
     if (data.personas_demo) {
       html += `<div class="status-row"><span>personas_demo.jsonl</span><span class="status-ok">✓ ${data.demo_count} 个 persona</span></div>`;
     }
+    html += `<div class="status-row"><span>buyer environment</span><span class="${data.buyer_environment_configured ? 'status-ok' : 'status-missing'}">${data.buyer_environment_configured ? '✓ ' + data.buyer_environment_table : '✗ 未配置 Postgres'}</span></div>`;
     container.innerHTML = html;
   } catch (err) {
     document.getElementById('dataStatusContent').textContent = '加载失败';

@@ -16,6 +16,16 @@ LLM_API_KEY = os.getenv('LLM_API_KEY')
 LLM_BASE_URL = os.getenv('LLM_BASE_URL', 'https://dashscope.aliyuncs.com/compatible-mode/v1')
 LLM_MODEL = os.getenv('LLM_MODEL') or os.getenv('LLM_MODEL_NAME', 'qwen-plus')
 
+# === Buyer 个体环境包（PostgreSQL） ===
+BUYER_ENV_POSTGRES_DSN = (
+    os.getenv('BUYER_ENV_POSTGRES_DSN')
+    or os.getenv('POSTGRES_DSN')
+    or os.getenv('DATABASE_URL')
+)
+BUYER_ENV_TABLE = os.getenv('BUYER_ENV_TABLE', 'buyer_environment_personas')
+BUYER_ENV_PERSONA_JSON_COLUMN = os.getenv('BUYER_ENV_PERSONA_JSON_COLUMN', 'persona_json')
+BUYER_ENV_MAX_SIZE = int(os.getenv('BUYER_ENV_MAX_SIZE', '80'))
+
 # === 并发与限流 ===
 LLM_CONCURRENCY_PROFILE = 15
 LLM_CONCURRENCY_POST = 8

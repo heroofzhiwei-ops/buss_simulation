@@ -9,7 +9,7 @@ from pathlib import Path
 from flask import (Flask, render_template, request, Response,
                    jsonify, send_from_directory)
 
-from config import DATA_INPUT, DATA_OUTPUT
+from config import BUYER_ENV_POSTGRES_DSN, BUYER_ENV_TABLE, DATA_INPUT, DATA_OUTPUT
 
 app = Flask(__name__)
 
@@ -59,6 +59,8 @@ def data_status():
         'profile_count': 0,
         'personas_demo': demo_path.exists(),
         'demo_count': 0,
+        'buyer_environment_configured': bool(BUYER_ENV_POSTGRES_DSN),
+        'buyer_environment_table': BUYER_ENV_TABLE,
     }
 
     if buyer_path.exists():
@@ -90,10 +92,16 @@ def run_pipeline():
     signal_brief = request.args.get('signal_brief', '').strip()
     sample_limit = int(request.args.get('sample_limit', 300))
     stage = request.args.get('stage', 'all')
+    mode = request.args.get('mode', 'signal').strip() or 'signal'
+    buyer_id = request.args.get('buyer_id', '').strip()
 
     if not signal_word:
         def error_stream():
             yield _sse_event('error_msg', {'message': '商机信号词不能为空'})
+        return Response(error_stream(), mimetype='text/event-stream')
+    if mode == 'buyer' and not buyer_id:
+        def error_stream():
+            yield _sse_event('error_msg', {'message': '买家个体环境泛化推演需要 buyer_id'})
         return Response(error_stream(), mimetype='text/event-stream')
 
     message_queue = queue.Queue()
@@ -114,6 +122,7 @@ def run_pipeline():
             loop.run_until_complete(
                 _execute_pipeline(
                     signal_word, signal_brief, sample_limit, stage,
+                    mode, buyer_id,
                     progress_callback, message_queue,
                 )
             )
@@ -147,7 +156,8 @@ def run_pipeline():
 # 核心流水线执行
 # ============================================================
 async def _execute_pipeline(signal_word, signal_brief, sample_limit,
-                            stage, progress_callback, message_queue):
+                            stage, mode, buyer_id,
+                            progress_callback, message_queue):
     """在子线程的事件循环中执行整个流水线"""
     from persona_builder import build_personas_pipeline
     from post_generator import (generate_buyer_assessments,
@@ -155,6 +165,7 @@ async def _execute_pipeline(signal_word, signal_brief, sample_limit,
     from scoring import compute_resonance
     from renderer import render_demo_html
     from signal_analyzer import build_signal_profile, select_review_personas
+    from buyer_environment import load_buyer_environment_personas
 
     def send_stage(stage_name):
         message_queue.put(('stage', {'stage': stage_name}))
@@ -190,17 +201,6 @@ async def _execute_pipeline(signal_word, signal_brief, sample_limit,
         }))
         return
 
-    # 检查 demo persona 是否存在
-    demo_path = DATA_OUTPUT / 'personas_demo.jsonl'
-    if not demo_path.exists():
-        message_queue.put(('error_msg', {
-            'message': '没有找到 personas_demo.jsonl，请先运行 Persona 构建阶段'
-        }))
-        return
-
-    personas = _load_jsonl(demo_path)
-    progress_callback(f'加载 {len(personas)} 个 demo persona', 1, 1)
-
     # 阶段 1: 商机画像拆解（demo/personas 已存在时从这里开始）
     send_stage('阶段 1/5: 商机画像拆解')
     signal_profile = build_signal_profile(signal_word, signal_brief)
@@ -209,10 +209,31 @@ async def _execute_pipeline(signal_word, signal_brief, sample_limit,
         1, 1,
     )
 
-    # 阶段 2: 买家匹配
-    send_stage('阶段 2/5: 买家匹配与视角选择')
-    reviewers = select_review_personas(personas, signal_profile)
-    progress_callback(f'选出 {len(reviewers)} 个买家推演视角', 1, 1)
+    # 阶段 2: 加载推演人群并做视角选择
+    if mode == 'buyer':
+        send_stage('阶段 2/5: 个体环境包加载与视角选择')
+        personas = load_buyer_environment_personas(buyer_id, limit=sample_limit)
+        progress_callback(
+            f'加载 buyer_id={buyer_id} 的个体环境包 {len(personas)} 个买家',
+            1, 1,
+        )
+        reviewers = select_review_personas(
+            personas, signal_profile, max_reviewers=min(sample_limit, len(personas)),
+        )
+        progress_callback(f'选出 {len(reviewers)} 个买家推演视角', 1, 1)
+    else:
+        demo_path = DATA_OUTPUT / 'personas_demo.jsonl'
+        if not demo_path.exists():
+            message_queue.put(('error_msg', {
+                'message': '没有找到 personas_demo.jsonl，请先运行 Persona 构建阶段'
+            }))
+            return
+
+        personas = _load_jsonl(demo_path)
+        progress_callback(f'加载 {len(personas)} 个 demo persona', 1, 1)
+        send_stage('阶段 2/5: 买家匹配与视角选择')
+        reviewers = select_review_personas(personas, signal_profile)
+        progress_callback(f'选出 {len(reviewers)} 个买家推演视角', 1, 1)
 
     # 阶段 3: 买家个性化推演
     send_stage('阶段 3/5: 买家个性化推演')
@@ -249,6 +270,8 @@ async def _execute_pipeline(signal_word, signal_brief, sample_limit,
     history.append({
         'signal_word': signal_word,
         'signal_brief': signal_brief,
+        'mode': mode,
+        'buyer_id': buyer_id,
         'time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'post_count': len(assessments),
         'reply_count': len(challenges),

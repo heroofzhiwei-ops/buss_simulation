@@ -10,6 +10,7 @@ from post_generator import generate_buyer_assessments, generate_cross_examinatio
 from scoring import compute_resonance
 from renderer import render_demo_html
 from signal_analyzer import build_signal_profile, select_review_personas
+from buyer_environment import load_buyer_environment_personas
 
 
 def load_jsonl(path: Path) -> list:
@@ -34,14 +35,24 @@ async def stage_personas(args):
 async def stage_demo(args):
     """阶段 2-5: 基于已有 personas_demo.jsonl 跑商机推演 demo"""
     demo_path = DATA_OUTPUT / 'personas_demo.jsonl'
-    if not demo_path.exists():
+    if args.mode == 'signal' and not demo_path.exists():
         raise FileNotFoundError(f"先跑 stage=personas 生成 {demo_path}")
 
-    personas = load_jsonl(demo_path)
-    print(f"[DEMO] 加载 {len(personas)} 个 demo persona")
-
     signal_profile = build_signal_profile(args.signal, args.signal_brief)
-    reviewers = select_review_personas(personas, signal_profile)
+    if args.mode == 'buyer':
+        if not args.buyer_id:
+            raise ValueError('--mode buyer 需要提供 --buyer-id')
+        personas = load_buyer_environment_personas(
+            args.buyer_id, limit=args.sample_limit,
+        )
+        print(f"[DEMO] 加载 buyer_id={args.buyer_id} 个体环境包 {len(personas)} 个买家")
+        reviewers = select_review_personas(
+            personas, signal_profile, max_reviewers=min(args.sample_limit, len(personas)),
+        )
+    else:
+        personas = load_jsonl(demo_path)
+        print(f"[DEMO] 加载 {len(personas)} 个 demo persona")
+        reviewers = select_review_personas(personas, signal_profile)
     print(f"[DEMO] 选出 {len(reviewers)} 个买家推演视角")
 
     assessments = await generate_buyer_assessments(
@@ -82,6 +93,10 @@ def main():
     parser.add_argument('--signal-brief',
                         default='美式复古休闲风，近期小红书话题热度环比+120%，'
                                 '主打oversize衬衫和复古工装')
+    parser.add_argument('--mode', choices=['signal', 'buyer'], default='signal',
+                        help='signal=生意视角，buyer=买家个体环境泛化推演')
+    parser.add_argument('--buyer-id', default='',
+                        help='mode=buyer 时的目标 buyer_id')
     args = parser.parse_args()
 
     if args.stage == 'personas':

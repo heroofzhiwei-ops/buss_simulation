@@ -26,6 +26,37 @@ python app.py
 - `data/input/buyer_features.tsv` — 买家行为特征表（17 列 TSV）
 - `data/input/buyer_profiles.tsv` — 买家画像文本表（buyer_id + profile_text）
 
+## Buyer 个体环境包
+
+右侧「买家个体环境泛化推演」会根据 `buyer_id` 实时查询 PostgreSQL 中预先
+计算好的同行、相似经营体或竞对人群，然后复用左侧同一套推演链路。
+
+环境变量：
+
+```bash
+BUYER_ENV_POSTGRES_DSN=postgresql://user:password@host:5432/dbname
+BUYER_ENV_TABLE=buyer_environment_personas
+BUYER_ENV_PERSONA_JSON_COLUMN=persona_json
+BUYER_ENV_MAX_SIZE=80
+```
+
+默认表结构建议：
+
+```sql
+CREATE TABLE buyer_environment_personas (
+  buyer_id text NOT NULL,
+  related_buyer_id text NOT NULL,
+  relation_type text,
+  relation_score double precision,
+  relation_reason text,
+  persona_json jsonb NOT NULL
+);
+```
+
+`persona_json` 使用 `persona_builder.py` 输出的 persona 字段即可；如果不存
+JSON，也可以把 `main_categories`、`downstream_channels`、`recent_search_top10`
+等字段拆成独立列，加载器会自动兼容。
+
 ## 使用方式
 
 ### Web 界面（推荐）
@@ -33,9 +64,10 @@ python app.py
 启动 Flask 后访问 `http://localhost:5000`，在页面上：
 
 1. 输入商机信号词和简介
-2. 选择运行模式（端到端 / 仅 Demo / 仅 Persona）
-3. 点击"开始模拟"，实时查看进度
-4. 完成后点击链接查看结果页面
+2. 选择生意视角或买家视角入口
+3. 选择运行模式（端到端 / 仅推演 / 仅 Persona）
+4. 点击"启动推演"，实时查看进度
+5. 完成后点击链接查看结果页面
 
 ### 命令行
 
@@ -60,6 +92,7 @@ python main.py --stage demo --signal "巴恩风"
 ├── llm_client.py           # LLM 异步客户端封装
 ├── prompts.py              # Prompt 模板
 ├── persona_builder.py      # 画像构建
+├── buyer_environment.py    # buyer_id 个体环境包 Postgres 加载
 ├── signal_analyzer.py      # 商机画像拆解 + buyer 匹配
 ├── post_generator.py       # 买家推演 + 视角碰撞生成
 ├── scoring.py              # 机会可参考度评分
