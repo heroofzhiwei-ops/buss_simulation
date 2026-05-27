@@ -7,6 +7,7 @@ __pycache__/
 data/input/*.tsv
 data/output/*
 !data/output/entry_preview.html
+!data/output/songjin_pdd_listing.html
 *.egg-info/
 dist/
 build/
