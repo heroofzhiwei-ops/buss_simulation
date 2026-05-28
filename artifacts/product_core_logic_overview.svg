@@ -1,0 +1,156 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1800' height='2450' viewBox='0 0 1800 2450'>
+<defs>
+  <linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='#070B16'/><stop offset='48%' stop-color='#0D1426'/><stop offset='100%' stop-color='#08101D'/></linearGradient>
+  <linearGradient id='flow' x1='0' y1='0' x2='1' y2='0'><stop offset='0%' stop-color='#D9A441'/><stop offset='100%' stop-color='#33B7C7'/></linearGradient>
+  <filter id='shadow' x='-15%' y='-15%' width='130%' height='130%'><feDropShadow dx='0' dy='20' stdDeviation='26' flood-color='#000000' flood-opacity='.32'/></filter>
+  <marker id='arrow' markerWidth='14' markerHeight='14' refX='10' refY='5' orient='auto' markerUnits='strokeWidth'><path d='M0,0 L10,5 L0,10 z' fill='#7F8EA8'/></marker>
+  <style>text { font-family: 'WenQuanYi Micro Hei','Noto Sans CJK SC','PingFang SC','Microsoft YaHei',Arial,sans-serif; dominant-baseline: auto; } .smallcaps { letter-spacing: 3px; }</style>
+</defs>
+<rect width='1800' height='2450' fill='url(#bg)'/>
+<circle cx='1450' cy='210' r='380' fill='#1B7A8A' opacity='.14'/>
+<circle cx='250' cy='560' r='360' fill='#B87924' opacity='.12'/>
+<circle cx='1130' cy='1320' r='520' fill='#7B61FF' opacity='.055'/>
+
+<text x='90' y='92' font-size='22' fill='#7E8DA6' font-weight='850' text-anchor='start' opacity='1' class='smallcaps'>PRODUCT LOGIC · INPUT / SIMULATION / OUTPUT</text>
+<text x='90' y='158' font-size='58' fill='#FFFFFF' font-weight='900' text-anchor='start' opacity='1' class=''>个体视角的商机信号仿真引擎</text>
+<text x='90' y='214' font-size='29' fill='#B8C3D6' font-weight='500' text-anchor='start' opacity='1' class=''>把一个外部商机信号词，放进 B 买用户真实经营动线与 Agent 讨论中，推演出“对这个人意味着什么”。</text>
+<rect x='90' y='248' width='1320' height='54' rx='27' fill='rgba(255,255,255,.07)' stroke='#DCE6F4' stroke-width='1' opacity='1' filter=''/>
+<text x='750' y='283' font-size='25' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>输入：user_id + 外部商机信号词  →  输出：个性化延伸泛化词信号</text>
+<rect x='90' y='340' width='1620' height='225' rx='34' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.13)' stroke-width='1' opacity='1' filter='url(#shadow)'/>
+<rect x='130' y='378' width='166' height='38' rx='19' fill='rgba(255,255,255,.06)' stroke='#F3D48B' stroke-width='1' opacity='0.95' filter=''/>
+<text x='213' y='404' font-size='18' fill='#F3D48B' font-weight='800' text-anchor='middle' opacity='1' class=''>一句话定义</text>
+<text x='130' y='454' font-size='38' fill='#FFFFFF' font-weight='900' text-anchor='start' opacity='1' class=''>不是把市场热点直接分发给所有人，而是把热点翻译成每个 B 买用户自己的经营语言。</text>
+<text x='130' y='506' font-size='26' fill='#C9D3E3' font-weight='400' text-anchor='start' opacity='1' class=''>系统结合询盘、搜索、商详浏览、图搜、视频浏览等行为轨迹，构建个体经营画像；再通过个体 Agent 与同行 Agent 的多轮讨论，把</text>
+<text x='130' y='544' font-size='26' fill='#C9D3E3' font-weight='400' text-anchor='start' opacity='1' class=''>外部信号细化成可搜索、可试探、可解释的机会词。</text>
+<text x='90' y='642' font-size='31' fill='#FFFFFF' font-weight='900' text-anchor='start' opacity='1' class=''>01  输入与数据底座</text>
+<text x='90' y='682' font-size='23' fill='#9FADC2' font-weight='500' text-anchor='start' opacity='1' class=''>从“谁 + 什么信号”开始，把外部趋势锚定到具体经营主体。</text>
+<rect x='90' y='730' width='365' height='250' rx='30' fill='rgba(217,164,65,.10)' stroke='#F3D48B' stroke-width='1.1' opacity='1' filter=''/>
+<text x='124' y='782' font-size='23' fill='#F3D48B' font-weight='850' text-anchor='start' opacity='1' class=''>输入 A</text>
+<text x='124' y='832' font-size='42' fill='#FFFFFF' font-weight='900' text-anchor='start' opacity='1' class=''>user_id</text>
+<text x='124' y='884' font-size='22' fill='#E5D4AD' font-weight='500' text-anchor='start' opacity='1' class=''>定位一个具体 B 买用户，并拉取他的真实行</text>
+<text x='124' y='916' font-size='22' fill='#E5D4AD' font-weight='500' text-anchor='start' opacity='1' class=''>为、经营约束与历史偏好。</text>
+<rect x='90' y='1010' width='365' height='250' rx='30' fill='rgba(51,183,199,.10)' stroke='#9BE7EF' stroke-width='1.1' opacity='1' filter=''/>
+<text x='124' y='1062' font-size='23' fill='#9BE7EF' font-weight='850' text-anchor='start' opacity='1' class=''>输入 B</text>
+<text x='124' y='1112' font-size='39' fill='#FFFFFF' font-weight='900' text-anchor='start' opacity='1' class=''>外部商机信号词</text>
+<text x='124' y='1164' font-size='22' fill='#BEEEF3' font-weight='500' text-anchor='start' opacity='1' class=''>例如：新中式、AI 玩具、宠物烘焙、低糖茶</text>
+<text x='124' y='1196' font-size='22' fill='#BEEEF3' font-weight='500' text-anchor='start' opacity='1' class=''>饮等外部市场趋势。</text>
+<line x1='468' y1='855' x2='538' y2='855' stroke='#7F8EA8' stroke-width='3' opacity='0.75' marker-end='url(#arrow)'/>
+<line x1='468' y1='1135' x2='538' y2='1135' stroke='#7F8EA8' stroke-width='3' opacity='0.75' marker-end='url(#arrow)'/>
+<rect x='545' y='730' width='770' height='530' rx='34' fill='rgba(255,255,255,.035)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter='url(#shadow)'/>
+<text x='585' y='782' font-size='34' fill='#FFFFFF' font-weight='900' text-anchor='start' opacity='1' class=''>B 买用户动线数据整合</text>
+<text x='585' y='820' font-size='22' fill='#9FADC2' font-weight='500' text-anchor='start' opacity='1' class=''>把碎片行为还原成经营上下文：怎么做生意、正在找什么、能不能承接。</text>
+<rect x='585' y='870' width='220' height='255' rx='24' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='613' cy='906' r='14' fill='#F3D48B' opacity='.95'/>
+<text x='637' y='914' font-size='23' fill='#FFFFFF' font-weight='850' text-anchor='start' opacity='1' class=''>行为信号</text>
+<circle cx='610' cy='947' r='4.5' fill='#F3D48B' opacity='.9'/>
+<text x='627' y='954' font-size='18' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>询盘：采购意向/阻力</text>
+<circle cx='610' cy='1001' r='4.5' fill='#F3D48B' opacity='.9'/>
+<text x='627' y='1008' font-size='18' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>搜索：主动需求/长尾词</text>
+<circle cx='610' cy='1055' r='4.5' fill='#F3D48B' opacity='.9'/>
+<text x='627' y='1062' font-size='18' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>商详：类目/价格/规</text>
+<text x='627' y='1086' font-size='18' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>格</text>
+<rect x='820' y='870' width='220' height='255' rx='24' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='848' cy='906' r='14' fill='#9BE7EF' opacity='.95'/>
+<text x='872' y='914' font-size='23' fill='#FFFFFF' font-weight='850' text-anchor='start' opacity='1' class=''>内容信号</text>
+<circle cx='845' cy='947' r='4.5' fill='#9BE7EF' opacity='.9'/>
+<text x='862' y='954' font-size='18' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>图搜：款式/材质/风</text>
+<text x='862' y='978' font-size='18' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>格</text>
+<circle cx='845' cy='1001' r='4.5' fill='#9BE7EF' opacity='.9'/>
+<text x='862' y='1008' font-size='18' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>视频：场景/兴趣迁移</text>
+<circle cx='845' cy='1055' r='4.5' fill='#9BE7EF' opacity='.9'/>
+<text x='862' y='1062' font-size='18' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>互动：趋势反应强弱</text>
+<rect x='1055' y='870' width='220' height='255' rx='24' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='1083' cy='906' r='14' fill='#A99BFF' opacity='.95'/>
+<text x='1107' y='914' font-size='23' fill='#FFFFFF' font-weight='850' text-anchor='start' opacity='1' class=''>经营画像</text>
+<circle cx='1080' cy='947' r='4.5' fill='#A99BFF' opacity='.9'/>
+<text x='1097' y='954' font-size='18' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>主营类目/渠道/体量</text>
+<circle cx='1080' cy='1001' r='4.5' fill='#A99BFF' opacity='.9'/>
+<text x='1097' y='1008' font-size='18' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>价格带/履约/供应链</text>
+<circle cx='1080' cy='1055' r='4.5' fill='#A99BFF' opacity='.9'/>
+<text x='1097' y='1062' font-size='18' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>新品接受度/风险偏好</text>
+<line x1='1328' y1='995' x2='1368' y2='995' stroke='#7F8EA8' stroke-width='3' opacity='0.75' marker-end='url(#arrow)'/>
+<rect x='1370' y='730' width='340' height='530' rx='34' fill='rgba(255,255,255,.04)' stroke='rgba(255,255,255,.13)' stroke-width='1' opacity='1' filter='url(#shadow)'/>
+<text x='1405' y='782' font-size='31' fill='#FFFFFF' font-weight='900' text-anchor='start' opacity='1' class=''>中间态画像</text>
+<text x='1405' y='835' font-size='23' fill='#C9D3E3' font-weight='500' text-anchor='start' opacity='1' class=''>先得到可推演的个体经营上下文，再把商机信</text>
+<text x='1405' y='869' font-size='23' fill='#C9D3E3' font-weight='500' text-anchor='start' opacity='1' class=''>号放进去判断。</text>
+<rect x='1405' y='948' width='118' height='40' rx='20' fill='rgba(255,255,255,.055)' stroke='#F3D48B' stroke-width='1' opacity='0.95' filter=''/>
+<text x='1464.0' y='975' font-size='18' fill='#F3D48B' font-weight='700' text-anchor='middle' opacity='1' class=''>类目适配</text>
+<rect x='1532' y='948' width='118' height='40' rx='20' fill='rgba(255,255,255,.055)' stroke='#9BE7EF' stroke-width='1' opacity='0.95' filter=''/>
+<text x='1591.0' y='975' font-size='18' fill='#9BE7EF' font-weight='700' text-anchor='middle' opacity='1' class=''>渠道承接</text>
+<rect x='1405' y='1008' width='118' height='40' rx='20' fill='rgba(255,255,255,.055)' stroke='#A99BFF' stroke-width='1' opacity='0.95' filter=''/>
+<text x='1464.0' y='1035' font-size='18' fill='#A99BFF' font-weight='700' text-anchor='middle' opacity='1' class=''>价格兼容</text>
+<rect x='1532' y='1008' width='140' height='40' rx='20' fill='rgba(255,255,255,.055)' stroke='#F3D48B' stroke-width='1' opacity='0.95' filter=''/>
+<text x='1602.0' y='1035' font-size='18' fill='#F3D48B' font-weight='700' text-anchor='middle' opacity='1' class=''>供应链可行</text>
+<rect x='1405' y='1068' width='118' height='40' rx='20' fill='rgba(255,255,255,.055)' stroke='#9BE7EF' stroke-width='1' opacity='0.95' filter=''/>
+<text x='1464.0' y='1095' font-size='18' fill='#9BE7EF' font-weight='700' text-anchor='middle' opacity='1' class=''>内容场景</text>
+<rect x='1532' y='1068' width='118' height='40' rx='20' fill='rgba(255,255,255,.055)' stroke='#A99BFF' stroke-width='1' opacity='0.95' filter=''/>
+<text x='1591.0' y='1095' font-size='18' fill='#A99BFF' font-weight='700' text-anchor='middle' opacity='1' class=''>试错风险</text>
+<text x='1405' y='1160' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>核心问题：这个外部机会，对这个用户是可做</text>
+<text x='1405' y='1194' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>、可试，还是不适合？</text>
+<text x='90' y='1352' font-size='31' fill='#FFFFFF' font-weight='900' text-anchor='start' opacity='1' class=''>02  仿真推演：从外部信号到个体表达</text>
+<text x='90' y='1392' font-size='23' fill='#9FADC2' font-weight='500' text-anchor='start' opacity='1' class=''>多 Agent 不是为了热闹对话，而是用讨论机制把模糊趋势逐轮收敛成可执行的个性化表达。</text>
+<rect x='90' y='1450' width='300' height='225' rx='26' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='130' cy='1492' r='22' fill='#F3D48B'/>
+<text x='130' y='1500' font-size='22' fill='#08111F' font-weight='900' text-anchor='middle' opacity='1' class=''>1</text>
+<text x='164' y='1498' font-size='24' fill='#FFFFFF' font-weight='850' text-anchor='start' opacity='1' class=''>个体人设激活</text>
+<text x='122' y='1542' font-size='21' fill='#C4D0E0' font-weight='500' text-anchor='start' opacity='1' class=''>基于 user_id 的经</text>
+<text x='122' y='1572' font-size='21' fill='#C4D0E0' font-weight='500' text-anchor='start' opacity='1' class=''>营画像，生成该用户的判断口径、关注点</text>
+<text x='122' y='1602' font-size='21' fill='#C4D0E0' font-weight='500' text-anchor='start' opacity='1' class=''>和约束条件。</text>
+<rect x='420' y='1450' width='300' height='225' rx='26' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='460' cy='1492' r='22' fill='#9BE7EF'/>
+<text x='460' y='1500' font-size='22' fill='#08111F' font-weight='900' text-anchor='middle' opacity='1' class=''>2</text>
+<text x='494' y='1498' font-size='24' fill='#FFFFFF' font-weight='850' text-anchor='start' opacity='1' class=''>信号适配判断</text>
+<text x='452' y='1542' font-size='21' fill='#C4D0E0' font-weight='500' text-anchor='start' opacity='1' class=''>围绕类目、渠道、价格、供应链和风险，</text>
+<text x='452' y='1572' font-size='21' fill='#C4D0E0' font-weight='500' text-anchor='start' opacity='1' class=''>判断外部信号是否值得试探。</text>
+<rect x='750' y='1450' width='300' height='225' rx='26' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='790' cy='1492' r='22' fill='#A99BFF'/>
+<text x='790' y='1500' font-size='22' fill='#08111F' font-weight='900' text-anchor='middle' opacity='1' class=''>3</text>
+<text x='824' y='1498' font-size='24' fill='#FFFFFF' font-weight='850' text-anchor='start' opacity='1' class=''>个体化表达</text>
+<text x='782' y='1542' font-size='21' fill='#C4D0E0' font-weight='500' text-anchor='start' opacity='1' class=''>让个体 Agent 用自己的</text>
+<text x='782' y='1572' font-size='21' fill='#C4D0E0' font-weight='500' text-anchor='start' opacity='1' class=''>经营语言提出方向、疑虑、关键词和试单</text>
+<text x='782' y='1602' font-size='21' fill='#C4D0E0' font-weight='500' text-anchor='start' opacity='1' class=''>方式。</text>
+<rect x='1080' y='1450' width='300' height='225' rx='26' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='1120' cy='1492' r='22' fill='#F3D48B'/>
+<text x='1120' y='1500' font-size='22' fill='#08111F' font-weight='900' text-anchor='middle' opacity='1' class=''>4</text>
+<text x='1154' y='1498' font-size='24' fill='#FFFFFF' font-weight='850' text-anchor='start' opacity='1' class=''>同行 Agent 交互</text>
+<text x='1112' y='1542' font-size='21' fill='#C4D0E0' font-weight='500' text-anchor='start' opacity='1' class=''>与相似同行进行挑战、补充和反问，暴露</text>
+<text x='1112' y='1572' font-size='21' fill='#C4D0E0' font-weight='500' text-anchor='start' opacity='1' class=''>盲点并扩展候选路径。</text>
+<rect x='1410' y='1450' width='300' height='225' rx='26' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='1450' cy='1492' r='22' fill='#9BE7EF'/>
+<text x='1450' y='1500' font-size='22' fill='#08111F' font-weight='900' text-anchor='middle' opacity='1' class=''>5</text>
+<text x='1484' y='1498' font-size='24' fill='#FFFFFF' font-weight='850' text-anchor='start' opacity='1' class=''>多轮收敛细化</text>
+<text x='1442' y='1542' font-size='21' fill='#C4D0E0' font-weight='500' text-anchor='start' opacity='1' class=''>在多轮对话中筛掉泛泛方向，留下更具体</text>
+<text x='1442' y='1572' font-size='21' fill='#C4D0E0' font-weight='500' text-anchor='start' opacity='1' class=''>、可搜索、可验证的机会词。</text>
+<line x1='390' y1='1560' x2='438' y2='1560' stroke='#7F8EA8' stroke-width='3' opacity='0.75' marker-end='url(#arrow)'/>
+<line x1='720' y1='1560' x2='768' y2='1560' stroke='#7F8EA8' stroke-width='3' opacity='0.75' marker-end='url(#arrow)'/>
+<line x1='1050' y1='1560' x2='1098' y2='1560' stroke='#7F8EA8' stroke-width='3' opacity='0.75' marker-end='url(#arrow)'/>
+<line x1='1380' y1='1560' x2='1428' y2='1560' stroke='#7F8EA8' stroke-width='3' opacity='0.75' marker-end='url(#arrow)'/>
+<text x='90' y='1788' font-size='31' fill='#FFFFFF' font-weight='900' text-anchor='start' opacity='1' class=''>03  输出：个性化延伸泛化词信号</text>
+<text x='90' y='1828' font-size='23' fill='#9FADC2' font-weight='500' text-anchor='start' opacity='1' class=''>输出不是单个关键词，而是一组“个体视角下的机会判断 + 可搜索表达 + 推荐理由”。</text>
+<rect x='90' y='1875' width='1620' height='345' rx='34' fill='rgba(255,255,255,.035)' stroke='rgba(255,255,255,.13)' stroke-width='1' opacity='1' filter='url(#shadow)'/>
+<rect x='130' y='1930' width='354' height='150' rx='24' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<rect x='130' y='1930' width='8' height='150' rx='4' fill='#F3D48B' opacity='.95'/>
+<text x='160' y='1974' font-size='24' fill='#FFFFFF' font-weight='850' text-anchor='start' opacity='1' class=''>机会方向</text>
+<text x='160' y='2012' font-size='19' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>例如“新中式厨房置物架”“宋风竹编收纳篮”，说</text>
+<text x='160' y='2039' font-size='19' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>明可切入的品类方向。</text>
+<rect x='510' y='1930' width='354' height='150' rx='24' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<rect x='510' y='1930' width='8' height='150' rx='4' fill='#9BE7EF' opacity='.95'/>
+<text x='540' y='1974' font-size='24' fill='#FFFFFF' font-weight='850' text-anchor='start' opacity='1' class=''>可搜索词</text>
+<text x='540' y='2012' font-size='19' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>给到能在供应链或内容平台检索的长尾词组合，便于</text>
+<text x='540' y='2039' font-size='19' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>找货和验证。</text>
+<rect x='890' y='1930' width='354' height='150' rx='24' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<rect x='890' y='1930' width='8' height='150' rx='4' fill='#A99BFF' opacity='.95'/>
+<text x='920' y='1974' font-size='24' fill='#FFFFFF' font-weight='850' text-anchor='start' opacity='1' class=''>适配判断</text>
+<text x='920' y='2012' font-size='19' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>说明信号与该用户类目、渠道、价格带、履约能力的</text>
+<text x='920' y='2039' font-size='19' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>匹配程度。</text>
+<rect x='1270' y='1930' width='354' height='150' rx='24' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<rect x='1270' y='1930' width='8' height='150' rx='4' fill='#F3D48B' opacity='.95'/>
+<text x='1300' y='1974' font-size='24' fill='#FFFFFF' font-weight='850' text-anchor='start' opacity='1' class=''>推荐理由</text>
+<text x='1300' y='2012' font-size='19' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>解释为什么是这个方向，并标注试探方式、风险点和</text>
+<text x='1300' y='2039' font-size='19' fill='#BFD0E6' font-weight='500' text-anchor='start' opacity='1' class=''>优先级。</text>
+<rect x='130' y='2112' width='1540' height='68' rx='34' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<text x='900' y='2156' font-size='31' fill='#FFFFFF' font-weight='900' text-anchor='middle' opacity='1' class=''>本质：外部市场信号  →  个体经营反馈  →  个性化机会词列表</text>
+<rect x='90' y='2262' width='1620' height='100' rx='34' fill='url(#flow)' stroke='none' stroke-width='0' opacity='0.92' filter=''/>
+<text x='130' y='2324' font-size='29' fill='#07111E' font-weight='900' text-anchor='start' opacity='1' class=''>老板视角看价值：把“看起来人人都能做的趋势”，变成“这个 B 买用户为什么能做、该怎么搜、先试什么”的可执行判断。</text>
+<text x='90' y='2408' font-size='18' fill='#6F7E96' font-weight='400' text-anchor='start' opacity='1' class=''>Design output: product core logic overview · Data foundation, input/output, agent simulation, personalized opportunity signals</text>
+</svg>
