@@ -6,12 +6,6 @@
   <linearGradient id='cardGrad' x1='0' y1='0' x2='1' y2='1'>
     <stop offset='0%' stop-color='#152039'/><stop offset='100%' stop-color='#101827'/>
   </linearGradient>
-  <linearGradient id='goldGrad' x1='0' y1='0' x2='1' y2='0'>
-    <stop offset='0%' stop-color='#A96F20'/><stop offset='100%' stop-color='#F3D48B'/>
-  </linearGradient>
-  <linearGradient id='cyanGrad' x1='0' y1='0' x2='1' y2='0'>
-    <stop offset='0%' stop-color='#168A99'/><stop offset='100%' stop-color='#9BE7EF'/>
-  </linearGradient>
   <linearGradient id='mixGrad' x1='0' y1='0' x2='1' y2='0'>
     <stop offset='0%' stop-color='#F3D48B'/><stop offset='100%' stop-color='#9BE7EF'/>
   </linearGradient>
@@ -74,173 +68,154 @@
 <text x='1615.0' y='684' font-size='19' fill='#9BE7EF' font-weight='600' text-anchor='middle' opacity='1' class=''>新品采纳率 1.5%</text>
 <rect x='968' y='712' width='220' height='42' rx='21' fill='rgba(255,255,255,.045)' stroke='#9BE7EF' stroke-width='1' opacity='0.95' filter=''/>
 <text x='1078.0' y='740' font-size='19' fill='#9BE7EF' font-weight='600' text-anchor='middle' opacity='1' class=''>48h 发货 98%</text>
-<rect x='90' y='830' width='1640' height='310' rx='30' fill='#10182A' stroke='rgba(255,255,255,.12)' stroke-width='1.1' opacity='1' filter='url(#shadowSoft)'/>
-<text x='132' y='888' font-size='34' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>适配结构对比</text>
-<text x='132' y='924' font-size='22' fill='#92A2BA' font-weight='400' text-anchor='start' opacity='1' class=''>分数为基于文本信号的表达强弱映射，用于展示泛化词在不同个体上的落点差异</text>
-<text x='134' y='984' font-size='20' fill='#BAC6D8' font-weight='600' text-anchor='start' opacity='1' class=''>类目贴合</text>
-<rect x='280' y='965' width='520' height='18' rx='9' fill='rgba(217,164,65,.12)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<rect x='280' y='965' width='218.4' height='18' rx='9' fill='url(#goldGrad)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<text x='820' y='983' font-size='18' fill='#F3D48B' font-weight='700' text-anchor='start' opacity='1' class=''>A 42</text>
-<rect x='1010' y='965' width='520' height='18' rx='9' fill='rgba(51,183,199,.12)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<rect x='1010' y='965' width='457.6' height='18' rx='9' fill='url(#cyanGrad)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<text x='1550' y='983' font-size='18' fill='#9BE7EF' font-weight='700' text-anchor='start' opacity='1' class=''>B 88</text>
-<text x='134' y='1018' font-size='20' fill='#BAC6D8' font-weight='600' text-anchor='start' opacity='1' class=''>渠道承接</text>
-<rect x='280' y='999' width='520' height='18' rx='9' fill='rgba(217,164,65,.12)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<rect x='280' y='999' width='364.0' height='18' rx='9' fill='url(#goldGrad)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<text x='820' y='1017' font-size='18' fill='#F3D48B' font-weight='700' text-anchor='start' opacity='1' class=''>A 70</text>
-<rect x='1010' y='999' width='520' height='18' rx='9' fill='rgba(51,183,199,.12)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<rect x='1010' y='999' width='405.6' height='18' rx='9' fill='url(#cyanGrad)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<text x='1550' y='1017' font-size='18' fill='#9BE7EF' font-weight='700' text-anchor='start' opacity='1' class=''>B 78</text>
-<text x='134' y='1052' font-size='20' fill='#BAC6D8' font-weight='600' text-anchor='start' opacity='1' class=''>供应链复用</text>
-<rect x='280' y='1033' width='520' height='18' rx='9' fill='rgba(217,164,65,.12)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<rect x='280' y='1033' width='343.2' height='18' rx='9' fill='url(#goldGrad)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<text x='820' y='1051' font-size='18' fill='#F3D48B' font-weight='700' text-anchor='start' opacity='1' class=''>A 66</text>
-<rect x='1010' y='1033' width='520' height='18' rx='9' fill='rgba(51,183,199,.12)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<rect x='1010' y='1033' width='468.0' height='18' rx='9' fill='url(#cyanGrad)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<text x='1550' y='1051' font-size='18' fill='#9BE7EF' font-weight='700' text-anchor='start' opacity='1' class=''>B 90</text>
-<text x='134' y='1086' font-size='20' fill='#BAC6D8' font-weight='600' text-anchor='start' opacity='1' class=''>价格兼容</text>
-<rect x='280' y='1067' width='520' height='18' rx='9' fill='rgba(217,164,65,.12)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<rect x='280' y='1067' width='426.4' height='18' rx='9' fill='url(#goldGrad)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<text x='820' y='1085' font-size='18' fill='#F3D48B' font-weight='700' text-anchor='start' opacity='1' class=''>A 82</text>
-<rect x='1010' y='1067' width='520' height='18' rx='9' fill='rgba(51,183,199,.12)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<rect x='1010' y='1067' width='416.0' height='18' rx='9' fill='url(#cyanGrad)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<text x='1550' y='1085' font-size='18' fill='#9BE7EF' font-weight='700' text-anchor='start' opacity='1' class=''>B 80</text>
-<text x='134' y='1120' font-size='20' fill='#BAC6D8' font-weight='600' text-anchor='start' opacity='1' class=''>试错友好</text>
-<rect x='280' y='1101' width='520' height='18' rx='9' fill='rgba(217,164,65,.12)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<rect x='280' y='1101' width='405.6' height='18' rx='9' fill='url(#goldGrad)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<text x='820' y='1119' font-size='18' fill='#F3D48B' font-weight='700' text-anchor='start' opacity='1' class=''>A 78</text>
-<rect x='1010' y='1101' width='520' height='18' rx='9' fill='rgba(51,183,199,.12)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<rect x='1010' y='1101' width='301.6' height='18' rx='9' fill='url(#cyanGrad)' stroke='none' stroke-width='1' opacity='1' filter=''/>
-<text x='1550' y='1119' font-size='18' fill='#9BE7EF' font-weight='700' text-anchor='start' opacity='1' class=''>B 58</text>
-<text x='280' y='1115' font-size='22' fill='#F3D48B' font-weight='600' text-anchor='start' opacity='1' class=''>A：内容驱动的小工具试探，优势在低成本试错与功能型长尾</text>
-<text x='1010' y='1115' font-size='22' fill='#9BE7EF' font-weight='600' text-anchor='start' opacity='1' class=''>B：现有货盘的风格化升级，优势在类目贴合与供应链复用</text>
-<rect x='90' y='1190' width='1640' height='350' rx='30' fill='#10182A' stroke='rgba(255,255,255,.12)' stroke-width='1.1' opacity='1' filter='url(#shadowSoft)'/>
-<text x='132' y='1248' font-size='34' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>机会词重合与分化</text>
-<text x='132' y='1284' font-size='23' fill='#AEBBD0' font-weight='400' text-anchor='start' opacity='1' class=''>同一信号被翻译成不同经营语言：A 更偏“厨房小工具功能美学”，B 更偏“收纳/玄关主类目升级”。</text>
-<rect x='144' y='1325' width='420' height='155' rx='24' fill='rgba(217,164,65,.10)' stroke='rgba(243,212,139,.35)' stroke-width='1' opacity='1' filter=''/>
-<text x='174' y='1366' font-size='26' fill='#F3D48B' font-weight='800' text-anchor='start' opacity='1' class=''>A 的表达重心</text>
-<text x='174' y='1404' font-size='21' fill='#E7D5AC' font-weight='400' text-anchor='start' opacity='1' class=''>调料罐、去核器、打蛋盆、蒸锅盖、厨房剪刀：把国风元素挂到</text>
-<text x='174' y='1435' font-size='21' fill='#E7D5AC' font-weight='400' text-anchor='start' opacity='1' class=''>高频厨房工具上。</text>
-<rect x='1256' y='1325' width='420' height='155' rx='24' fill='rgba(51,183,199,.10)' stroke='rgba(155,231,239,.35)' stroke-width='1' opacity='1' filter=''/>
-<text x='1286' y='1366' font-size='26' fill='#9BE7EF' font-weight='800' text-anchor='start' opacity='1' class=''>B 的表达重心</text>
-<text x='1286' y='1404' font-size='21' fill='#BEEEF3' font-weight='400' text-anchor='start' opacity='1' class=''>置物架、换鞋凳、收纳架、鞋架、防撞条：在老货盘上叠加新中</text>
-<text x='1286' y='1435' font-size='21' fill='#BEEEF3' font-weight='400' text-anchor='start' opacity='1' class=''>式符号。</text>
-<rect x='605' y='1320' width='600' height='52' rx='26' fill='rgba(255,255,255,.055)' stroke='rgba(255,255,255,.14)' stroke-width='1' opacity='1' filter=''/>
-<circle cx='633' cy='1346' r='8' fill='url(#mixGrad)'/>
-<text x='657' y='1353' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>新中式厨房置物架</text>
-<text x='915' y='1353' font-size='20' fill='#CFD8E6' font-weight='700' text-anchor='start' opacity='1' class=''>A#1 / B#1</text>
-<text x='657' y='1392' font-size='18' fill='#8FA0B7' font-weight='400' text-anchor='start' opacity='1' class=''>共同第一优先级：趋势词与主营类目都能对齐</text>
-<rect x='605' y='1385' width='600' height='52' rx='26' fill='rgba(255,255,255,.055)' stroke='rgba(255,255,255,.14)' stroke-width='1' opacity='1' filter=''/>
-<circle cx='633' cy='1411' r='8' fill='url(#mixGrad)'/>
-<text x='657' y='1418' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>青瓷釉色厨房置物架</text>
-<text x='915' y='1418' font-size='20' fill='#CFD8E6' font-weight='700' text-anchor='start' opacity='1' class=''>A#4 / B#5</text>
-<text x='657' y='1457' font-size='18' fill='#8FA0B7' font-weight='400' text-anchor='start' opacity='1' class=''>共同视觉锚点：青瓷色提高识别度与溢价感</text>
-<rect x='605' y='1450' width='600' height='52' rx='26' fill='rgba(255,255,255,.055)' stroke='rgba(255,255,255,.14)' stroke-width='1' opacity='1' filter=''/>
-<circle cx='633' cy='1476' r='8' fill='url(#mixGrad)'/>
-<text x='657' y='1483' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>竹编厨房收纳</text>
-<text x='915' y='1483' font-size='20' fill='#CFD8E6' font-weight='700' text-anchor='start' opacity='1' class=''>A#10 / B#4/#7</text>
-<text x='657' y='1522' font-size='18' fill='#8FA0B7' font-weight='400' text-anchor='start' opacity='1' class=''>共同材质路径：竹编天然承接新中式与厨房/家居</text>
-<path d='M475 1403 C515 1403, 490 1403, 515 1403' stroke='#D9A441' stroke-width='3' opacity='.55' fill='none'/>
-<path d='M1165 1403 C1125 1403, 1140 1403, 1115 1403' stroke='#33B7C7' stroke-width='3' opacity='.55' fill='none'/>
-<rect x='90' y='1590' width='1640' height='1045' rx='30' fill='#10182A' stroke='rgba(255,255,255,.12)' stroke-width='1.1' opacity='1' filter='url(#shadowSoft)'/>
-<text x='132' y='1648' font-size='34' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>Top 10 泛化词机会排序对照</text>
-<text x='132' y='1684' font-size='22' fill='#AEBBD0' font-weight='400' text-anchor='start' opacity='1' class=''>左侧保留 A 的“厨房工具化”路径，右侧保留 B 的“家居收纳化”路径；中间标签显示对比关系。</text>
-<rect x='132' y='1715' width='1556' height='54' rx='18' fill='rgba(255,255,255,.065)' stroke='rgba(255,255,255,.08)' stroke-width='1' opacity='1' filter=''/>
-<text x='160' y='1751' font-size='20' fill='#AEBBD0' font-weight='700' text-anchor='start' opacity='1' class=''>#</text>
-<text x='225' y='1751' font-size='21' fill='#F3D48B' font-weight='800' text-anchor='start' opacity='1' class=''>A：厨房家居用品 / 小工具</text>
-<text x='805' y='1751' font-size='21' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>对比效果</text>
-<text x='1035' y='1751' font-size='21' fill='#9BE7EF' font-weight='800' text-anchor='start' opacity='1' class=''>B：厨房置物架 / 换鞋凳</text>
-<rect x='132' y='1780' width='1556' height='74' rx='18' fill='rgba(255,255,255,.035)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
-<circle cx='172' cy='1817' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
-<text x='172' y='1825' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>1</text>
-<text x='220' y='1810' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>新中式厨房置物架</text>
-<text x='220' y='1840' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>不锈钢 / 竹编 / 抖音场景</text>
-<rect x='790' y='1800' width='104' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
-<text x='842.0' y='1825' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>共识核心</text>
-<text x='1035' y='1810' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>新中式厨房置物架</text>
-<text x='1035' y='1840' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>竹编 / 宋风 / 复用置物架供应链</text>
-<rect x='132' y='1864' width='1556' height='74' rx='18' fill='rgba(255,255,255,.018)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
-<circle cx='172' cy='1901' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
-<text x='172' y='1909' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>2</text>
-<text x='220' y='1894' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>宋式简约调料罐</text>
-<text x='220' y='1924' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>玻璃木盖 / 盘扣 / 小工具高毛利</text>
-<rect x='790' y='1884' width='210' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
-<text x='895.0' y='1909' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>A 厨房小件 / B</text>
-<text x='1035' y='1894' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>新中式玄关换鞋凳</text>
-<text x='1035' y='1924' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>软包木质 / 小户型玄关 / 主类目</text>
-<rect x='132' y='1948' width='1556' height='74' rx='18' fill='rgba(255,255,255,.035)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
-<circle cx='172' cy='1985' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
-<text x='172' y='1993' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>3</text>
-<text x='220' y='1978' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>国风镂空红枣去核器</text>
-<text x='220' y='2008' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>生活妙招 / 功能长尾 / 低竞争</text>
-<rect x='790' y='1968' width='210' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
-<text x='895.0' y='1993' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>A 功能奇点 / B</text>
-<text x='1035' y='1978' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>新中式家居收纳架</text>
-<text x='1035' y='2008' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>多层移动免打孔 / 跨场景收纳</text>
-<rect x='132' y='2032' width='1556' height='74' rx='18' fill='rgba(255,255,255,.018)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
-<circle cx='172' cy='2069' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
-<text x='172' y='2077' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>4</text>
-<text x='220' y='2062' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>青瓷釉色厨房置物架</text>
-<text x='220' y='2092' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>青瓷釉视觉锚点 / 溢价</text>
-<rect x='790' y='2052' width='123' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
-<text x='851.5' y='2077' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>材质符号化</text>
-<text x='1035' y='2062' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>宋风竹编厨房收纳篮</text>
-<text x='1035' y='2092' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>米面调料 / 素雅 / 竹编老供</text>
-<rect x='132' y='2116' width='1556' height='74' rx='18' fill='rgba(255,255,255,.035)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
-<circle cx='172' cy='2153' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
-<text x='172' y='2161' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>5</text>
-<text x='220' y='2146' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>新中式紫砂快客杯</text>
-<text x='220' y='2176' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>厨房+茶饮 / 60-80 元</text>
-<rect x='790' y='2136' width='210' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
-<text x='895.0' y='2161' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>A 茶饮延伸 / B</text>
-<text x='1035' y='2146' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>青瓷釉色厨房置物架</text>
-<text x='1035' y='2176' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>陶瓷感 / 不锈钢底座 / 易清洁</text>
-<rect x='132' y='2200' width='1556' height='74' rx='18' fill='rgba(255,255,255,.018)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
-<circle cx='172' cy='2237' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
-<text x='172' y='2245' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>6</text>
-<text x='220' y='2230' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>云雷纹不锈钢打蛋盆</text>
-<text x='220' y='2260' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>高频刚需 / 不锈钢供应链</text>
-<rect x='790' y='2220' width='142' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
-<text x='861.0' y='2245' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>符号落点不同</text>
-<text x='1035' y='2230' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>国风软包换鞋凳</text>
-<text x='1035' y='2260' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>云纹刺绣 / 棉麻坐垫 / 触感体验</text>
-<rect x='132' y='2284' width='1556' height='74' rx='18' fill='rgba(255,255,255,.035)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
-<circle cx='172' cy='2321' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
-<text x='172' y='2329' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>7</text>
-<text x='220' y='2314' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>中式窗棂纹蒸锅盖</text>
-<text x='220' y='2344' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>厨房升级 / 替换成本低</text>
-<rect x='790' y='2304' width='210' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
-<text x='895.0' y='2329' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>A 配件化 / B </text>
-<text x='1035' y='2314' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>新中式竹编收纳筐</text>
-<text x='1035' y='2344' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>藤编圆形 / 大容量 / 低售后</text>
-<rect x='132' y='2368' width='1556' height='74' rx='18' fill='rgba(255,255,255,.018)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
-<circle cx='172' cy='2405' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
-<text x='172' y='2413' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>8</text>
-<text x='220' y='2398' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>哑光黑金厨房剪刀</text>
-<text x='220' y='2428' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>刀具延伸 / 视觉冲击 / 低退货</text>
-<rect x='790' y='2388' width='210' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
-<text x='895.0' y='2413' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>A 工具线 / B </text>
-<text x='1035' y='2398' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>榫卯风入户鞋架</text>
-<text x='1035' y='2428' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>组装式 / 免打孔 / 0新增模具</text>
-<rect x='132' y='2452' width='1556' height='74' rx='18' fill='rgba(255,255,255,.035)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
-<circle cx='172' cy='2489' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
-<text x='172' y='2497' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>9</text>
-<text x='220' y='2482' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>宋锦风厨房收纳架</text>
-<text x='220' y='2512' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>贴纸/压纹控本 / 小空间改造</text>
-<rect x='790' y='2472' width='142' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
-<text x='861.0' y='2497' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>低成本图案化</text>
-<text x='1035' y='2482' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>云纹吸盘置物架</text>
-<text x='1035' y='2512' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>浴室厨房 / 免打孔 / 强吸附</text>
-<rect x='132' y='2536' width='1556' height='74' rx='18' fill='rgba(255,255,255,.018)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
-<circle cx='172' cy='2573' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
-<text x='172' y='2581' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>10</text>
-<text x='220' y='2566' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>新中式竹编厨房收纳篮</text>
-<text x='220' y='2596' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>PP+竹丝 / 环保视觉 / 轻试探</text>
-<rect x='790' y='2556' width='210' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
-<text x='895.0' y='2581' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>A 氛围篮 / B </text>
-<text x='1035' y='2566' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>回纹防撞条加厚</text>
-<text x='1035' y='2596' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>硅胶标品 / 宝宝安全交叉</text>
-<rect x='132' y='2590' width='1556' height='1' rx='0' fill='rgba(255,255,255,.12)' stroke='none' stroke-width='1' opacity='1' filter=''/>
+<rect x='90' y='840' width='1640' height='430' rx='30' fill='#10182A' stroke='rgba(255,255,255,.12)' stroke-width='1.1' opacity='1' filter='url(#shadowSoft)'/>
+<text x='132' y='898' font-size='34' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>机会词重合与分化</text>
+<text x='132' y='934' font-size='23' fill='#AEBBD0' font-weight='400' text-anchor='start' opacity='1' class=''>去掉打分后，直接呈现“共同机会词”与“A/B 各自转译路径”，让同一信号的泛化差异更清晰。</text>
+<rect x='132' y='972' width='470' height='54' rx='20' fill='rgba(217,164,65,.12)' stroke='rgba(243,212,139,.35)' stroke-width='1' opacity='1' filter=''/>
+<rect x='675' y='972' width='470' height='54' rx='20' fill='rgba(255,255,255,.065)' stroke='rgba(255,255,255,.16)' stroke-width='1' opacity='1' filter=''/>
+<rect x='1218' y='972' width='470' height='54' rx='20' fill='rgba(51,183,199,.12)' stroke='rgba(155,231,239,.35)' stroke-width='1' opacity='1' filter=''/>
+<text x='367' y='1008' font-size='24' fill='#F3D48B' font-weight='900' text-anchor='middle' opacity='1' class=''>A 分化：厨房小工具化</text>
+<text x='910' y='1008' font-size='24' fill='#FFFFFF' font-weight='900' text-anchor='middle' opacity='1' class=''>中间共识：可共同试探</text>
+<text x='1453' y='1008' font-size='24' fill='#9BE7EF' font-weight='900' text-anchor='middle' opacity='1' class=''>B 分化：收纳/玄关主类目化</text>
+<rect x='142' y='1045' width='452' height='86' rx='20' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.10)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='170' cy='1076' r='7' fill='#F3D48B'/>
+<text x='190' y='1082' font-size='22' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>工具功能化</text>
+<text x='190' y='1111' font-size='18' fill='#AEBBD0' font-weight='400' text-anchor='start' opacity='1' class=''>调料罐、去核器、打蛋盆、蒸锅盖、厨房剪刀</text>
+<rect x='142' y='1115' width='452' height='86' rx='20' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.10)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='170' cy='1146' r='7' fill='#F3D48B'/>
+<text x='190' y='1152' font-size='22' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>内容试探</text>
+<text x='190' y='1181' font-size='18' fill='#AEBBD0' font-weight='400' text-anchor='start' opacity='1' class=''>依赖抖音生活妙招、厨房升级、颜值化工具展示</text>
+<rect x='142' y='1185' width='452' height='86' rx='20' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.10)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='170' cy='1216' r='7' fill='#F3D48B'/>
+<text x='190' y='1222' font-size='22' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>轻量 SKU</text>
+<text x='190' y='1251' font-size='18' fill='#AEBBD0' font-weight='400' text-anchor='start' opacity='1' class=''>小体积、低售后、低库存压力，适合谨慎试单</text>
+<rect x='1228' y='1045' width='452' height='86' rx='20' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.10)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='1256' cy='1076' r='7' fill='#9BE7EF'/>
+<text x='1276' y='1082' font-size='22' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>主类目升级</text>
+<text x='1276' y='1111' font-size='18' fill='#AEBBD0' font-weight='400' text-anchor='start' opacity='1' class=''>置物架、换鞋凳、收纳架、鞋架、防撞条</text>
+<rect x='1228' y='1115' width='452' height='86' rx='20' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.10)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='1256' cy='1146' r='7' fill='#9BE7EF'/>
+<text x='1276' y='1152' font-size='22' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>场景扩张</text>
+<text x='1276' y='1181' font-size='18' fill='#AEBBD0' font-weight='400' text-anchor='start' opacity='1' class=''>从厨房延伸到玄关、浴室、小户型收纳</text>
+<rect x='1228' y='1185' width='452' height='86' rx='20' fill='rgba(255,255,255,.045)' stroke='rgba(255,255,255,.10)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='1256' cy='1216' r='7' fill='#9BE7EF'/>
+<text x='1276' y='1222' font-size='22' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>老供复用</text>
+<text x='1276' y='1251' font-size='18' fill='#AEBBD0' font-weight='400' text-anchor='start' opacity='1' class=''>优先复用成熟结构和履约能力，降低新品开发成本</text>
+<rect x='685' y='1044' width='450' height='62' rx='22' fill='rgba(255,255,255,.055)' stroke='rgba(255,255,255,.14)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='712' cy='1072' r='8' fill='url(#mixGrad)'/>
+<text x='732' y='1071' font-size='21' fill='#FFFFFF' font-weight='900' text-anchor='start' opacity='1' class=''>新中式厨房置物架</text>
+<text x='1108' y='1071' font-size='17' fill='#CFD8E6' font-weight='800' text-anchor='end' opacity='1' class=''>A#1 / B#1</text>
+<text x='732' y='1095' font-size='16' fill='#97A8BE' font-weight='500' text-anchor='start' opacity='1' class=''>共同第一优先级；趋势词与主营类目同时对齐</text>
+<rect x='685' y='1116' width='450' height='62' rx='22' fill='rgba(255,255,255,.055)' stroke='rgba(255,255,255,.14)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='712' cy='1144' r='8' fill='url(#mixGrad)'/>
+<text x='732' y='1143' font-size='21' fill='#FFFFFF' font-weight='900' text-anchor='start' opacity='1' class=''>青瓷釉色厨房置物架</text>
+<text x='1108' y='1143' font-size='17' fill='#CFD8E6' font-weight='800' text-anchor='end' opacity='1' class=''>A#4 / B#5</text>
+<text x='732' y='1167' font-size='16' fill='#97A8BE' font-weight='500' text-anchor='start' opacity='1' class=''>共同视觉锚点；青瓷色提升识别度与溢价感</text>
+<rect x='685' y='1188' width='450' height='62' rx='22' fill='rgba(255,255,255,.055)' stroke='rgba(255,255,255,.14)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='712' cy='1216' r='8' fill='url(#mixGrad)'/>
+<text x='732' y='1215' font-size='21' fill='#FFFFFF' font-weight='900' text-anchor='start' opacity='1' class=''>竹编厨房收纳</text>
+<text x='1108' y='1215' font-size='17' fill='#CFD8E6' font-weight='800' text-anchor='end' opacity='1' class=''>A#10 / B#4/#7</text>
+<text x='732' y='1239' font-size='16' fill='#97A8BE' font-weight='500' text-anchor='start' opacity='1' class=''>共同材质路径；竹编天然承接新中式家居氛围</text>
+<line x1='638' y1='982' x2='638' y2='1235' stroke='rgba(255,255,255,.08)' stroke-width='1'/>
+<line x1='1182' y1='982' x2='1182' y2='1235' stroke='rgba(255,255,255,.08)' stroke-width='1'/>
+<rect x='90' y='1320' width='1640' height='1045' rx='30' fill='#10182A' stroke='rgba(255,255,255,.12)' stroke-width='1.1' opacity='1' filter='url(#shadowSoft)'/>
+<text x='132' y='1378' font-size='34' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>Top 10 泛化词机会排序对照</text>
+<text x='132' y='1414' font-size='22' fill='#AEBBD0' font-weight='400' text-anchor='start' opacity='1' class=''>左侧保留 A 的“厨房工具化”路径，右侧保留 B 的“家居收纳化”路径；中间标签显示对比关系。</text>
+<rect x='132' y='1445' width='1556' height='54' rx='18' fill='rgba(255,255,255,.065)' stroke='rgba(255,255,255,.08)' stroke-width='1' opacity='1' filter=''/>
+<text x='160' y='1481' font-size='20' fill='#AEBBD0' font-weight='700' text-anchor='start' opacity='1' class=''>#</text>
+<text x='225' y='1481' font-size='21' fill='#F3D48B' font-weight='800' text-anchor='start' opacity='1' class=''>A：厨房家居用品 / 小工具</text>
+<text x='805' y='1481' font-size='21' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>对比效果</text>
+<text x='1035' y='1481' font-size='21' fill='#9BE7EF' font-weight='800' text-anchor='start' opacity='1' class=''>B：厨房置物架 / 换鞋凳</text>
+<rect x='132' y='1510' width='1556' height='74' rx='18' fill='rgba(255,255,255,.035)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='172' cy='1547' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
+<text x='172' y='1555' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>1</text>
+<text x='220' y='1540' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>新中式厨房置物架</text>
+<text x='220' y='1570' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>不锈钢 / 竹编 / 抖音场景</text>
+<rect x='790' y='1530' width='116' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<text x='848.0' y='1555' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>共识核心</text>
+<text x='1035' y='1540' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>新中式厨房置物架</text>
+<text x='1035' y='1570' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>竹编 / 宋风 / 复用置物架供应链</text>
+<rect x='132' y='1594' width='1556' height='74' rx='18' fill='rgba(255,255,255,.018)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='172' cy='1631' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
+<text x='172' y='1639' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>2</text>
+<text x='220' y='1624' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>宋式简约调料罐</text>
+<text x='220' y='1654' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>玻璃木盖 / 盘扣 / 小工具高毛利</text>
+<rect x='790' y='1614' width='174' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<text x='877.0' y='1639' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>A 小件 / B 玄关</text>
+<text x='1035' y='1624' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>新中式玄关换鞋凳</text>
+<text x='1035' y='1654' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>软包木质 / 小户型玄关 / 主类目</text>
+<rect x='132' y='1678' width='1556' height='74' rx='18' fill='rgba(255,255,255,.035)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='172' cy='1715' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
+<text x='172' y='1723' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>3</text>
+<text x='220' y='1708' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>国风镂空红枣去核器</text>
+<text x='220' y='1738' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>生活妙招 / 功能长尾 / 低竞争</text>
+<rect x='790' y='1698' width='144' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<text x='862.0' y='1723' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>功能 vs 收纳</text>
+<text x='1035' y='1708' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>新中式家居收纳架</text>
+<text x='1035' y='1738' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>多层移动免打孔 / 跨场景收纳</text>
+<rect x='132' y='1762' width='1556' height='74' rx='18' fill='rgba(255,255,255,.018)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='172' cy='1799' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
+<text x='172' y='1807' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>4</text>
+<text x='220' y='1792' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>青瓷釉色厨房置物架</text>
+<text x='220' y='1822' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>青瓷釉视觉锚点 / 溢价</text>
+<rect x='790' y='1782' width='116' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<text x='848.0' y='1807' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>材质符号</text>
+<text x='1035' y='1792' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>宋风竹编厨房收纳篮</text>
+<text x='1035' y='1822' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>米面调料 / 素雅 / 竹编老供</text>
+<rect x='132' y='1846' width='1556' height='74' rx='18' fill='rgba(255,255,255,.035)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='172' cy='1883' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
+<text x='172' y='1891' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>5</text>
+<text x='220' y='1876' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>新中式紫砂快客杯</text>
+<text x='220' y='1906' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>厨房+茶饮 / 60-80 元</text>
+<rect x='790' y='1866' width='144' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<text x='862.0' y='1891' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>茶饮 vs 置物</text>
+<text x='1035' y='1876' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>青瓷釉色厨房置物架</text>
+<text x='1035' y='1906' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>陶瓷感 / 不锈钢底座 / 易清洁</text>
+<rect x='132' y='1930' width='1556' height='74' rx='18' fill='rgba(255,255,255,.018)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='172' cy='1967' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
+<text x='172' y='1975' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>6</text>
+<text x='220' y='1960' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>云雷纹不锈钢打蛋盆</text>
+<text x='220' y='1990' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>高频刚需 / 不锈钢供应链</text>
+<rect x='790' y='1950' width='116' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<text x='848.0' y='1975' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>符号落点</text>
+<text x='1035' y='1960' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>国风软包换鞋凳</text>
+<text x='1035' y='1990' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>云纹刺绣 / 棉麻坐垫 / 触感体验</text>
+<rect x='132' y='2014' width='1556' height='74' rx='18' fill='rgba(255,255,255,.035)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='172' cy='2051' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
+<text x='172' y='2059' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>7</text>
+<text x='220' y='2044' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>中式窗棂纹蒸锅盖</text>
+<text x='220' y='2074' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>厨房升级 / 替换成本低</text>
+<rect x='790' y='2034' width='144' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<text x='862.0' y='2059' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>配件 vs 容器</text>
+<text x='1035' y='2044' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>新中式竹编收纳筐</text>
+<text x='1035' y='2074' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>藤编圆形 / 大容量 / 低售后</text>
+<rect x='132' y='2098' width='1556' height='74' rx='18' fill='rgba(255,255,255,.018)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='172' cy='2135' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
+<text x='172' y='2143' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>8</text>
+<text x='220' y='2128' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>哑光黑金厨房剪刀</text>
+<text x='220' y='2158' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>刀具延伸 / 视觉冲击 / 低退货</text>
+<rect x='790' y='2118' width='144' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<text x='862.0' y='2143' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>工具 vs 玄关</text>
+<text x='1035' y='2128' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>榫卯风入户鞋架</text>
+<text x='1035' y='2158' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>组装式 / 免打孔 / 0新增模具</text>
+<rect x='132' y='2182' width='1556' height='74' rx='18' fill='rgba(255,255,255,.035)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='172' cy='2219' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
+<text x='172' y='2227' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>9</text>
+<text x='220' y='2212' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>宋锦风厨房收纳架</text>
+<text x='220' y='2242' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>贴纸/压纹控本 / 小空间改造</text>
+<rect x='790' y='2202' width='123' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<text x='851.5' y='2227' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>低成本图案</text>
+<text x='1035' y='2212' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>云纹吸盘置物架</text>
+<text x='1035' y='2242' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>浴室厨房 / 免打孔 / 强吸附</text>
+<rect x='132' y='2266' width='1556' height='74' rx='18' fill='rgba(255,255,255,.018)' stroke='rgba(255,255,255,.055)' stroke-width='1' opacity='1' filter=''/>
+<circle cx='172' cy='2303' r='21' fill='rgba(255,255,255,.08)' stroke='rgba(255,255,255,.18)'/>
+<text x='172' y='2311' font-size='20' fill='#FFFFFF' font-weight='800' text-anchor='middle' opacity='1' class=''>10</text>
+<text x='220' y='2296' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>新中式竹编厨房收纳篮</text>
+<text x='220' y='2326' font-size='18' fill='#B8A985' font-weight='500' text-anchor='start' opacity='1' class=''>PP+竹丝 / 环保视觉 / 轻试探</text>
+<rect x='790' y='2286' width='144' height='36' rx='18' fill='rgba(255,255,255,.06)' stroke='rgba(255,255,255,.12)' stroke-width='1' opacity='1' filter=''/>
+<text x='862.0' y='2311' font-size='17' fill='#DCE6F4' font-weight='700' text-anchor='middle' opacity='1' class=''>氛围 vs 标品</text>
+<text x='1035' y='2296' font-size='23' fill='#FFFFFF' font-weight='800' text-anchor='start' opacity='1' class=''>回纹防撞条加厚</text>
+<text x='1035' y='2326' font-size='18' fill='#8FCED6' font-weight='500' text-anchor='start' opacity='1' class=''>硅胶标品 / 宝宝安全交叉</text>
 <text x='90' y='2395' font-size='18' fill='#6F7E96' font-weight='400' text-anchor='start' opacity='1' class=''>Design output: opportunity signal comparison · Generated from provided A/B persona notes</text>
 <text x='1710' y='2395' font-size='20' fill='#F3D48B' font-weight='900' text-anchor='end' opacity='1' class=''>A</text>
 <text x='1734' y='2395' font-size='20' fill='#6F7E96' font-weight='400' text-anchor='end' opacity='1' class=''>/</text>
