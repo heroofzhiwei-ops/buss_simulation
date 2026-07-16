@@ -4,6 +4,8 @@
 
 `A2A 请求 → Query 分析 → 计划生成 → 逐步执行 → 实时 Eval → 不满足则重试/重规划 → 最终汇总`
 
+**与三类 Skill 整合**：请参阅项目根目录 [INTEGRATION_GUIDE.md](../INTEGRATION_GUIDE.md)。
+
 ## 快速开始
 
 ```bash
