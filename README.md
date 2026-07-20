@@ -51,9 +51,21 @@ python main.py --stage personas --sample-limit 300
 python main.py --stage demo --signal "巴恩风"
 ```
 
+## LangGraph Orchestrator（实验性）
+
+新增 `orchestrator/` 模块，提供 Task Planner + Eval Agent 编排骨架，支持 mock 模式本地演示：
+
+```bash
+pip install -r orchestrator/requirements.txt
+python -m orchestrator.main
+```
+
+详见 [orchestrator/README.md](orchestrator/README.md)。
+
 ## 项目结构
 
 ```
+├── orchestrator/           # LangGraph 编排骨架（Planner + Eval）
 ├── app.py                  # Flask Web 应用入口
 ├── main.py                 # 命令行入口
 ├── config.py               # 全局配置

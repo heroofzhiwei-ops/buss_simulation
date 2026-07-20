@@ -10,3 +10,9 @@ dependencies = [
     "jinja2>=3.0.0",
     "python-dotenv>=1.0.0",
 ]
+
+[project.optional-dependencies]
+orchestrator = [
+    "langgraph>=0.2.0",
+    "langchain-core>=0.3.0",
+]
